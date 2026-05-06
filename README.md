@@ -1,2 +1,2 @@
-# ADO-Online-Concert-Ticketing-Website
-A web-based concert ticketing platform developed to facilitate the online purchase of tickets for concerts of Ado, providing features such as event browsing, seat reservation, and booking management.
+# Online-Concert-Ticketing-System
+A web-based event ticketing platform designed to facilitate online ticket purchasing, seat reservation, and event management, providing an efficient and user-friendly experience for both customers and administrators.
