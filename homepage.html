@@ -1,240 +1,163 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ticketo - Buy Tickets Online</title>
+  <title>Homepage</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <style>
-    .event-card {
-      transition: all 0.3s ease;
-    }
-    .event-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.3), 0 8px 10px -6px rgb(0 0 0 / 0.3);
-    }
-    .hero-bg {
-      background-image: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1920');
-      background-size: cover;
-      background-position: center;
-    }
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap');
+    body { font-family: 'DM Sans', sans-serif; }
+    h1, h2 { font-family: 'DM Serif Display', serif; }
+    .card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.4); }
   </style>
 </head>
-<body class="bg-gray-950 text-gray-200 font-sans">
+<body class="bg-zinc-950 text-zinc-300">
 
-  <!-- Navbar -->
-  <nav class="bg-gray-900 border-b border-gray-800 sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+  <!-- Nav -->
+  <nav class="border-b border-zinc-800 sticky top-0 z-50 bg-zinc-950/90 backdrop-blur">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2 text-white">
+        <i class="fa-solid fa-ticket text-violet-400 text-xl"></i>
+        <span class="text-lg font-semibold tracking-tight">Absolute Cinema</span>
+      </div>
+      <div class="hidden md:flex items-center gap-6 text-sm text-zinc-400">
+        <a href="#" class="hover:text-white">Events</a>
+        <a href="#" class="hover:text-white">Categories</a>
+        <a href="#" class="hover:text-white">My Tickets</a>
+      </div>
       <div class="flex items-center gap-3">
-        <i class="fa-solid fa-ticket text-3xl text-indigo-500"></i>
-        <h1 class="text-2xl font-bold text-white">Ticketo</h1>
-      </div>
-      
-      <div class="hidden md:flex items-center gap-8">
-        <a href="#" class="hover:text-white text-gray-300 font-medium">Home</a>
-        <a href="#" class="hover:text-white text-gray-300 font-medium">Events</a>
-        <a href="#" class="hover:text-white text-gray-300 font-medium">Categories</a>
-        <a href="#" class="hover:text-white text-gray-300 font-medium">My Tickets</a>
-      </div>
-
-      <div class="flex items-center gap-4">
-        <button onclick="toggleDarkMode()" 
-                class="p-3 text-gray-400 hover:text-white">
-          <i class="fa-solid fa-sun text-xl"></i>
-        </button>
-        <button onclick="window.location.href='login.html'" 
-                class="px-5 py-2 text-gray-300 hover:text-white font-medium">
-          Login
-        </button>
-        <button onclick="window.location.href='register.html'" 
-                class="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-medium">
-          Sign Up
-        </button>
+        <button class="text-sm text-zinc-400 hover:text-white px-3 py-1.5">Login</button>
+        <button class="text-sm bg-violet-600 hover:bg-violet-500 text-white px-4 py-1.5 rounded-lg">Sign Up</button>
       </div>
     </div>
   </nav>
 
-  <!-- Hero Section -->
-  <header class="hero-bg text-white py-24">
-    <div class="max-w-4xl mx-auto text-center px-6">
-      <h2 class="text-5xl md:text-6xl font-bold mb-4">Experience Live Moments</h2>
-      <p class="text-xl md:text-2xl mb-8 text-gray-200">Buy tickets for the best concerts, sports, and theater events</p>
-      
-      <div class="max-w-2xl mx-auto">
-        <div class="relative">
-          <input id="searchInput" 
-                 type="text" 
-                 placeholder="Search events, artists, teams..." 
-                 class="w-full px-6 py-4 bg-gray-900 border border-gray-700 rounded-2xl text-lg focus:outline-none focus:ring-4 focus:ring-indigo-500 text-white placeholder-gray-400">
-          <button onclick="performSearch()" 
-                  class="absolute right-3 top-1/2 -translate-y-1/2 bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-3 rounded-xl font-medium">
-            Search
-          </button>
-        </div>
-      </div>
+  <!-- Hero -->
+  <header class="py-20 px-6 text-center" style="background: radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.15) 0%, transparent 70%)">
+    <p class="text-violet-400 text-sm font-medium mb-3 tracking-widest uppercase">Live Events</p>
+    <h2 class="text-5xl text-white mb-4">Find Your Next<br>Live Experience</h2>
+    <p class="text-zinc-400 mb-8 max-w-md mx-auto">Concerts, sports, theatre — all in one place.</p>
+    <div class="max-w-lg mx-auto flex gap-2">
+      <input id="searchInput" type="text" placeholder="Search events or artists..."
+        class="flex-1 bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500">
+      <button onclick="performSearch()" class="bg-violet-600 hover:bg-violet-500 text-white px-5 py-3 rounded-xl text-sm font-medium">
+        Search
+      </button>
     </div>
   </header>
 
   <!-- Filters -->
-  <div class="max-w-7xl mx-auto px-6 py-8">
-    <div class="flex flex-wrap items-center gap-4">
-      <h3 class="text-2xl font-semibold text-white">All Events</h3>
-      
-      <div class="flex-1"></div>
-
-      <select id="categoryFilter" onchange="filterEvents()" 
-              class="bg-gray-900 border border-gray-700 text-gray-200 rounded-xl px-5 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-        <option value="all">All Categories</option>
-        <option value="concert">Concerts</option>
-        <option value="sports">Sports</option>
-        <option value="theatre">Theatre</option>
-        <option value="festival">Festivals</option>
-      </select>
-
-      <button onclick="resetFilters()" 
-              class="text-gray-400 hover:text-white flex items-center gap-2">
-        <i class="fa-solid fa-rotate"></i> Reset
-      </button>
-    </div>
+  <div class="max-w-6xl mx-auto px-6 pb-6 flex flex-wrap items-center gap-3">
+    <button onclick="setFilter('all')" data-cat="all" class="filter-btn active text-sm px-4 py-2 rounded-lg bg-violet-600 text-white">All</button>
+    <button onclick="setFilter('concert')" data-cat="concert" class="filter-btn text-sm px-4 py-2 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700">Concerts</button>
+    <button onclick="setFilter('sports')" data-cat="sports" class="filter-btn text-sm px-4 py-2 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700">Sports</button>
+    <button onclick="setFilter('theatre')" data-cat="theatre" class="filter-btn text-sm px-4 py-2 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700">Theatre</button>
+    <button onclick="setFilter('festival')" data-cat="festival" class="filter-btn text-sm px-4 py-2 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700">Festivals</button>
+    <button onclick="resetFilters()" class="ml-auto text-xs text-zinc-500 hover:text-white flex items-center gap-1.5">
+      <i class="fa-solid fa-rotate"></i> Reset
+    </button>
   </div>
 
-  <!-- Events Grid -->
-  <div class="max-w-7xl mx-auto px-6 pb-16">
-    <div id="eventsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-      <!-- Populated by JavaScript -->
-    </div>
-  </div>
+  <!-- Grid -->
+  <main class="max-w-6xl mx-auto px-6 pb-20">
+    <div id="eventsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+    <p id="emptyMsg" class="hidden text-center text-zinc-500 py-16 text-sm">No events found.</p>
+  </main>
 
   <!-- Footer -->
-  <footer class="bg-black text-gray-400">
-    <div class="max-w-7xl mx-auto px-6 py-16">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-10">
-        <div>
-          <div class="flex items-center gap-3 text-white mb-6">
-            <i class="fa-solid fa-ticket text-3xl"></i>
-            <h2 class="text-2xl font-bold">Ticketo</h2>
-          </div>
-          <p class="text-sm">Your gateway to unforgettable live experiences.</p>
-        </div>
-        <div>
-          <h4 class="text-white font-semibold mb-4">Quick Links</h4>
-          <ul class="space-y-2 text-sm">
-            <li><a href="#" class="hover:text-white">Browse Events</a></li>
-            <li><a href="#" class="hover:text-white">How It Works</a></li>
-            <li><a href="#" class="hover:text-white">Sell Tickets</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="text-white font-semibold mb-4">Support</h4>
-          <ul class="space-y-2 text-sm">
-            <li><a href="#" class="hover:text-white">Contact Us</a></li>
-            <li><a href="#" class="hover:text-white">FAQs</a></li>
-            <li><a href="#" class="hover:text-white">Terms & Conditions</a></li>
-            <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="text-white font-semibold mb-4">Follow Us</h4>
-          <div class="flex gap-4 text-2xl">
-            <i class="fa-brands fa-facebook hover:text-white cursor-pointer"></i>
-            <i class="fa-brands fa-instagram hover:text-white cursor-pointer"></i>
-            <i class="fa-brands fa-x-twitter hover:text-white cursor-pointer"></i>
-          </div>
-        </div>
-      </div>
-      <div class="border-t border-gray-900 mt-12 pt-8 text-center text-sm">
-        © 2026 Ticketo. All rights reserved.
-      </div>
+  <footer class="border-t border-zinc-800 py-8 text-center text-zinc-600 text-sm">
+    <div class="flex justify-center items-center gap-2 text-zinc-400 mb-3">
+      <i class="fa-solid fa-ticket text-violet-400"></i>
+      <span class="font-medium">Absolute Cinema</span>
     </div>
+    <div class="flex justify-center gap-6 text-xs mb-4">
+      <a href="#" class="hover:text-zinc-300">Browse</a>
+      <a href="#" class="hover:text-zinc-300">FAQs</a>
+      <a href="#" class="hover:text-zinc-300">Contact</a>
+      <a href="#" class="hover:text-zinc-300">Terms</a>
+    </div>
+    <p>© 2026 Absolute Cinema. All rights reserved.</p>
   </footer>
 
   <script>
-    // Sample Events Data
     const events = [
       { id: 1, title: "Taylor Swift | The Eras Tour", category: "concert", date: "May 20, 2026", location: "Philippine Arena, Bulacan", price: "₱4,500", image: "https://picsum.photos/id/1015/400/250", type: "Concert" },
-      { id: 2, title: "PBA: Ginebra vs TNT", category: "sports", date: "May 15, 2026", location: "Smart Araneta Coliseum", price: "₱800", image: "https://picsum.photos/id/201/400/250", type: "Basketball" },
-      { id: 3, title: "Miss Saigon - Manila", category: "theatre", date: "June 10, 2026", location: "Cultural Center of the Philippines", price: "₱2,200", image: "https://picsum.photos/id/237/400/250", type: "Musical" },
+      { id: 2, title: "PBA: Ginebra vs TNT", category: "sports", date: "May 15, 2026", location: "Smart Araneta Coliseum", price: "₱800", image: "https://picsum.photos/id/201/400/250", type: "Sports" },
+      { id: 3, title: "Miss Saigon - Manila", category: "theatre", date: "June 10, 2026", location: "Cultural Center of the Philippines", price: "₱2,200", image: "https://picsum.photos/id/237/400/250", type: "Theatre" },
       { id: 4, title: "Coldplay World Tour", category: "concert", date: "July 5, 2026", location: "MOA Arena, Pasay", price: "₱6,000", image: "https://picsum.photos/id/870/400/250", type: "Concert" },
-      { id: 5, title: "UAAP: Ateneo vs La Salle", category: "sports", date: "May 25, 2026", location: "Smart Araneta Coliseum", price: "₱600", image: "https://picsum.photos/id/180/400/250", type: "Basketball" },
-      { id: 6, title: "Music Festival 2026", category: "festival", date: "June 20, 2026", location: "Mall of Asia Grounds", price: "₱1,800", image: "https://picsum.photos/id/1016/400/250", type: "Festival" }
+      { id: 5, title: "UAAP Men's Basketball: Ateneo vs La Salle", category: "sports", date: "May 25, 2026", location: "Smart Araneta Coliseum", price: "₱600", image: "https://picsum.photos/id/180/400/250", type: "Sports" },
+      { id: 6, title: "Music Festival 2026", category: "festival", date: "June 20, 2026", location: "Mall of Asia Grounds", price: "₱1,800", image: "https://picsum.photos/id/1016/400/250", type: "Festival" },
+      { id: 7, title: "Hamilton - Manila", category: "theatre", date: "August 15, 2026", location: "Cultural Center of the Philippines", price: "₱3,000", image: "https://picsum.photos/id/1025/400/250", type: "Theatre" },
+      { id: 8, title: "Daniel Ceasar Live in Manila", category: "concert", date: "September 10, 2026", location: "Philippine Arena, Bulacan", price: "₱2,500", image: "https://picsum.photos/id/1027/400/250", type: "Concert" },
+      { id: 9, title: "My Chemical Romance Reunion Tour", category: "concert", date: "October 5, 2026", location: "MOA Arena, Pasay", price: "₱5,000", image: "https://picsum.photos/id/1033/400/250", type: "Concert" },
+      { id: 10, title: "Bruno Mars Live in Manila", category: "concert", date: "November 20, 2026", location: "Philippine Arena, Bulacan", price: "₱4,000", image: "https://picsum.photos/id/1035/400/250", type: "Concert" },
+      { id: 11, title: "Epic: The Musical - Manila", category: "theatre", date: "December 10, 2026", location: "Cultural Center of the Philippines", price: "₱2,800", image: "https://picsum.photos/id/1040/400/250", type: "Theatre" },
+      { id: 12, title: "The 1975 Live in Manila", category: "concert", date: "January 15, 2027", location: "MOA Arena, Pasay", price: "₱3,500", image: "https://picsum.photos/id/1041/400/250", type: "Concert" },
+      { id: 13, title: "Hatsune Miku Expo 2026", category: "festival", date: "February 20, 2027", location: "Mall of Asia Grounds", price: "₱1,500", image: "https://picsum.photos/id/1042/400/250", type: "Festival" },
+      { id: 14, title: "Ado Live in Manila", category: "concert", date: "March 10, 2027", location: "Philippine Arena, Bulacan", price: "₱2,200", image: "https://picsum.photos/id/1043/400/250", type: "Concert" },
+      { id: 15, title: "Laufey", category: "concert", date: "April 5, 2027", location: "MOA Arena, Pasay", price: "₱6,500", image: "https://picsum.photos/id/1044/400/250", type: "Concert" },
+      { id: 16, title: "The Greatest Showman Live Experience", category: "theatre", date: "May 20, 2027", location: "Cultural Center of the Philippines", price: "₱3,200", image: "https://picsum.photos/id/1045/400/250", type: "Theatre" },
+      {id : 17, title: "Dustin Castro vs. Jersey Cantalejo Boxing Match", category: "sports", date: "June 15, 2027", location: "Smart Araneta Coliseum", price: "₱1,000", image: "https://picsum.photos/id/1046/400/250", type: "Sports" },
+      { id: 18, title: "UAAP Women's Volleyball Finals: FEU vs NU", category: "sports", date: "July 10, 2027", location: "Smart Araneta Coliseum", price: "₱500", image: "https://picsum.photos/id/1044/400/250", type: "Sports" },
+      { id: 19, title: "UAAP Women's Volleyball Finals: DLSU vs ADMU", category: "sports", date: "July 12, 2027", location: "Smart Araneta Coliseum", price: "₱500", image: "https://picsum.photos/id/1048/400/250", type: "Sports" },
     ];
 
-    function renderEvents(filteredEvents) {
-      const grid = document.getElementById('eventsGrid');
-      grid.innerHTML = '';
+    let currentFilter = 'all';
 
-      filteredEvents.forEach(event => {
-        const card = `
-          <div class="event-card bg-gray-900 border border-gray-800 rounded-3xl overflow-hidden cursor-pointer" onclick="viewEvent(${event.id})">
-            <img src="${event.image}" alt="${event.title}" class="w-full h-48 object-cover">
-            <div class="p-5">
-              <div class="flex justify-between items-start mb-2">
-                <span class="text-xs font-medium px-3 py-1 bg-indigo-950 text-indigo-400 rounded-full">${event.type}</span>
-                <span class="text-sm text-gray-500">${event.date}</span>
-              </div>
-              <h3 class="font-bold text-lg leading-tight mb-2 line-clamp-2 text-white">${event.title}</h3>
-              <p class="text-gray-400 text-sm mb-4">${event.location}</p>
-              <div class="flex justify-between items-center">
-                <span class="text-xl font-bold text-indigo-400">${event.price}</span>
-                <button class="text-indigo-400 hover:text-indigo-300 font-medium text-sm">
-                  Buy Ticket →
-                </button>
-              </div>
+    function renderEvents(list) {
+      const grid = document.getElementById('eventsGrid');
+      const empty = document.getElementById('emptyMsg');
+      if (!list.length) { grid.innerHTML = ''; empty.classList.remove('hidden'); return; }
+      empty.classList.add('hidden');
+      grid.innerHTML = list.map(e => `
+        <div class="card bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden cursor-pointer" onclick="viewEvent(${e.id})">
+          <img src="${e.image}" alt="${e.title}" class="w-full h-44 object-cover">
+          <div class="p-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs px-2.5 py-1 bg-violet-950 text-violet-400 rounded-full">${e.type}</span>
+              <span class="text-xs text-zinc-500">${e.date}</span>
+            </div>
+            <h3 class="text-white font-semibold text-base leading-snug mb-1 line-clamp-2">${e.title}</h3>
+            <p class="text-zinc-500 text-xs mb-4 flex items-center gap-1"><i class="fa-solid fa-location-dot"></i> ${e.location}</p>
+            <div class="flex items-center justify-between">
+              <span class="text-violet-400 font-semibold">${e.price}</span>
+              <button class="text-xs text-white bg-zinc-800 hover:bg-zinc-700 px-3 py-1.5 rounded-lg">Buy →</button>
             </div>
           </div>
-        `;
-        grid.innerHTML += card;
+        </div>
+      `).join('');
+    }
+
+    function setFilter(cat) {
+      currentFilter = cat;
+      document.querySelectorAll('.filter-btn').forEach(b => {
+        const isActive = b.dataset.cat === cat;
+        b.className = `filter-btn text-sm px-4 py-2 rounded-lg ${isActive ? 'bg-violet-600 text-white' : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'}`;
       });
+      applyFilters();
     }
 
-    function filterEvents() {
-      const category = document.getElementById('categoryFilter').value;
-      let filtered = events;
-      if (category !== 'all') {
-        filtered = events.filter(e => e.category === category);
-      }
-      renderEvents(filtered);
+    function applyFilters() {
+      const q = document.getElementById('searchInput').value.toLowerCase().trim();
+      let list = currentFilter === 'all' ? events : events.filter(e => e.category === currentFilter);
+      if (q) list = list.filter(e => e.title.toLowerCase().includes(q) || e.location.toLowerCase().includes(q));
+      renderEvents(list);
     }
 
-    function performSearch() {
-      const query = document.getElementById('searchInput').value.toLowerCase().trim();
-      if (!query) return filterEvents();
-
-      const filtered = events.filter(event => 
-        event.title.toLowerCase().includes(query) || 
-        event.location.toLowerCase().includes(query)
-      );
-      renderEvents(filtered);
-    }
+    function performSearch() { applyFilters(); }
 
     function resetFilters() {
-      document.getElementById('categoryFilter').value = 'all';
       document.getElementById('searchInput').value = '';
-      renderEvents(events);
+      setFilter('all');
     }
 
-    function viewEvent(id) {
-      window.location.href = `event-details.html?eventId=${id}`;
-    }
+    function viewEvent(id) { window.location.href = `event-details.html?eventId=${id}`; }
 
-    // Dark/Light Mode Toggle
-    function toggleDarkMode() {
-      if (document.documentElement.classList.contains('dark')) {
-        document.documentElement.classList.remove('dark');
-        localStorage.theme = 'light';
-      } else {
-        document.documentElement.classList.add('dark');
-        localStorage.theme = 'dark';
-      }
-    }
+    document.getElementById('searchInput').addEventListener('keypress', e => { if (e.key === 'Enter') performSearch(); });
 
-    // Keyboard support
-    document.getElementById('searchInput').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') performSearch();
-    });
-
-    // Initialize
     renderEvents(events);
   </script>
 </body>

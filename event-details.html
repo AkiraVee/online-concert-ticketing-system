@@ -1,221 +1,489 @@
-
-
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Event Details | Ticketo</title>
+  <title>Event Details — Ticketo</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
   <style>
-    .ticket-card { transition: all 0.3s ease; }
-    .ticket-card:hover { transform: translateY(-6px); border-color: rgb(129 140 248); }
+    body { font-family: 'DM Sans', sans-serif; }
+    .serif { font-family: 'DM Serif Display', serif; }
+
+    .hero-blur {
+      position: absolute; inset: 0;
+      background-size: cover;
+      background-position: center;
+      filter: blur(28px) brightness(0.3);
+      transform: scale(1.05);
+    }
+
+    .thumb { transition: all 0.2s; cursor: pointer; }
+    .thumb:hover { opacity: 1 !important; }
+    .thumb.active { outline: 2px solid #7c3aed; outline-offset: 2px; opacity: 1 !important; }
+
+    .date-btn { transition: all 0.2s; }
+    .date-btn.selected { background: #7c3aed; color: white; border-color: #7c3aed; }
+
+    .tier-card { transition: all 0.2s; }
+    .tier-card.selected { border-color: #7c3aed; background: rgba(124,58,237,0.08); }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { animation: fadeIn 0.4s ease forwards; }
+
+    /* Modal */
+    #buyModal { display: none; }
+    #buyModal.open { display: flex; }
   </style>
 </head>
-<body class="bg-gray-950 text-gray-200 font-sans">
+<body class="bg-zinc-950 text-zinc-300 min-h-screen">
 
-  <!-- Navbar -->
-  <nav class="bg-gray-900 border-b border-gray-800 sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-      <a href="homepage.html" class="flex items-center gap-3">
-        <i class="fa-solid fa-ticket text-3xl text-indigo-500"></i>
-        <h1 class="text-2xl font-bold text-white">Ticketo</h1>
+  <!-- Nav -->
+  <nav class="border-b border-zinc-800 sticky top-0 z-50 bg-zinc-950/90 backdrop-blur">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center gap-4">
+      <a href="homepage.html" class="flex items-center gap-2 text-white hover:text-violet-400 transition-colors">
+        <i class="fa-solid fa-arrow-left text-sm"></i>
+        <span class="text-sm">Back</span>
       </a>
-      <a href="homepage.html" class="flex items-center gap-2 text-gray-400 hover:text-white">
-        ← Back to All Events
-      </a>
+      <div class="h-5 w-px bg-zinc-700"></div>
+      <div class="flex items-center gap-2 text-white">
+        <i class="fa-solid fa-ticket text-violet-400 text-xl"></i>
+        <span class="text-lg font-semibold tracking-tight">Ticketo</span>
+      </div>
     </div>
   </nav>
 
-  <!-- Hero Image -->
-  <div class="relative h-[450px] md:h-[550px]">
-    <img id="mainImage" src="https://picsum.photos/id/1015/1200/600" 
-         class="w-full h-full object-cover">
-    <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/70"></div>
-  </div>
+  <!-- Content -->
+  <div id="pageContent" class="fade-in"></div>
 
-  <div class="max-w-7xl mx-auto px-6 -mt-16 relative z-10">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+  <!-- Buy Modal -->
+  <div id="buyModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm items-center justify-center p-4">
+    <div class="bg-zinc-900 border border-zinc-700 rounded-2xl w-full max-w-md p-6 relative">
+      <button onclick="closeModal()" class="absolute top-4 right-4 text-zinc-500 hover:text-white">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+      <h3 class="serif text-2xl text-white mb-1">Confirm Order</h3>
+      <p class="text-zinc-400 text-sm mb-6">Review your ticket selection before checkout.</p>
 
-      <!-- Main Content -->
-      <div class="lg:col-span-8">
-        <h1 id="eventTitle" class="text-4xl md:text-5xl font-bold text-white mb-4">
-          Taylor Swift | The Eras Tour
-        </h1>
+      <div id="modalSummary" class="bg-zinc-800 rounded-xl p-4 mb-5 space-y-2 text-sm"></div>
 
-        <div class="flex flex-wrap gap-6 text-gray-400 mb-8">
-          <div class="flex items-center gap-3">
-            <i class="fa-solid fa-calendar text-indigo-400"></i>
-            <span id="eventDate">May 20, 2026 • 7:00 PM</span>
-          </div>
-          <div class="flex items-center gap-3">
-            <i class="fa-solid fa-location-dot text-indigo-400"></i>
-            <span id="eventVenue">Philippine Arena, Bulacan</span>
-          </div>
-          <div class="flex items-center gap-3">
-            <i class="fa-solid fa-clock text-indigo-400"></i>
-            <span id="eventDuration">3 hours 45 minutes</span>
-          </div>
-        </div>
-
-        <!-- Description -->
-        <div class="bg-gray-900 rounded-3xl p-8 border border-gray-800 mb-10">
-          <h3 class="text-2xl font-semibold mb-5">About the Event</h3>
-          <p id="eventDescription" class="text-gray-300 leading-relaxed text-lg">
-            Experience the biggest concert tour of the decade. Taylor Swift brings her record-breaking Eras Tour to the Philippines for one unforgettable night.
-          </p>
-        </div>
-
-        <!-- Multiple Dates / Schedules -->
-        <div class="mb-10">
-          <h3 class="text-2xl font-semibold mb-5">Available Dates</h3>
-          <div id="datesContainer" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <!-- JS will populate multiple dates -->
-          </div>
-        </div>
-
-        <!-- Ticket Types -->
-        <h3 class="text-2xl font-semibold mb-6">Ticket Types</h3>
-        <div id="ticketTypesContainer" class="space-y-6">
-          <!-- Populated by JavaScript -->
+      <div class="mb-5">
+        <label class="block text-xs text-zinc-400 mb-1.5 font-medium uppercase tracking-wide">Full Name</label>
+        <input type="text" placeholder="Juan dela Cruz" class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-2.5 text-white text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500">
+      </div>
+      <div class="mb-5">
+        <label class="block text-xs text-zinc-400 mb-1.5 font-medium uppercase tracking-wide">Email</label>
+        <input type="email" placeholder="juan@example.com" class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-2.5 text-white text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500">
+      </div>
+      <div class="mb-6">
+        <label class="block text-xs text-zinc-400 mb-1.5 font-medium uppercase tracking-wide">Payment Method</label>
+        <div class="grid grid-cols-3 gap-2">
+          <button onclick="selectPayment(this)" class="pay-btn border border-zinc-700 rounded-xl py-2 text-xs text-zinc-400 hover:border-violet-500 hover:text-white transition-all">GCash</button>
+          <button onclick="selectPayment(this)" class="pay-btn border border-zinc-700 rounded-xl py-2 text-xs text-zinc-400 hover:border-violet-500 hover:text-white transition-all">Maya</button>
+          <button onclick="selectPayment(this)" class="pay-btn border border-zinc-700 rounded-xl py-2 text-xs text-zinc-400 hover:border-violet-500 hover:text-white transition-all">Card</button>
         </div>
       </div>
 
-      <!-- Sidebar -->
-      <div class="lg:col-span-4">
-        <div class="bg-gray-900 rounded-3xl p-8 border border-gray-800 sticky top-8">
-          <h4 class="text-xl font-semibold mb-6">Your Selection</h4>
-          
-          <div id="selectionBox" class="min-h-[200px] mb-8">
-            <p class="text-gray-500 italic">Select a ticket type below</p>
-          </div>
-
-          <button onclick="goToPurchase()" 
-                  class="w-full bg-indigo-600 hover:bg-indigo-500 py-6 rounded-2xl text-xl font-bold transition-all">
-            Buy Tickets Now
-          </button>
-
-          <p class="text-center text-xs text-gray-500 mt-6">✓ Secure Payment • ✓ Instant Confirmation</p>
-        </div>
-      </div>
+      <button onclick="submitOrder()" class="w-full bg-violet-600 hover:bg-violet-500 text-white py-3 rounded-xl font-semibold text-sm">
+        Confirm & Pay
+      </button>
     </div>
   </div>
 
-  <!-- Gallery -->
-  <div class="max-w-7xl mx-auto px-6 py-16">
-    <h3 class="text-2xl font-semibold mb-6">Gallery</h3>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <img src="https://picsum.photos/id/1015/400/250" class="rounded-2xl hover:scale-105 transition">
-      <img src="https://picsum.photos/id/870/400/250" class="rounded-2xl hover:scale-105 transition">
-      <img src="https://picsum.photos/id/201/400/250" class="rounded-2xl hover:scale-105 transition">
-      <img src="https://picsum.photos/id/237/400/250" class="rounded-2xl hover:scale-105 transition">
-    </div>
+  <!-- Success Toast -->
+  <div id="toast" class="hidden fixed bottom-6 right-6 bg-emerald-600 text-white px-5 py-3 rounded-xl text-sm font-medium shadow-xl z-50 flex items-center gap-2">
+    <i class="fa-solid fa-circle-check"></i> Order confirmed! Check your email.
   </div>
 
   <script>
-    // Sample Data (you can change this easily)
-    const eventData = {
-      title: "Taylor Swift | The Eras Tour",
-      date: "May 20, 2026",
-      venue: "Philippine Arena, Bulacan",
-      duration: "3 hours 45 minutes",
-      description: "Join Taylor Swift as she takes you through all the eras of her incredible career. This is going to be a night full of surprises, hits, and unforgettable memories.",
-      image: "https://picsum.photos/id/1015/1200/600"
+    // ─── Full Event Data ─────────────────────────────────────────────────────────
+    const events = {
+      1: {
+        id: 1,
+        title: "Taylor Swift | The Eras Tour",
+        type: "Concert",
+        category: "concert",
+        location: "Philippine Arena, Bulacan",
+        duration: "3 hours 30 minutes",
+        description: "Taylor Swift's record-breaking Eras Tour arrives in the Philippines for a spectacular one-night show. Journey through all musical eras — from Fearless to Midnights — with dazzling production, costume changes, surprise songs, and an unforgettable atmosphere. This is the biggest concert event in Philippine history.",
+        images: [
+          "https://picsum.photos/id/1015/1200/600",
+          "https://picsum.photos/id/1016/1200/600",
+          "https://picsum.photos/id/1020/1200/600",
+          "https://picsum.photos/id/1021/1200/600"
+        ],
+        dates: [
+          { label: "Sat, May 16", time: "6:00 PM" },
+          { label: "Sun, May 17", time: "5:30 PM" },
+          { label: "Fri, May 20", time: "7:00 PM" }
+        ],
+        tiers: [
+          { name: "General Admission", price: 4500, available: 1200, color: "zinc" },
+          { name: "Lower Box", price: 7500, available: 340, color: "blue" },
+          { name: "VIP Floor", price: 15000, available: 80, color: "violet" }
+        ]
+      },
+      2: {
+        id: 2,
+        title: "PBA: Ginebra vs TNT",
+        type: "Sports",
+        category: "sports",
+        location: "Smart Araneta Coliseum, Cubao",
+        duration: "~2 hours 30 minutes",
+        description: "The rivalry continues! Barangay Ginebra San Miguel takes on the TNT Tropang Giga in a high-stakes PBA Governors' Cup clash. Expect non-stop action, passionate crowd energy, and basketball at its finest. Both squads are in playoff contention — every possession matters.",
+        images: [
+          "https://picsum.photos/id/201/1200/600",
+          "https://picsum.photos/id/202/1200/600",
+          "https://picsum.photos/id/203/1200/600"
+        ],
+        dates: [
+          { label: "Wed, May 15", time: "7:00 PM" },
+          { label: "Sat, May 18", time: "4:00 PM" }
+        ],
+        tiers: [
+          { name: "Upper Box", price: 400, available: 900, color: "zinc" },
+          { name: "Lower Box", price: 800, available: 420, color: "blue" },
+          { name: "Courtside", price: 3500, available: 30, color: "violet" }
+        ]
+      },
+      3: {
+        id: 3,
+        title: "Miss Saigon - Manila",
+        type: "Theatre",
+        category: "theatre",
+        location: "Cultural Center of the Philippines, Pasay",
+        duration: "2 hours 45 minutes (incl. intermission)",
+        description: "The legendary West End and Broadway musical returns to its birthplace. Miss Saigon tells the timeless story of Kim and Chris — a love story set against the backdrop of the Vietnam War. Featuring a Filipino cast and the iconic helicopter sequence, this is a theatrical event not to be missed.",
+        images: [
+          "https://picsum.photos/id/237/1200/600",
+          "https://picsum.photos/id/240/1200/600",
+          "https://picsum.photos/id/242/1200/600"
+        ],
+        dates: [
+          { label: "Tue, Jun 10", time: "8:00 PM" },
+          { label: "Wed, Jun 11", time: "3:00 PM" },
+          { label: "Sat, Jun 14", time: "8:00 PM" },
+          { label: "Sun, Jun 15", time: "2:00 PM" }
+        ],
+        tiers: [
+          { name: "Balcony", price: 1200, available: 280, color: "zinc" },
+          { name: "Orchestra", price: 2200, available: 150, color: "blue" },
+          { name: "Front Orchestra", price: 4500, available: 40, color: "violet" }
+        ]
+      },
+      4: {
+        id: 4,
+        title: "Coldplay World Tour",
+        type: "Concert",
+        category: "concert",
+        location: "MOA Arena, Pasay",
+        duration: "2 hours 15 minutes",
+        description: "Coldplay's Music of the Spheres World Tour — one of the highest-grossing concert tours of all time — makes its Philippine stop. Known for their breathtaking LED wristband light shows, confetti cannons, and massive set production, Chris Martin and the band will perform hits across their entire catalog.",
+        images: [
+          "https://picsum.photos/id/870/1200/600",
+          "https://picsum.photos/id/871/1200/600",
+          "https://picsum.photos/id/873/1200/600",
+          "https://picsum.photos/id/875/1200/600"
+        ],
+        dates: [
+          { label: "Sun, Jul 5", time: "7:30 PM" },
+          { label: "Mon, Jul 6", time: "7:30 PM" }
+        ],
+        tiers: [
+          { name: "General Admission", price: 3500, available: 2000, color: "zinc" },
+          { name: "Lower Box", price: 6000, available: 600, color: "blue" },
+          { name: "VIP Pit", price: 12000, available: 120, color: "violet" }
+        ]
+      },
+      5: {
+        id: 5,
+        title: "UAAP: Ateneo vs La Salle",
+        type: "Sports",
+        category: "sports",
+        location: "Smart Araneta Coliseum, Cubao",
+        duration: "~2 hours",
+        description: "The most storied rivalry in Philippine college basketball is back. Ateneo Blue Eagles face the De La Salle Green Archers in a Season 87 elimination round battle. Bragging rights, playoff seeding, and pure school spirit are all on the line. Wear your colors and cheer your team to victory.",
+        images: [
+          "https://picsum.photos/id/180/1200/600",
+          "https://picsum.photos/id/181/1200/600",
+          "https://picsum.photos/id/182/1200/600"
+        ],
+        dates: [
+          { label: "Sun, May 25", time: "12:00 PM" },
+          { label: "Sat, May 31", time: "2:00 PM" }
+        ],
+        tiers: [
+          { name: "Upper Box", price: 300, available: 1100, color: "zinc" },
+          { name: "Lower Box", price: 600, available: 480, color: "blue" },
+          { name: "Patron", price: 2000, available: 60, color: "violet" }
+        ]
+      },
+      6: {
+        id: 6,
+        title: "Music Festival 2026",
+        type: "Festival",
+        category: "festival",
+        location: "Mall of Asia Grounds, Pasay",
+        duration: "8 hours (12 NN – 9 PM)",
+        description: "The biggest outdoor music festival in the Philippines returns with an all-star lineup spanning OPM legends, indie acts, and international headliners. Multiple stages, food stalls, art installations, and non-stop live music across every genre. A full-day celebration of Philippine music culture.",
+        images: [
+          "https://picsum.photos/id/1016/1200/600",
+          "https://picsum.photos/id/1018/1200/600",
+          "https://picsum.photos/id/1019/1200/600",
+          "https://picsum.photos/id/1022/1200/600"
+        ],
+        dates: [
+          { label: "Sat, Jun 20", time: "12:00 PM" },
+          { label: "Sun, Jun 21", time: "12:00 PM" }
+        ],
+        tiers: [
+          { name: "General Admission", price: 1200, available: 5000, color: "zinc" },
+          { name: "Day + Night Pass", price: 1800, available: 1500, color: "blue" },
+          { name: "VIP Lounge", price: 4500, available: 200, color: "violet" }
+        ]
+      }
     };
 
-    // Multiple Dates
-    const dates = [
-      { date: "May 20, 2026", time: "7:00 PM" },
-      { date: "May 21, 2026", time: "7:00 PM" },
-      { date: "May 23, 2026", time: "8:00 PM" }
-    ];
+    // ─── State ────────────────────────────────────────────────────────────────────
+    let state = {
+      event: null,
+      activeImg: 0,
+      selectedDate: 0,
+      selectedTier: 0,
+      qty: 1
+    };
 
-    // Ticket Types
-    const ticketTypes = [
-      { id: 1, name: "VIP Standing", price: 6500, available: 320, color: "amber" },
-      { id: 2, name: "Lower Box", price: 4500, available: 1850, color: "blue" },
-      { id: 3, name: "Upper Box", price: 2800, available: 3200, color: "emerald" },
-      { id: 4, name: "General Admission", price: 1800, available: 8900, color: "gray" }
-    ];
-
-    let selectedTicket = null;
-
-    function renderDates() {
-      const container = document.getElementById('datesContainer');
-      container.innerHTML = '';
-      dates.forEach(d => {
-        const div = document.createElement('div');
-        div.className = "bg-gray-900 border border-gray-700 rounded-2xl p-5 hover:border-indigo-500 cursor-pointer transition";
-        div.innerHTML = `
-          <p class="font-semibold">${d.date}</p>
-          <p class="text-indigo-400">${d.time}</p>
-        `;
-        container.appendChild(div);
-      });
+    // ─── Init ─────────────────────────────────────────────────────────────────────
+    function init() {
+      const params = new URLSearchParams(window.location.search);
+      const id = parseInt(params.get('eventId')) || 1;
+      state.event = events[id];
+      if (!state.event) {
+        document.getElementById('pageContent').innerHTML = '<p class="text-center text-zinc-500 py-32">Event not found.</p>';
+        return;
+      }
+      document.title = `${state.event.title} — Ticketo`;
+      renderPage();
     }
 
-    function renderTicketTypes() {
-      const container = document.getElementById('ticketTypesContainer');
-      container.innerHTML = '';
+    function renderPage() {
+      const e = state.event;
+      document.getElementById('pageContent').innerHTML = `
 
-      ticketTypes.forEach(ticket => {
-        const card = document.createElement('div');
-        card.className = `ticket-card bg-gray-900 border-2 border-gray-800 rounded-3xl p-7 cursor-pointer`;
-        card.innerHTML = `
-          <div class="flex justify-between items-center">
-            <div>
-              <span class="px-5 py-2 bg-${ticket.color}-600 text-white rounded-full text-sm font-medium">${ticket.name}</span>
-              <p class="text-4xl font-bold mt-6">₱${ticket.price.toLocaleString()}</p>
-            </div>
-            <div class="text-right">
-              <p class="text-sm text-gray-400">Available</p>
-              <p class="text-3xl font-bold text-emerald-400">${ticket.available}</p>
+        <!-- Hero Banner -->
+        <div class="relative overflow-hidden" style="height: 420px;">
+          <div class="hero-blur" id="heroBg" style="background-image: url('${e.images[0]}')"></div>
+          <div class="relative z-10 h-full flex flex-col justify-end max-w-6xl mx-auto px-6 pb-8">
+            <span class="inline-block mb-3 text-xs font-medium px-3 py-1 bg-violet-600 text-white rounded-full w-fit">${e.type}</span>
+            <h1 class="serif text-white text-4xl md:text-5xl leading-tight mb-2">${e.title}</h1>
+            <div class="flex flex-wrap items-center gap-4 text-sm text-zinc-300">
+              <span><i class="fa-solid fa-location-dot text-violet-400 mr-1"></i>${e.location}</span>
+              <span><i class="fa-solid fa-clock text-violet-400 mr-1"></i>${e.duration}</span>
             </div>
           </div>
-        `;
-        card.onclick = () => selectTicket(ticket, card);
-        container.appendChild(card);
-      });
-    }
+        </div>
 
-    function selectTicket(ticket, element) {
-      selectedTicket = ticket;
-      
-      // Highlight selected
-      document.querySelectorAll('.ticket-card').forEach(el => el.classList.remove('border-indigo-500'));
-      element.classList.add('border-indigo-500');
+        <!-- Body -->
+        <div class="max-w-6xl mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-3 gap-10">
 
-      // Update selection box
-      document.getElementById('selectionBox').innerHTML = `
-        <div class="bg-gray-800 rounded-2xl p-6">
-          <p class="text-gray-400">Selected Ticket</p>
-          <p class="text-2xl font-bold">${ticket.name}</p>
-          <p class="text-5xl font-bold text-indigo-400 mt-3">₱${ticket.price.toLocaleString()}</p>
-          <p class="text-emerald-400 mt-2">${ticket.available} tickets remaining</p>
+          <!-- LEFT: Details -->
+          <div class="lg:col-span-2 space-y-10">
+
+            <!-- Gallery -->
+            <section>
+              <h2 class="serif text-xl text-white mb-4">Gallery</h2>
+              <div class="rounded-2xl overflow-hidden mb-3" style="height:300px">
+                <img id="mainImg" src="${e.images[0]}" alt="Event" class="w-full h-full object-cover transition-opacity duration-300">
+              </div>
+              <div class="flex gap-2">
+                ${e.images.map((img, i) => `
+                  <div class="thumb ${i === 0 ? 'active' : 'opacity-50'} rounded-xl overflow-hidden flex-1" style="height:70px" onclick="switchImage(${i})">
+                    <img src="${img}" class="w-full h-full object-cover">
+                  </div>
+                `).join('')}
+              </div>
+            </section>
+
+            <!-- About -->
+            <section>
+              <h2 class="serif text-xl text-white mb-3">About This Event</h2>
+              <p class="text-zinc-400 leading-relaxed text-sm">${e.description}</p>
+            </section>
+
+            <!-- Event Info -->
+            <section>
+              <h2 class="serif text-xl text-white mb-4">Event Info</h2>
+              <div class="grid grid-cols-2 gap-3">
+                <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
+                  <p class="text-xs text-zinc-500 mb-1 uppercase tracking-wide">Venue</p>
+                  <p class="text-white text-sm font-medium">${e.location}</p>
+                </div>
+                <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
+                  <p class="text-xs text-zinc-500 mb-1 uppercase tracking-wide">Duration</p>
+                  <p class="text-white text-sm font-medium">${e.duration}</p>
+                </div>
+                <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
+                  <p class="text-xs text-zinc-500 mb-1 uppercase tracking-wide">Type</p>
+                  <p class="text-white text-sm font-medium">${e.type}</p>
+                </div>
+                <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
+                  <p class="text-xs text-zinc-500 mb-1 uppercase tracking-wide">Available Shows</p>
+                  <p class="text-white text-sm font-medium">${e.dates.length} date${e.dates.length > 1 ? 's' : ''}</p>
+                </div>
+              </div>
+            </section>
+
+          </div>
+
+          <!-- RIGHT: Ticket Sidebar -->
+          <div class="lg:col-span-1">
+            <div class="sticky top-24 bg-zinc-900 border border-zinc-800 rounded-2xl p-6 space-y-6">
+
+              <!-- Date Selection -->
+              <div>
+                <p class="text-xs text-zinc-400 uppercase tracking-wide font-medium mb-3">Select Date & Time</p>
+                <div class="space-y-2">
+                  ${e.dates.map((d, i) => `
+                    <button class="date-btn w-full border border-zinc-700 rounded-xl px-4 py-3 text-left flex justify-between items-center ${i === 0 ? 'selected' : 'hover:border-zinc-500'}"
+                      onclick="selectDate(${i})">
+                      <span class="text-sm font-medium text-white">${d.label}</span>
+                      <span class="text-xs text-zinc-400">${d.time}</span>
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+
+              <!-- Tier Selection -->
+              <div>
+                <p class="text-xs text-zinc-400 uppercase tracking-wide font-medium mb-3">Ticket Tier</p>
+                <div class="space-y-2">
+                  ${e.tiers.map((t, i) => `
+                    <div class="tier-card border border-zinc-700 rounded-xl p-4 cursor-pointer ${i === 0 ? 'selected' : ''}" onclick="selectTier(${i})">
+                      <div class="flex justify-between items-start">
+                        <div>
+                          <p class="text-white text-sm font-medium">${t.name}</p>
+                          <p class="text-xs text-zinc-500 mt-0.5">${t.available.toLocaleString()} available</p>
+                        </div>
+                        <span class="text-violet-400 font-bold text-sm">₱${t.price.toLocaleString()}</span>
+                      </div>
+                      <!-- Availability Bar -->
+                      <div class="mt-3 h-1 bg-zinc-700 rounded-full overflow-hidden">
+                        <div class="h-full bg-violet-500 rounded-full" style="width: ${Math.min(100, 100 - (t.available / (t.available * 1.5)) * 100 + 40)}%"></div>
+                      </div>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+
+              <!-- Quantity -->
+              <div>
+                <p class="text-xs text-zinc-400 uppercase tracking-wide font-medium mb-3">Quantity</p>
+                <div class="flex items-center gap-4">
+                  <button onclick="changeQty(-1)" class="w-9 h-9 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-white flex items-center justify-center font-bold">−</button>
+                  <span id="qtyDisplay" class="text-white font-bold text-lg w-6 text-center">1</span>
+                  <button onclick="changeQty(1)" class="w-9 h-9 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-white flex items-center justify-center font-bold">+</button>
+                  <span class="text-zinc-500 text-xs ml-auto">Max 10 per order</span>
+                </div>
+              </div>
+
+              <!-- Total -->
+              <div class="border-t border-zinc-800 pt-4">
+                <div class="flex justify-between items-center mb-4">
+                  <span class="text-zinc-400 text-sm">Total</span>
+                  <span id="totalPrice" class="text-white font-bold text-xl">₱${e.tiers[0].price.toLocaleString()}</span>
+                </div>
+                <button onclick="openModal()" class="w-full bg-violet-600 hover:bg-violet-500 text-white py-3 rounded-xl font-semibold text-sm transition-colors">
+                  <i class="fa-solid fa-ticket mr-2"></i>Buy Tickets
+                </button>
+                <p class="text-center text-zinc-600 text-xs mt-3">Secure checkout · No hidden fees</p>
+              </div>
+
+            </div>
+          </div>
+
         </div>
       `;
     }
 
-    function goToPurchase() {
-      if (!selectedTicket) {
-        alert("Please select a ticket type first!");
-        return;
-      }
-      alert(`Proceeding to purchase: ${selectedTicket.name} - ₱${selectedTicket.price}`);
-      // Later change to: window.location.href = `purchase.html?event=1&ticket=${selectedTicket.id}`;
+    // ─── Interactions ─────────────────────────────────────────────────────────────
+    function switchImage(i) {
+      state.activeImg = i;
+      document.getElementById('mainImg').src = state.event.images[i];
+      document.querySelectorAll('.thumb').forEach((el, idx) => {
+        el.classList.toggle('active', idx === i);
+        el.style.opacity = idx === i ? '1' : '0.5';
+      });
     }
 
-    // Initialize Page
-    document.getElementById('eventTitle').textContent = eventData.title;
-    document.getElementById('eventDate').textContent = `${eventData.date} • 7:00 PM`;
-    document.getElementById('eventVenue').textContent = eventData.venue;
-    document.getElementById('eventDuration').textContent = eventData.duration;
-    document.getElementById('eventDescription').textContent = eventData.description;
-    document.getElementById('mainImage').src = eventData.image;
+    function selectDate(i) {
+      state.selectedDate = i;
+      document.querySelectorAll('.date-btn').forEach((b, idx) => {
+        b.classList.toggle('selected', idx === i);
+        if (idx !== i) b.classList.remove('selected');
+      });
+    }
 
-    renderDates();
-    renderTicketTypes();
+    function selectTier(i) {
+      state.selectedTier = i;
+      document.querySelectorAll('.tier-card').forEach((c, idx) => c.classList.toggle('selected', idx === i));
+      updateTotal();
+    }
+
+    function changeQty(delta) {
+      state.qty = Math.max(1, Math.min(10, state.qty + delta));
+      document.getElementById('qtyDisplay').textContent = state.qty;
+      updateTotal();
+    }
+
+    function updateTotal() {
+      const tier = state.event.tiers[state.selectedTier];
+      const total = tier.price * state.qty;
+      document.getElementById('totalPrice').textContent = `₱${total.toLocaleString()}`;
+    }
+
+    function openModal() {
+      const e = state.event;
+      const tier = e.tiers[state.selectedTier];
+      const date = e.dates[state.selectedDate];
+      const total = tier.price * state.qty;
+
+      document.getElementById('modalSummary').innerHTML = `
+        <div class="flex justify-between text-zinc-300"><span>Event</span><span class="font-medium text-white text-right ml-4">${e.title}</span></div>
+        <div class="flex justify-between text-zinc-300"><span>Date</span><span class="text-white">${date.label} · ${date.time}</span></div>
+        <div class="flex justify-between text-zinc-300"><span>Tier</span><span class="text-white">${tier.name}</span></div>
+        <div class="flex justify-between text-zinc-300"><span>Quantity</span><span class="text-white">${state.qty} ticket${state.qty > 1 ? 's' : ''}</span></div>
+        <div class="border-t border-zinc-700 pt-2 flex justify-between font-semibold"><span class="text-zinc-300">Total</span><span class="text-violet-400 text-base">₱${total.toLocaleString()}</span></div>
+      `;
+      document.getElementById('buyModal').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('buyModal').classList.remove('open');
+    }
+
+    function selectPayment(btn) {
+      document.querySelectorAll('.pay-btn').forEach(b => {
+        b.classList.remove('border-violet-500', 'text-white', 'bg-violet-950');
+        b.classList.add('border-zinc-700', 'text-zinc-400');
+      });
+      btn.classList.add('border-violet-500', 'text-white', 'bg-violet-950');
+      btn.classList.remove('border-zinc-700', 'text-zinc-400');
+    }
+
+    function submitOrder() {
+      closeModal();
+      const toast = document.getElementById('toast');
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 4000);
+    }
+
+    // Close modal on backdrop click
+    document.getElementById('buyModal').addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+
+    init();
   </script>
 </body>
 </html>
