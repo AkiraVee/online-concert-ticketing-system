@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Details | Ticketo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+    .ticket-card { transition: all 0.3s ease; }
+    .ticket-card:hover { transform: translateY(-6px); border-color: rgb(129 140 248); }
+  </style>
+</head>
+<body class="bg-gray-950 text-gray-200 font-sans">
+
+  <!-- Navbar -->
+  <nav class="bg-gray-900 border-b border-gray-800 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <i class="fa-solid fa-ticket text-3xl text-indigo-500"></i>
+        <h1 class="text-2xl font-bold text-white">Ticketo</h1>
+      </a>
+      <a href="index.html" class="flex items-center gap-2 text-gray-400 hover:text-white">
+        ← Back to All Events
+      </a>
+    </div>
+  </nav>
+
+  <!-- Hero Image -->
+  <div class="relative h-[450px] md:h-[550px]">
+    <img id="mainImage" src="https://picsum.photos/id/1015/1200/600" 
+         class="w-full h-full object-cover">
+    <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/70"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-6 -mt-16 relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+      <!-- Main Content -->
+      <div class="lg:col-span-8">
+        <h1 id="eventTitle" class="text-4xl md:text-5xl font-bold text-white mb-4">
+          Taylor Swift | The Eras Tour
+        </h1>
+
+        <div class="flex flex-wrap gap-6 text-gray-400 mb-8">
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-calendar text-indigo-400"></i>
+            <span id="eventDate">May 20, 2026 • 7:00 PM</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-location-dot text-indigo-400"></i>
+            <span id="eventVenue">Philippine Arena, Bulacan</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-clock text-indigo-400"></i>
+            <span id="eventDuration">3 hours 45 minutes</span>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="bg-gray-900 rounded-3xl p-8 border border-gray-800 mb-10">
+          <h3 class="text-2xl font-semibold mb-5">About the Event</h3>
+          <p id="eventDescription" class="text-gray-300 leading-relaxed text-lg">
+            Experience the biggest concert tour of the decade. Taylor Swift brings her record-breaking Eras Tour to the Philippines for one unforgettable night.
+          </p>
+        </div>
+
+        <!-- Multiple Dates / Schedules -->
+        <div class="mb-10">
+          <h3 class="text-2xl font-semibold mb-5">Available Dates</h3>
+          <div id="datesContainer" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- JS will populate multiple dates -->
+          </div>
+        </div>
+
+        <!-- Ticket Types -->
+        <h3 class="text-2xl font-semibold mb-6">Ticket Types</h3>
+        <div id="ticketTypesContainer" class="space-y-6">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="lg:col-span-4">
+        <div class="bg-gray-900 rounded-3xl p-8 border border-gray-800 sticky top-8">
+          <h4 class="text-xl font-semibold mb-6">Your Selection</h4>
+          
+          <div id="selectionBox" class="min-h-[200px] mb-8">
+            <p class="text-gray-500 italic">Select a ticket type below</p>
+          </div>
+
+          <button onclick="goToPurchase()" 
+                  class="w-full bg-indigo-600 hover:bg-indigo-500 py-6 rounded-2xl text-xl font-bold transition-all">
+            Buy Tickets Now
+          </button>
+
+          <p class="text-center text-xs text-gray-500 mt-6">✓ Secure Payment • ✓ Instant Confirmation</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gallery -->
+  <div class="max-w-7xl mx-auto px-6 py-16">
+    <h3 class="text-2xl font-semibold mb-6">Gallery</h3>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <img src="https://picsum.photos/id/1015/400/250" class="rounded-2xl hover:scale-105 transition">
+      <img src="https://picsum.photos/id/870/400/250" class="rounded-2xl hover:scale-105 transition">
+      <img src="https://picsum.photos/id/201/400/250" class="rounded-2xl hover:scale-105 transition">
+      <img src="https://picsum.photos/id/237/400/250" class="rounded-2xl hover:scale-105 transition">
+    </div>
+  </div>
+
+  <script>
+    // Sample Data (you can change this easily)
+    const eventData = {
+      title: "Taylor Swift | The Eras Tour",
+      date: "May 20, 2026",
+      venue: "Philippine Arena, Bulacan",
+      duration: "3 hours 45 minutes",
+      description: "Join Taylor Swift as she takes you through all the eras of her incredible career. This is going to be a night full of surprises, hits, and unforgettable memories.",
+      image: "https://picsum.photos/id/1015/1200/600"
+    };
+
+    // Multiple Dates
+    const dates = [
+      { date: "May 20, 2026", time: "7:00 PM" },
+      { date: "May 21, 2026", time: "7:00 PM" },
+      { date: "May 23, 2026", time: "8:00 PM" }
+    ];
+
+    // Ticket Types
+    const ticketTypes = [
+      { id: 1, name: "VIP Standing", price: 6500, available: 320, color: "amber" },
+      { id: 2, name: "Lower Box", price: 4500, available: 1850, color: "blue" },
+      { id: 3, name: "Upper Box", price: 2800, available: 3200, color: "emerald" },
+      { id: 4, name: "General Admission", price: 1800, available: 8900, color: "gray" }
+    ];
+
+    let selectedTicket = null;
+
+    function renderDates() {
+      const container = document.getElementById('datesContainer');
+      container.innerHTML = '';
+      dates.forEach(d => {
+        const div = document.createElement('div');
+        div.className = "bg-gray-900 border border-gray-700 rounded-2xl p-5 hover:border-indigo-500 cursor-pointer transition";
+        div.innerHTML = `
+          <p class="font-semibold">${d.date}</p>
+          <p class="text-indigo-400">${d.time}</p>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function renderTicketTypes() {
+      const container = document.getElementById('ticketTypesContainer');
+      container.innerHTML = '';
+
+      ticketTypes.forEach(ticket => {
+        const card = document.createElement('div');
+        card.className = `ticket-card bg-gray-900 border-2 border-gray-800 rounded-3xl p-7 cursor-pointer`;
+        card.innerHTML = `
+          <div class="flex justify-between items-center">
+            <div>
+              <span class="px-5 py-2 bg-${ticket.color}-600 text-white rounded-full text-sm font-medium">${ticket.name}</span>
+              <p class="text-4xl font-bold mt-6">₱${ticket.price.toLocaleString()}</p>
+            </div>
+            <div class="text-right">
+              <p class="text-sm text-gray-400">Available</p>
+              <p class="text-3xl font-bold text-emerald-400">${ticket.available}</p>
+            </div>
+          </div>
+        `;
+        card.onclick = () => selectTicket(ticket, card);
+        container.appendChild(card);
+      });
+    }
+
+    function selectTicket(ticket, element) {
+      selectedTicket = ticket;
+      
+      // Highlight selected
+      document.querySelectorAll('.ticket-card').forEach(el => el.classList.remove('border-indigo-500'));
+      element.classList.add('border-indigo-500');
+
+      // Update selection box
+      document.getElementById('selectionBox').innerHTML = `
+        <div class="bg-gray-800 rounded-2xl p-6">
+          <p class="text-gray-400">Selected Ticket</p>
+          <p class="text-2xl font-bold">${ticket.name}</p>
+          <p class="text-5xl font-bold text-indigo-400 mt-3">₱${ticket.price.toLocaleString()}</p>
+          <p class="text-emerald-400 mt-2">${ticket.available} tickets remaining</p>
+        </div>
+      `;
+    }
+
+    function goToPurchase() {
+      if (!selectedTicket) {
+        alert("Please select a ticket type first!");
+        return;
+      }
+      alert(`Proceeding to purchase: ${selectedTicket.name} - ₱${selectedTicket.price}`);
+      // Later change to: window.location.href = `purchase.html?event=1&ticket=${selectedTicket.id}`;
+    }
+
+    // Initialize Page
+    document.getElementById('eventTitle').textContent = eventData.title;
+    document.getElementById('eventDate').textContent = `${eventData.date} • 7:00 PM`;
+    document.getElementById('eventVenue').textContent = eventData.venue;
+    document.getElementById('eventDuration').textContent = eventData.duration;
+    document.getElementById('eventDescription').textContent = eventData.description;
+    document.getElementById('mainImage').src = eventData.image;
+
+    renderDates();
+    renderTicketTypes();
+  </script>
+</body>
+</html>
