@@ -28,6 +28,7 @@
     </style>
   </head>
   <body class="bg-zinc-950 text-zinc-300">
+
     <!-- Nav -->
     <nav
       class="border-b border-zinc-800 sticky top-0 z-50 bg-zinc-950/90 backdrop-blur"
@@ -37,9 +38,7 @@
       >
         <div class="flex items-center gap-2 text-white">
           <i class="fa-solid fa-ticket text-violet-400 text-xl"></i>
-          <span class="text-lg font-semibold tracking-tight"
-            >Absolute Cinema</span
-          >
+          <span class="text-lg font-semibold tracking-tight">Absolute Cinema</span>
         </div>
         <div class="hidden md:flex items-center gap-6 text-sm text-zinc-400">
           <a href="homepage.html" class="hover:text-white">Events</a>
@@ -57,87 +56,99 @@
       </div>
     </nav>
 
-    <div class="max-w-6xl mx-auto px-6 py-12">
-      <div class="flex flex-col md:flex-row gap-10">
-        <!-- Sidebar / Profile Info -->
-        <div class="md:w-80 flex-shrink-0">
-          <div
-            class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 text-center"
+    <!-- Auth Gate (shown when not logged in) -->
+    <div id="authGate" class="hidden fixed inset-0 z-50 bg-zinc-950 flex items-center justify-center px-6">
+      <div class="bg-zinc-900 border border-zinc-700 rounded-2xl w-full max-w-sm p-8 text-center">
+        <i class="fa-solid fa-lock text-violet-400 text-4xl mb-4 block"></i>
+        <h2 class="text-2xl text-white font-semibold mb-2">Sign In Required</h2>
+        <p class="text-zinc-400 text-sm mb-8">
+          You need to be logged in to view your profile.
+        </p>
+        <div class="flex flex-col gap-3">
+          <button
+            onclick="window.location.href='login.html'"
+            class="w-full bg-violet-600 hover:bg-violet-500 text-white py-3 rounded-xl font-medium text-sm transition-colors"
           >
-            <div
-              class="w-28 h-28 mx-auto rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center text-5xl mb-6"
-            >
-              👤
-            </div>
-            <h2 class="text-2xl font-semibold text-white mb-1">Akira Cruz</h2>
-            <p class="text-zinc-400">akira.cruz@email.com</p>
-
-            <div
-              class="mt-8 pt-6 border-t border-zinc-800 text-left space-y-4 text-sm"
-            >
-              <div class="flex justify-between">
-                <span class="text-zinc-500">Member since</span>
-                <span class="text-zinc-300">March 2025</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-zinc-500">Tickets Purchased</span>
-                <span class="text-violet-400 font-medium">7</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-zinc-500">Favorite Category</span>
-                <span class="text-zinc-300">Concerts</span>
-              </div>
-            </div>
-
-            <button
-              onclick="editProfile()"
-              class="mt-8 w-full border border-zinc-700 hover:border-violet-500 text-white py-3 rounded-2xl transition-colors"
-            >
-              Edit Profile
-            </button>
-          </div>
+            Sign In
+          </button>
+          <button
+            onclick="window.location.href='signup.html'"
+            class="w-full bg-zinc-800 hover:bg-zinc-700 text-white py-3 rounded-xl font-medium text-sm transition-colors"
+          >
+            Create Account
+          </button>
+          <a href="homepage.html" class="text-xs text-zinc-500 hover:text-zinc-300 mt-1">← Back to Home</a>
         </div>
+      </div>
+    </div>
 
-        <!-- Main Content -->
-        <div class="flex-1">
-          <h1 class="text-4xl text-white mb-8">My Profile</h1>
+    <!-- Profile Content (shown when logged in) -->
+    <div id="profileContent" class="hidden">
+      <div class="max-w-6xl mx-auto px-6 py-12">
+        <div class="flex flex-col md:flex-row gap-10">
+          <!-- Sidebar / Profile Info -->
+          <div class="md:w-80 flex-shrink-0">
+            <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 text-center">
+              <div class="w-28 h-28 mx-auto rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center text-5xl mb-6">
+                👤
+              </div>
+              <h2 class="text-2xl font-semibold text-white mb-1">Akira Cruz</h2>
+              <p class="text-zinc-400" id="userEmailDisplay"></p>
 
-          <!-- Upcoming Tickets -->
-          <div class="mb-12">
-            <h3 class="text-xl font-semibold mb-6 flex items-center gap-3">
-              <i class="fa-solid fa-ticket text-violet-400"></i> Upcoming
-              Tickets
-            </h3>
-            <div
-              id="upcomingTickets"
-              class="grid grid-cols-1 md:grid-cols-2 gap-5"
-            >
-              <!-- Populated by JS -->
+              <div class="mt-8 pt-6 border-t border-zinc-800 text-left space-y-4 text-sm">
+                <div class="flex justify-between">
+                  <span class="text-zinc-500">Member since</span>
+                  <span class="text-zinc-300">March 2025</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-zinc-500">Tickets Purchased</span>
+                  <span class="text-violet-400 font-medium">7</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-zinc-500">Favorite Category</span>
+                  <span class="text-zinc-300">Concerts</span>
+                </div>
+              </div>
+
+              <button
+                onclick="editProfile()"
+                class="mt-8 w-full border border-zinc-700 hover:border-violet-500 text-white py-3 rounded-2xl transition-colors"
+              >
+                Edit Profile
+              </button>
             </div>
           </div>
 
-          <!-- Past Events -->
-          <div>
-            <h3 class="text-xl font-semibold mb-6 flex items-center gap-3">
-              <i class="fa-solid fa-clock-rotate-left text-zinc-500"></i> Past
-              Events
-            </h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 opacity-75">
-              <div
-                class="card bg-zinc-900 border border-zinc-800 rounded-2xl p-5 flex gap-5"
-              >
-                <img
-                  src="https://picsum.photos/id/1015/120/120"
-                  class="w-24 h-24 object-cover rounded-xl"
-                />
-                <div>
-                  <h4 class="font-medium">Taylor Swift | The Eras Tour</h4>
-                  <p class="text-sm text-zinc-500 mt-1">
-                    May 20, 2026 • Philippine Arena
-                  </p>
-                  <span class="text-xs text-emerald-400 mt-3 inline-block"
-                    >Attended</span
-                  >
+          <!-- Main Content -->
+          <div class="flex-1">
+            <h1 class="text-4xl text-white mb-8">My Profile</h1>
+
+            <!-- Upcoming Tickets -->
+            <div class="mb-12">
+              <h3 class="text-xl font-semibold mb-6 flex items-center gap-3">
+                <i class="fa-solid fa-ticket text-violet-400"></i> Upcoming Tickets
+              </h3>
+              <div id="upcomingTickets" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+
+            <!-- Past Events -->
+            <div>
+              <h3 class="text-xl font-semibold mb-6 flex items-center gap-3">
+                <i class="fa-solid fa-clock-rotate-left text-zinc-500"></i> Past Events
+              </h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5 opacity-75">
+                <div class="card bg-zinc-900 border border-zinc-800 rounded-2xl p-5 flex gap-5">
+                  <img
+                    src="https://picsum.photos/id/1015/120/120"
+                    class="w-24 h-24 object-cover rounded-xl"
+                  />
+                  <div>
+                    <h4 class="font-medium">Taylor Swift | The Eras Tour</h4>
+                    <p class="text-sm text-zinc-500 mt-1">May 20, 2026 • Philippine Arena</p>
+                    <span class="text-xs text-emerald-400 mt-3 inline-block">Attended</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -147,13 +158,23 @@
     </div>
 
     <!-- Footer -->
-    <footer
-      class="border-t border-zinc-800 py-8 text-center text-zinc-600 text-sm"
-    >
+    <footer class="border-t border-zinc-800 py-8 text-center text-zinc-600 text-sm">
       <p>© 2026 Absolute Cinema. All rights reserved.</p>
     </footer>
 
     <script>
+      // ── AUTH GUARD ───────────────────────────────────────────
+      if (localStorage.getItem("userLoggedIn") !== "true") {
+        document.getElementById("authGate").classList.remove("hidden");
+      } else {
+        document.getElementById("profileContent").classList.remove("hidden");
+        // Show the stored email
+        const email = localStorage.getItem("userEmail") || "";
+        document.getElementById("userEmailDisplay").textContent = email;
+        renderUpcoming();
+      }
+
+      // ── UPCOMING TICKETS ─────────────────────────────────────
       const upcoming = [
         {
           title: "Coldplay World Tour",
@@ -176,18 +197,18 @@
         container.innerHTML = upcoming
           .map(
             (ticket) => `
-        <div class="card bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden">
-          <img src="${ticket.image}" class="w-full h-40 object-cover">
-          <div class="p-5">
-            <h4 class="font-semibold leading-tight mb-2">${ticket.title}</h4>
-            <p class="text-xs text-zinc-500 mb-4">${ticket.date} • ${ticket.location}</p>
-            <div class="flex justify-between items-center">
-              <span class="text-violet-400 font-semibold">${ticket.price}</span>
-              <button class="text-xs bg-violet-600 hover:bg-violet-500 px-5 py-2 rounded-xl">View Ticket</button>
+          <div class="card bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden">
+            <img src="${ticket.image}" class="w-full h-40 object-cover">
+            <div class="p-5">
+              <h4 class="font-semibold leading-tight mb-2">${ticket.title}</h4>
+              <p class="text-xs text-zinc-500 mb-4">${ticket.date} • ${ticket.location}</p>
+              <div class="flex justify-between items-center">
+                <span class="text-violet-400 font-semibold">${ticket.price}</span>
+                <button class="text-xs bg-violet-600 hover:bg-violet-500 px-5 py-2 rounded-xl">View Ticket</button>
+              </div>
             </div>
           </div>
-        </div>
-      `
+        `
           )
           .join("");
       }
@@ -198,15 +219,11 @@
 
       function logout() {
         if (confirm("Are you sure you want to logout?")) {
-          // ── Clear login session from localStorage ─────────────
           localStorage.removeItem("userLoggedIn");
           localStorage.removeItem("userEmail");
           window.location.href = "login.html";
         }
       }
-
-      // Initialize
-      renderUpcoming();
     </script>
   </body>
 </html>
