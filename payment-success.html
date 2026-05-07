@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Successful - Absolute Cinema</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap');
+    body { font-family: 'DM Sans', sans-serif; }
+    .serif { font-family: 'DM Serif Display', serif; }
+  </style>
+</head>
+<body class="bg-zinc-950 text-zinc-300 min-h-screen">
+
+  <!-- Nav -->
+  <nav class="border-b border-zinc-800 sticky top-0 z-50 bg-zinc-950/90 backdrop-blur">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2 text-white">
+        <i class="fa-solid fa-ticket text-violet-400 text-xl"></i>
+        <span class="text-lg font-semibold tracking-tight">Absolute Cinema</span>
+      </div>
+      <a href="homepage.html" class="text-sm text-zinc-400 hover:text-white">← Back to Home</a>
+    </div>
+  </nav>
+
+  <div class="max-w-2xl mx-auto px-6 py-16 text-center">
+    <div class="inline-flex items-center justify-center w-24 h-24 bg-emerald-500/10 rounded-full mb-6">
+      <i class="fa-solid fa-circle-check text-emerald-500 text-6xl"></i>
+    </div>
+    
+    <h1 class="serif text-5xl text-white mb-2">Payment Successful!</h1>
+    <p class="text-emerald-400 text-lg font-medium">Your tickets have been confirmed</p>
+
+    <div class="mt-12 bg-zinc-900 border border-zinc-700 rounded-3xl p-8 text-left">
+      
+      <div id="successDetails" class="space-y-6"></div>
+
+      <!-- QR Code -->
+      <div class="mt-10 flex justify-center">
+        <div class="bg-white p-5 rounded-2xl shadow-inner">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=AC-TICKET-2026-78492" 
+               alt="QR Code" class="w-48 h-48">
+        </div>
+      </div>
+      <p class="text-center text-zinc-500 text-sm mt-3">Present this QR code at the venue entrance</p>
+
+      <div class="mt-10 pt-6 border-t border-zinc-700 text-center">
+        <p class="text-xs text-zinc-500">Order ID: <span class="text-white font-mono">#AC-2026-78492</span></p>
+      </div>
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-4 mt-10">
+      <a href="profile.html" 
+         class="flex-1 bg-violet-600 hover:bg-violet-500 text-white py-4 rounded-2xl font-semibold transition-colors">
+        View My Tickets
+      </a>
+      <button onclick="downloadTickets()" 
+        class="flex-1 border border-zinc-700 hover:border-zinc-500 py-4 rounded-2xl font-semibold transition-colors">
+        Download Tickets (PDF)
+      </button>
+    </div>
+
+    <p class="text-zinc-500 text-sm mt-12">
+      A detailed receipt has been sent to your email.<br>
+      Thank you for choosing Absolute Cinema!
+    </p>
+  </div>
+
+  <footer class="border-t border-zinc-800 py-8 text-center text-zinc-600 text-sm">
+    <p>© 2026 Absolute Cinema. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function getOrderData() {
+      const params = new URLSearchParams(window.location.search);
+      return {
+        eventTitle: params.get('eventTitle'),
+        date: params.get('date'),
+        location: params.get('location'),
+        tier: params.get('tier'),
+        quantity: params.get('quantity'),
+        total: params.get('total'),
+        paymentMethod: params.get('paymentMethod') || 'GCash'
+      };
+    }
+
+    function renderSuccessPage() {
+      const order = getOrderData();
+      const container = document.getElementById('successDetails');
+
+      const subtotal = parseInt(order.total);
+      const serviceFee = Math.round(subtotal * 0.08);
+      const grandTotal = subtotal + serviceFee;
+
+      container.innerHTML = `
+        <div class="flex justify-between items-center pb-6 border-b border-zinc-700">
+          <div class="text-left">
+            <h2 class="text-white text-2xl serif">${order.eventTitle}</h2>
+            <p class="text-zinc-400 mt-1">${order.date}</p>
+          </div>
+          <span class="text-emerald-400 font-medium flex items-center gap-1">
+            <i class="fa-solid fa-check-circle"></i> Confirmed
+          </span>
+        </div>
+
+        <div class="pt-6 grid grid-cols-2 gap-y-5 text-sm">
+          <div>
+            <p class="text-zinc-500">Location</p>
+            <p class="text-white">${order.location}</p>
+          </div>
+          <div>
+            <p class="text-zinc-500">Section / Tier</p>
+            <p class="text-white">${order.tier}</p>
+          </div>
+          <div>
+            <p class="text-zinc-500">Quantity</p>
+            <p class="text-white">${order.quantity} Ticket${order.quantity > 1 ? 's' : ''}</p>
+          </div>
+          <div>
+            <p class="text-zinc-500">Payment Method</p>
+            <p class="text-white">${order.paymentMethod}</p>
+          </div>
+        </div>
+
+        <div class="mt-8 pt-6 border-t border-zinc-700">
+          <div class="flex justify-between text-zinc-400 mb-2">
+            <span>Subtotal</span>
+            <span>₱${subtotal.toLocaleString()}</span>
+          </div>
+          <div class="flex justify-between text-zinc-400 mb-2">
+            <span>Service Fee</span>
+            <span>₱${serviceFee.toLocaleString()}</span>
+          </div>
+          <div class="flex justify-between text-xl font-bold text-white pt-4 border-t border-zinc-700">
+            <span>Total Paid</span>
+            <span class="text-violet-400">₱${grandTotal.toLocaleString()}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function downloadTickets() {
+      alert("🎟️ Downloading your tickets as PDF... (Demo)");
+    }
+
+    // Initialize
+    renderSuccessPage();
+  </script>
+</body>
+</html>

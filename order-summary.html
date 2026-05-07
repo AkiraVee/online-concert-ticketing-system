@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Summary - Absolute Cinema</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap');
+    body { font-family: 'DM Sans', sans-serif; }
+    .serif { font-family: 'DM Serif Display', serif; }
+  </style>
+</head>
+<body class="bg-zinc-950 text-zinc-300 min-h-screen">
+
+  <!-- Nav -->
+  <nav class="border-b border-zinc-800 sticky top-0 z-50 bg-zinc-950/90 backdrop-blur">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2 text-white">
+        <i class="fa-solid fa-ticket text-violet-400 text-xl"></i>
+        <span class="text-lg font-semibold tracking-tight">Absolute Cinema</span>
+      </div>
+      <a href="homepage.html" class="text-sm text-zinc-400 hover:text-white">← Back</a>
+    </div>
+  </nav>
+
+  <div class="max-w-2xl mx-auto px-6 py-12">
+    <h1 class="serif text-4xl text-white mb-8">Order Summary</h1>
+
+    <div class="bg-zinc-900 border border-zinc-700 rounded-3xl p-8 space-y-8">
+
+      <!-- Event Details -->
+      <div>
+        <h2 class="text-white text-xl font-semibold mb-4" id="eventTitle"></h2>
+        <div class="flex items-center gap-4 text-sm text-zinc-400">
+          <span id="eventDate"></span>
+          <span id="eventLocation"></span>
+        </div>
+      </div>
+
+      <!-- Ticket Info -->
+      <div class="border-t border-zinc-700 pt-6">
+        <h3 class="uppercase text-xs tracking-widest text-zinc-500 mb-4">Ticket Details</h3>
+        <div class="space-y-3">
+          <div class="flex justify-between">
+            <span class="text-zinc-400">Section / Tier</span>
+            <span class="font-medium text-white" id="tierName"></span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-zinc-400">Quantity</span>
+            <span class="font-medium text-white" id="quantity"></span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-zinc-400">Price per Ticket</span>
+            <span class="font-medium text-white" id="pricePerTicket"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Price Breakdown -->
+      <div class="border-t border-zinc-700 pt-6">
+        <h3 class="uppercase text-xs tracking-widest text-zinc-500 mb-4">Price Breakdown</h3>
+        <div class="space-y-3">
+          <div class="flex justify-between text-zinc-400">
+            <span>Tickets Subtotal</span>
+            <span id="subtotal"></span>
+          </div>
+          <div class="flex justify-between text-zinc-400">
+            <span>Online Service Fee</span>
+            <span id="serviceFee"></span>
+          </div>
+          <div class="flex justify-between text-lg font-semibold border-t border-zinc-700 pt-4">
+            <span class="text-white">Total</span>
+            <span class="text-violet-400" id="grandTotal"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Method -->
+      <div class="border-t border-zinc-700 pt-6">
+        <h3 class="uppercase text-xs tracking-widest text-zinc-500 mb-4">Choose Payment Method</h3>
+        <div class="grid grid-cols-3 gap-3" id="paymentOptions">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Terms -->
+      <div class="border-t border-zinc-700 pt-6">
+        <label class="flex items-start gap-3 text-sm">
+          <input type="checkbox" id="agreeTerms" class="mt-1 w-5 h-5 accent-violet-600">
+          <span class="text-zinc-400">
+            I agree to the <a href="#" class="text-violet-400 hover:underline">Terms of Service</a> and 
+            <a href="#" class="text-violet-400 hover:underline">Ticket Refund Policy</a>.
+          </span>
+        </label>
+      </div>
+
+      <!-- Proceed Button -->
+      <button onclick="proceedToPayment()" 
+        class="w-full bg-violet-600 hover:bg-violet-500 transition-colors text-white py-4 rounded-2xl font-semibold text-lg mt-4">
+        Proceed to Payment
+      </button>
+    </div>
+  </div>
+
+  <footer class="border-t border-zinc-800 py-8 text-center text-zinc-600 text-sm">
+    <p>© 2026 Absolute Cinema. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function getOrderData() {
+      const params = new URLSearchParams(window.location.search);
+      return {
+        eventTitle: params.get('eventTitle'),
+        date: params.get('date'),
+        location: params.get('location'),
+        tier: params.get('tier'),
+        quantity: parseInt(params.get('quantity')),
+        total: parseInt(params.get('total'))
+      };
+    }
+
+    function renderOrderSummary() {
+      const order = getOrderData();
+
+      document.getElementById('eventTitle').textContent = order.eventTitle;
+      document.getElementById('eventDate').innerHTML = `<i class="fa-solid fa-calendar mr-2"></i>${order.date}`;
+      document.getElementById('eventLocation').innerHTML = `<i class="fa-solid fa-location-dot mr-2"></i>${order.location}`;
+      document.getElementById('tierName').textContent = order.tier;
+      document.getElementById('quantity').textContent = `${order.quantity} Ticket${order.quantity > 1 ? 's' : ''}`;
+      document.getElementById('pricePerTicket').textContent = `₱${(order.total / order.quantity).toLocaleString()}`;
+
+      const subtotal = order.total;
+      const serviceFee = Math.round(subtotal * 0.08); // 8% service fee
+      const grandTotal = subtotal + serviceFee;
+
+      document.getElementById('subtotal').textContent = `₱${subtotal.toLocaleString()}`;
+      document.getElementById('serviceFee').textContent = `₱${serviceFee.toLocaleString()}`;
+      document.getElementById('grandTotal').textContent = `₱${grandTotal.toLocaleString()}`;
+    }
+
+    function renderPaymentMethods() {
+      const methods = [
+        { name: "GCash", icon: "fa-mobile-alt" },
+        { name: "Maya", icon: "fa-wallet" },
+        { name: "Card", icon: "fa-credit-card" }
+      ];
+
+      const container = document.getElementById('paymentOptions');
+      container.innerHTML = methods.map(method => `
+        <button onclick="selectPayment(this)" 
+          class="pay-btn border border-zinc-700 hover:border-violet-500 rounded-2xl py-5 flex flex-col items-center gap-2 transition-all">
+          <i class="fa-solid ${method.icon} text-2xl"></i>
+          <span class="text-sm font-medium">${method.name}</span>
+        </button>
+      `).join('');
+    }
+
+    let selectedPayment = null;
+
+    function selectPayment(btn) {
+      document.querySelectorAll('.pay-btn').forEach(b => {
+        b.classList.remove('border-violet-500', 'bg-violet-950/30');
+      });
+      btn.classList.add('border-violet-500', 'bg-violet-950/30');
+      selectedPayment = btn.textContent.trim();
+    }
+
+    function proceedToPayment() {
+    const agreed = document.getElementById('agreeTerms').checked;
+    
+    if (!agreed) {
+        alert("Please agree to the Terms of Service before proceeding.");
+        return;
+    }
+    if (!selectedPayment) {
+        alert("Please select a payment method.");
+        return;
+    }
+
+    // Redirect to success page with payment method
+    const url = new URL('payment-success.html', window.location.origin);
+    const params = new URLSearchParams(window.location.search);
+    params.set('paymentMethod', selectedPayment);
+    
+    window.location.href = `payment-success.html?${params.toString()}`;
+    }
+
+    // Initialize
+    renderOrderSummary();
+    renderPaymentMethods();
+  </script>
+</body>
+</html>

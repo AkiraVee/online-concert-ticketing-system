@@ -473,12 +473,25 @@
       btn.classList.remove('border-zinc-700', 'text-zinc-400');
     }
 
-    function submitOrder() {
-      closeModal();
-      const toast = document.getElementById('toast');
-      toast.classList.remove('hidden');
-      setTimeout(() => toast.classList.add('hidden'), 4000);
-    }
+  function submitOrder() {
+    const e = state.event;
+    const tier = e.tiers[state.selectedTier];
+    const date = e.dates[state.selectedDate];
+    const total = tier.price * state.qty;
+
+    // Pass order data via URL parameters
+    const params = new URLSearchParams({
+      eventId: e.id,
+      eventTitle: e.title,
+      date: date.label + " • " + date.time,
+      tier: tier.name,
+      quantity: state.qty,
+      total: total,
+      location: e.location
+    });
+
+    window.location.href = `order-summary.html?${params.toString()}`;
+  }
 
     // Close modal on backdrop click
     document.getElementById('buyModal').addEventListener('click', function(e) {
