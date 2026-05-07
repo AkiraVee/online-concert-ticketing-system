@@ -1,502 +1,1215 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Event Details — Absolute Cinema</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
-  <style>
-    body { font-family: 'DM Sans', sans-serif; }
-    .serif { font-family: 'DM Serif Display', serif; }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Details — Absolute Cinema</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "DM Sans", sans-serif;
+      }
+      .serif {
+        font-family: "DM Serif Display", serif;
+      }
 
-    .hero-blur {
-      position: absolute; inset: 0;
-      background-size: cover;
-      background-position: center;
-      filter: blur(28px) brightness(0.3);
-      transform: scale(1.05);
-    }
+      .hero-blur {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+        filter: blur(28px) brightness(0.3);
+        transform: scale(1.05);
+      }
 
-    .thumb { transition: all 0.2s; cursor: pointer; }
-    .thumb:hover { opacity: 1 !important; }
-    .thumb.active { outline: 2px solid #7c3aed; outline-offset: 2px; opacity: 1 !important; }
+      .thumb {
+        transition: all 0.2s;
+        cursor: pointer;
+      }
+      .thumb:hover {
+        opacity: 1 !important;
+      }
+      .thumb.active {
+        outline: 2px solid #7c3aed;
+        outline-offset: 2px;
+        opacity: 1 !important;
+      }
 
-    .date-btn { transition: all 0.2s; }
-    .date-btn.selected { background: #7c3aed; color: white; border-color: #7c3aed; }
+      .date-btn {
+        transition: all 0.2s;
+      }
+      .date-btn.selected {
+        background: #7c3aed;
+        color: white;
+        border-color: #7c3aed;
+      }
 
-    .tier-card { transition: all 0.2s; }
-    .tier-card.selected { border-color: #7c3aed; background: rgba(124,58,237,0.08); }
+      .tier-card {
+        transition: all 0.2s;
+      }
+      .tier-card.selected {
+        border-color: #7c3aed;
+        background: rgba(124, 58, 237, 0.08);
+      }
 
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-    .fade-in { animation: fadeIn 0.4s ease forwards; }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .fade-in {
+        animation: fadeIn 0.4s ease forwards;
+      }
 
-    /* Modal */
-    #buyModal { display: none; }
-    #buyModal.open { display: flex; }
-  </style>
-</head>
-<body class="bg-zinc-950 text-zinc-300 min-h-screen">
-
-  <!-- Nav -->
-  <nav class="border-b border-zinc-800 sticky top-0 z-50 bg-zinc-950/90 backdrop-blur">
-    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center gap-4">
-      <a href="homepage.html" class="flex items-center gap-2 text-white hover:text-violet-400 transition-colors">
-        <i class="fa-solid fa-arrow-left text-sm"></i>
-        <span class="text-sm">Back</span>
-      </a>
-      <div class="h-5 w-px bg-zinc-700"></div>
-      <div class="flex items-center gap-2 text-white">
-        <i class="fa-solid fa-ticket text-violet-400 text-xl"></i>
-        <span class="text-lg font-semibold tracking-tight">Ticketo</span>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Content -->
-  <div id="pageContent" class="fade-in"></div>
-
-  <!-- Buy Modal -->
-  <div id="buyModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm items-center justify-center p-4">
-    <div class="bg-zinc-900 border border-zinc-700 rounded-2xl w-full max-w-md p-6 relative">
-      <button onclick="closeModal()" class="absolute top-4 right-4 text-zinc-500 hover:text-white">
-        <i class="fa-solid fa-xmark text-lg"></i>
-      </button>
-      <h3 class="serif text-2xl text-white mb-1">Confirm Order</h3>
-      <p class="text-zinc-400 text-sm mb-6">Review your ticket selection before checkout.</p>
-
-      <div id="modalSummary" class="bg-zinc-800 rounded-xl p-4 mb-5 space-y-2 text-sm"></div>
-
-      <div class="mb-5">
-        <label class="block text-xs text-zinc-400 mb-1.5 font-medium uppercase tracking-wide">Full Name</label>
-        <input type="text" placeholder="Juan dela Cruz" class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-2.5 text-white text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500">
-      </div>
-      <div class="mb-5">
-        <label class="block text-xs text-zinc-400 mb-1.5 font-medium uppercase tracking-wide">Email</label>
-        <input type="email" placeholder="juan@example.com" class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-2.5 text-white text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500">
-      </div>
-      <div class="mb-6">
-        <label class="block text-xs text-zinc-400 mb-1.5 font-medium uppercase tracking-wide">Payment Method</label>
-        <div class="grid grid-cols-3 gap-2">
-          <button onclick="selectPayment(this)" class="pay-btn border border-zinc-700 rounded-xl py-2 text-xs text-zinc-400 hover:border-violet-500 hover:text-white transition-all">GCash</button>
-          <button onclick="selectPayment(this)" class="pay-btn border border-zinc-700 rounded-xl py-2 text-xs text-zinc-400 hover:border-violet-500 hover:text-white transition-all">Maya</button>
-          <button onclick="selectPayment(this)" class="pay-btn border border-zinc-700 rounded-xl py-2 text-xs text-zinc-400 hover:border-violet-500 hover:text-white transition-all">Card</button>
+      /* Modal */
+      #buyModal {
+        display: none;
+      }
+      #buyModal.open {
+        display: flex;
+      }
+    </style>
+  </head>
+  <body class="bg-zinc-950 text-zinc-300 min-h-screen">
+    <!-- Nav -->
+    <nav
+      class="border-b border-zinc-800 sticky top-0 z-50 bg-zinc-950/90 backdrop-blur"
+    >
+      <div class="max-w-6xl mx-auto px-6 py-4 flex items-center gap-4">
+        <a
+          href="homepage.html"
+          class="flex items-center gap-2 text-white hover:text-violet-400 transition-colors"
+        >
+          <i class="fa-solid fa-arrow-left text-sm"></i>
+          <span class="text-sm">Back</span>
+        </a>
+        <div class="h-5 w-px bg-zinc-700"></div>
+        <div class="flex items-center gap-2 text-white">
+          <i class="fa-solid fa-ticket text-violet-400 text-xl"></i>
+          <span class="text-lg font-semibold tracking-tight">Ticketo</span>
         </div>
       </div>
+    </nav>
 
-      <button onclick="submitOrder()" class="w-full bg-violet-600 hover:bg-violet-500 text-white py-3 rounded-xl font-semibold text-sm">
-        Confirm & Pay
-      </button>
+    <!-- Content -->
+    <div id="pageContent" class="fade-in"></div>
+
+    <!-- Buy Modal -->
+    <div
+      id="buyModal"
+      class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm items-center justify-center p-4"
+    >
+      <div
+        class="bg-zinc-900 border border-zinc-700 rounded-2xl w-full max-w-md p-6 relative"
+      >
+        <button
+          onclick="closeModal()"
+          class="absolute top-4 right-4 text-zinc-500 hover:text-white"
+        >
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+        <h3 class="serif text-2xl text-white mb-1">Confirm Order</h3>
+        <p class="text-zinc-400 text-sm mb-6">
+          Review your ticket selection before checkout.
+        </p>
+
+        <div
+          id="modalSummary"
+          class="bg-zinc-800 rounded-xl p-4 mb-5 space-y-2 text-sm"
+        ></div>
+
+        <div class="mb-5">
+          <label
+            class="block text-xs text-zinc-400 mb-1.5 font-medium uppercase tracking-wide"
+            >Full Name</label
+          >
+          <input
+            type="text"
+            placeholder="Juan dela Cruz"
+            class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-2.5 text-white text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500"
+          />
+        </div>
+        <div class="mb-5">
+          <label
+            class="block text-xs text-zinc-400 mb-1.5 font-medium uppercase tracking-wide"
+            >Email</label
+          >
+          <input
+            type="email"
+            placeholder="juan@example.com"
+            class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-2.5 text-white text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500"
+          />
+        </div>
+        <div class="mb-6">
+          <label
+            class="block text-xs text-zinc-400 mb-1.5 font-medium uppercase tracking-wide"
+            >Payment Method</label
+          >
+          <div class="grid grid-cols-3 gap-2">
+            <button
+              onclick="selectPayment(this)"
+              class="pay-btn border border-zinc-700 rounded-xl py-2 text-xs text-zinc-400 hover:border-violet-500 hover:text-white transition-all"
+            >
+              GCash
+            </button>
+            <button
+              onclick="selectPayment(this)"
+              class="pay-btn border border-zinc-700 rounded-xl py-2 text-xs text-zinc-400 hover:border-violet-500 hover:text-white transition-all"
+            >
+              Maya
+            </button>
+            <button
+              onclick="selectPayment(this)"
+              class="pay-btn border border-zinc-700 rounded-xl py-2 text-xs text-zinc-400 hover:border-violet-500 hover:text-white transition-all"
+            >
+              Card
+            </button>
+          </div>
+        </div>
+
+        <button
+          onclick="submitOrder()"
+          class="w-full bg-violet-600 hover:bg-violet-500 text-white py-3 rounded-xl font-semibold text-sm"
+        >
+          Confirm & Pay
+        </button>
+      </div>
     </div>
-  </div>
 
-  <!-- Success Toast -->
-  <div id="toast" class="hidden fixed bottom-6 right-6 bg-emerald-600 text-white px-5 py-3 rounded-xl text-sm font-medium shadow-xl z-50 flex items-center gap-2">
-    <i class="fa-solid fa-circle-check"></i> Order confirmed! Check your email.
-  </div>
+    <!-- Success Toast -->
+    <div
+      id="toast"
+      class="hidden fixed bottom-6 right-6 bg-emerald-600 text-white px-5 py-3 rounded-xl text-sm font-medium shadow-xl z-50 flex items-center gap-2"
+    >
+      <i class="fa-solid fa-circle-check"></i> Order confirmed! Check your
+      email.
+    </div>
 
-  <script>
-    // ─── Full Event Data ─────────────────────────────────────────────────────────
-    const events = {
-      1: {
-        id: 1,
-        title: "Taylor Swift | The Eras Tour",
-        type: "Concert",
-        category: "concert",
-        location: "Philippine Arena, Bulacan",
-        duration: "3 hours 30 minutes",
-        description: "Taylor Swift's record-breaking Eras Tour arrives in the Philippines for a spectacular one-night show. Journey through all musical eras — from Fearless to Midnights — with dazzling production, costume changes, surprise songs, and an unforgettable atmosphere. This is the biggest concert event in Philippine history.",
-        images: [
-          "https://picsum.photos/id/1015/1200/600",
-          "https://picsum.photos/id/1016/1200/600",
-          "https://picsum.photos/id/1020/1200/600",
-          "https://picsum.photos/id/1021/1200/600"
-        ],
-        dates: [
-          { label: "Sat, May 16", time: "6:00 PM" },
-          { label: "Sun, May 17", time: "5:30 PM" },
-          { label: "Fri, May 20", time: "7:00 PM" }
-        ],
-        tiers: [
-          { name: "General Admission", price: 4500, available: 1200, color: "zinc" },
-          { name: "Lower Box", price: 7500, available: 340, color: "blue" },
-          { name: "VIP Floor", price: 15000, available: 80, color: "violet" }
-        ]
-      },
-      2: {
-        id: 2,
-        title: "PBA: Ginebra vs TNT",
-        type: "Sports",
-        category: "sports",
-        location: "SM Mall Of Asia Arena, Pasay",
-        duration: "~2 hours 30 minutes",
-        description: "The rivalry continues! Barangay Ginebra San Miguel takes on the TNT Tropang Giga in a high-stakes PBA Governors' Cup clash. Expect non-stop action, passionate crowd energy, and basketball at its finest. Both squads are in playoff contention — every possession matters.",
-        images: [
-          "https://picsum.photos/id/201/1200/600",
-          "https://picsum.photos/id/202/1200/600",
-          "https://picsum.photos/id/203/1200/600"
-        ],
-        dates: [
-          { label: "Wed, May 15", time: "7:00 PM" },
-          { label: "Sat, May 18", time: "4:00 PM" }
-        ],
+    <script>
+      // ─── Full Event Data ─────────────────────────────────────────────────────────
+      const events = {
+        1: {
+          id: 1,
+          title: "Taylor Swift | The Eras Tour",
+          type: "Concert",
+          category: "concert",
+          location: "Philippine Arena, Bulacan",
+          duration: "3 hours 30 minutes",
+          description:
+            "Taylor Swift's record-breaking Eras Tour arrives in the Philippines for a spectacular one-night show. Journey through all musical eras — from Fearless to Midnights — with dazzling production, costume changes, surprise songs, and an unforgettable atmosphere. This is the biggest concert event in Philippine history.",
+          images: [
+            "https://picsum.photos/id/1015/1200/600",
+            "https://picsum.photos/id/1016/1200/600",
+            "https://picsum.photos/id/1020/1200/600",
+            "https://picsum.photos/id/1021/1200/600",
+          ],
+          dates: [
+            { label: "Sat, May 16", time: "6:00 PM" },
+            { label: "Sun, May 17", time: "5:30 PM" },
+            { label: "Fri, May 20", time: "7:00 PM" },
+          ],
+          tiers: [
+            {
+              name: "General Admission",
+              price: 4500,
+              available: 1200,
+              color: "zinc",
+            },
+            { name: "Lower Box", price: 7500, available: 340, color: "blue" },
+            { name: "VIP Floor", price: 15000, available: 80, color: "violet" },
+          ],
+        },
+        2: {
+          id: 2,
+          title: "PBA: Ginebra vs TNT",
+          type: "Sports",
+          category: "sports",
+          location: "SM Mall Of Asia Arena, Pasay",
+          duration: "~2 hours 30 minutes",
+          description:
+            "The rivalry continues! Barangay Ginebra San Miguel takes on the TNT Tropang Giga in a high-stakes PBA Governors' Cup clash. Expect non-stop action, passionate crowd energy, and basketball at its finest. Both squads are in playoff contention — every possession matters.",
+          images: [
+            "https://picsum.photos/id/201/1200/600",
+            "https://picsum.photos/id/202/1200/600",
+            "https://picsum.photos/id/203/1200/600",
+          ],
+          dates: [
+            { label: "Wed, May 15", time: "7:00 PM" },
+            { label: "Sat, May 18", time: "4:00 PM" },
+          ],
 
-        <!-- Use the proper seating locations for every venue. -->
-        tiers: [
-          { name: "Upper Box", price: 400, available: 900, color: "zinc" },
-          { name: "Lower Box", price: 800, available: 420, color: "blue" },
-          { name: "Courtside", price: 3500, available: 30, color: "violet" }
-        ]
-      },
-      3: {
-        id: 3,
-        title: "Miss Saigon - Manila",
-        type: "Theatre",
-        category: "theatre",
-        location: "Cultural Center of the Philippines, Pasay",
-        duration: "2 hours 45 minutes (incl. intermission)",
-        description: "The legendary West End and Broadway musical returns to its birthplace. Miss Saigon tells the timeless story of Kim and Chris — a love story set against the backdrop of the Vietnam War. Featuring a Filipino cast and the iconic helicopter sequence, this is a theatrical event not to be missed.",
-        images: [
-          "https://picsum.photos/id/237/1200/600",
-          "https://picsum.photos/id/240/1200/600",
-          "https://picsum.photos/id/242/1200/600"
-        ],
-        dates: [
-          { label: "Tue, Jun 10", time: "8:00 PM" },
-          { label: "Wed, Jun 11", time: "3:00 PM" },
-          { label: "Sat, Jun 14", time: "8:00 PM" },
-          { label: "Sun, Jun 15", time: "2:00 PM" }
-        ],
-        tiers: [
-          { name: "Balcony", price: 1200, available: 280, color: "zinc" },
-          { name: "Orchestra", price: 2200, available: 150, color: "blue" },
-          { name: "Front Orchestra", price: 4500, available: 40, color: "violet" }
-        ]
-      },
-      4: {
-        id: 4,
-        title: "Coldplay World Tour",
-        type: "Concert",
-        category: "concert",
-        location: "SM Mall Of Asia Arena, Pasay",
-        duration: "2 hours 15 minutes",
-        description: "Coldplay's Music of the Spheres World Tour — one of the highest-grossing concert tours of all time — makes its Philippine stop. Known for their breathtaking LED wristband light shows, confetti cannons, and massive set production, Chris Martin and the band will perform hits across their entire catalog.",
-        images: [
-          "https://picsum.photos/id/870/1200/600",
-          "https://picsum.photos/id/871/1200/600",
-          "https://picsum.photos/id/873/1200/600",
-          "https://picsum.photos/id/875/1200/600"
-        ],
-        dates: [
-          { label: "Sun, Jul 5", time: "7:30 PM" },
-          { label: "Mon, Jul 6", time: "7:30 PM" }
-        ],
-        tiers: [
-          { name: "General Admission", price: 3500, available: 2000, color: "zinc" },
-          { name: "Lower Box", price: 6000, available: 600, color: "blue" },
-          { name: "VIP Pit", price: 12000, available: 120, color: "violet" }
-        ]
-      },
-      5: {
-        id: 5,
-        title: "UAAP: Ateneo vs La Salle",
-        type: "Sports",
-        category: "sports",
-        location: "SM Mall Of Asia Arena, Pasay",
-        duration: "~2 hours",
-        description: "The most storied rivalry in Philippine college basketball is back. Ateneo Blue Eagles face the De La Salle Green Archers in a Season 87 elimination round battle. Bragging rights, playoff seeding, and pure school spirit are all on the line. Wear your colors and cheer your team to victory.",
-        images: [
-          "https://picsum.photos/id/180/1200/600",
-          "https://picsum.photos/id/181/1200/600",
-          "https://picsum.photos/id/182/1200/600"
-        ],
-        dates: [
-          { label: "Sun, May 25", time: "12:00 PM" },
-          { label: "Sat, May 31", time: "2:00 PM" }
-        ],
-        tiers: [
-          { name: "Upper Box", price: 300, available: 1100, color: "zinc" },
-          { name: "Lower Box", price: 600, available: 480, color: "blue" },
-          { name: "Patron", price: 2000, available: 60, color: "violet" }
-        ]
-      },
-      6: {
-        id: 6,
-        title: "Music Festival 2026",
-        type: "Festival",
-        category: "festival",
-        location: "Mall of Asia Grounds, Pasay",
-        duration: "8 hours (12 NN – 9 PM)",
-        description: "The biggest outdoor music festival in the Philippines returns with an all-star lineup spanning OPM legends, indie acts, and international headliners. Multiple stages, food stalls, art installations, and non-stop live music across every genre. A full-day celebration of Philippine music culture.",
-        images: [
-          "https://picsum.photos/id/1016/1200/600",
-          "https://picsum.photos/id/1018/1200/600",
-          "https://picsum.photos/id/1019/1200/600",
-          "https://picsum.photos/id/1022/1200/600"
-        ],
-        dates: [
-          { label: "Sat, Jun 20", time: "12:00 PM" },
-          { label: "Sun, Jun 21", time: "12:00 PM" }
-        ],
-        tiers: [
-          { name: "General Admission", price: 1200, available: 5000, color: "zinc" },
-          { name: "Day + Night Pass", price: 1800, available: 1500, color: "blue" },
-          { name: "VIP Lounge", price: 4500, available: 200, color: "violet" }
-        ],
-      },
-      7: {
-        id: 7,
-        title: "Hamilton - Manila",
-        type: "Theatre",
-        category: "theatre",
-        location: "SM Mall Of Asia Arena, Pasay",
-        duration: "2 hours 30 minutes (incl. intermission)",
-        description: "Experience the magic of Hamilton — a revolutionary musical that blends hip-hop, R&B, and traditional show tunes. With its groundbreaking storytelling and unforgettable score, Hamilton is a must-see event that will leave you inspired and moved.",
-        images: [
-          "https://picsum.photos/id/250/1200/600",
-          "https://picsum.photos/id/251/1200/600",
-          "https://picsum.photos/id/252/1200/600"
-        ],
-        dates: [
-          { label: "Fri, Aug 14", time: "8:00 PM" },
-          { label: "Sat, Aug 15", time: "3:00 PM" },
-          { label: "Sat, Aug 15", time: "8:00 PM" },
-          { label: "Sun, Aug 16", time: "2:00 PM" }
-        ],
-        tiers: [
-          { name: "Balcony", price: 1500, available: 300, color: "zinc" },
-          { name: "Orchestra", price: 3000, available: 120, color: "blue" },
-          { name: "Front Orchestra", price: 6000, available: 50, color: "violet" }
-        ],
-      },
-      8: {
-        id: 8,
-        title: "Daniel Caesar Live in Manila",
-        type: "Concert",
-        category: "concert",
-        location: "SM Mall Of Asia Arena, Pasay",
-        duration: "2 hours (incl. intermission)",
-        description: "Join Daniel Caesar for an unforgettable night of soulful R&B and pop hits. Experience his powerful vocals and magnetic stage presence in an intimate concert setting.",
-        images: [
-          "https://picsum.photos/id/253/1200/600",
-          "https://picsum.photos/id/254/1200/600",
-          "https://picsum.photos/id/255/1200/600"
-        ],
-        dates: [
-          { label: "Sat, Sep 13", time: "8:00 PM" }
-        ],
-        tiers: [
-          { name: "General Admission", price: 1200, available: 1500, color: "zinc" },
-          { name: "VIP Experience", price: 3500, available: 200, color: "blue" }
-        ],
-      },
-      9: {
-        id: 9,
-        title: "My Chemical Romance Reunion Tour",
-        type: "Concert",
-        category: "concert",
-        location: "SM Mall Of Asia Arena, Pasay",
-        duration: "2 hours (incl. intermission)",
-        description: "Witness the return of My Chemical Romance in a spectacular reunion tour. Experience the band's iconic hits and unforgettable stage presence in an electrifying live performance.",
-        images: [
-          "https://picsum.photos/id/256/1200/600",
-          "https://picsum.photos/id/257/1200/600",
-          "https://picsum.photos/id/258/1200/600"
-        ],
-        dates: [
-          { label: "Sat, Oct 10", time: "8:00 PM" }
-        ],
-        tiers: [
-          { name: "General Admission", price: 1500, available: 2000, color: "zinc" },
-          { name: "VIP Experience", price: 4500, available: 300, color: "blue" }
-        ],
-      },
-      10: {
-        id: 10,
-        title: "Bruno Mars 24K Magic Tour",
-        type: "Concert",
-        category: "concert",
-        location: "SM Mall Of Asia Arena, Pasay",
-        duration: "2 hours (incl. intermission)",
-        description: "Experience the magic of Bruno Mars in his 24K Magic Tour. Get ready for an electrifying performance filled with his biggest hits and unforgettable stage presence.",
-        images: [
-          "https://picsum.photos/id/259/1200/600",
-          "https://picsum.photos/id/260/1200/600",
-          "https://picsum.photos/id/261/1200/600"
-        ],
-        dates: [
-          { label: "Sat, Nov 14", time: "8:00 PM" }
-        ],
-        tiers: [
-          { name: "General Admission", price: 1800, available: 2500, color: "zinc" },
-          { name: "VIP Experience", price: 5500, available: 400, color: "blue" }
-        ],
-      },
-      11: {
-        id: 11,
-        title: "Epic: The Musical - Manila",
-        type: "Theatre",
-        category: "theatre",
-        location: "Cultural Center of the Philippines, Pasay",
-        duration: "2 hours (incl. intermission)",
-        description: "Join us for an unforgettable experience of Epic: The Musical in Manila. Witness the magic of this award-winning production in an intimate theatre setting.",
-        images: [
-          "https://picsum.photos/id/262/1200/600",
-          "https://picsum.photos/id/263/1200/600",
-          "https://picsum.photos/id/264/1200/600"
-        ],
-        dates: [
-          { label: "Sat, Dec 12", time: "8:00 PM" }
-        ],
-        tiers: [
-          { name: "General Admission", price: 2800, available: 1500, color: "zinc" },
-          { name: "VIP Experience", price: 5500, available: 300, color: "blue" }
-        ],
-      },
-      12: {
-        id: 12,
-        title: "The 1975 Live in Manila",
-        type: "Concert",
-        category: "concert",
-        location: "SM Mall Of Asia Arena, Pasay",
-        duration: "2 hours (incl. intermission)",
-        description: "Experience the magic of The 1975 in their live performance in Manila. Get ready for an electrifying show filled with their biggest hits and unforgettable stage presence.",
-        images: [
-          "https://picsum.photos/id/265/1200/600",
-          "https://picsum.photos/id/266/1200/600",
-          "https://picsum.photos/id/267/1200/600"
-        ],
-        dates: [
-          { label: "Sat, Jan 18", time: "8:00 PM" }
-        ],
-        tiers: [
-          { name: "General Admission", price: 1800, available: 2500, color: "zinc" },
-          { name: "VIP Experience", price: 5500, available: 400, color: "blue" }
-        ],
-      },
-      13: {
-        id: 13,
-        title: "Hatsune Miku Expo 2026",
-        type: "Festival",
-        category: "festival",
-        location: "Mall of Asia Grounds",
-        duration: "2 hours (incl. intermission)",
-        description: "Join us for the ultimate Hatsune Miku experience at the Hatsune Miku Expo 2026. Witness the magic of this beloved virtual singer in an immersive festival setting.",
-        images: [
-          "https://picsum.photos/id/268/1200/600",
-          "https://picsum.photos/id/269/1200/600",
-          "https://picsum.photos/id/270/1200/600"
-        ],
-        dates: [
-          { label: "Sat, Feb 14", time: "8:00 PM" }
-        ],
-        tiers: [
-          { name: "General Admission", price: 1500, available: 2000, color: "zinc" },
-          { name: "VIP Experience", price: 4500, available: 300, color: "blue" }
-        ],
-      },
-      14: {
-        id: 14,
-        title: "Ado Live in Manila",
-        type: "Concert",
-        category: "concert",
-        location: "Philippine Arena, Bulacan",
-        duration: "2 hours (incl. intermission)",
-        description: "Experience the magic of Ado in her live performance in Manila. Get ready for an electrifying show filled with her biggest hits and unforgettable stage presence.",
-        images: [
-          "https://picsum.photos/id/271/1200/600",
-          "https://picsum.photos/id/272/1200/600",
-          "https://picsum.photos/id/273/1200/600"
-        ],
-        dates: [
-          { label: "Sat, Mar 14", time: "8:00 PM" }
-        ],
-        tiers: [
-          { name: "General Admission", price: 2200, available: 2500, color: "zinc" },
-          { name: "VIP Experience", price: 5500, available: 400, color: "blue" }
-        ],
-      },
-      15: {
-        id: 15,
-        title: "Laufey A matter of time Tour - Manila",
-        type: "Concert",
-        category: "concert",
-        location: "SM Mall Of Asia Arena, Pasay",
-        duration: "2 hours (incl. intermission)",
-        description: "Experience the magic of Laufey in her live performance in Manila. Get ready for an electrifying show filled with her biggest hits and unforgettable stage presence.",
-        images: [
-          "https://picsum.photos/id/274/1200/600",
-          "https://picsum.photos/id/275/1200/600",
-          "https://picsum.photos/id/276/1200/600"
-        ],
-        dates: [
-          { label: "Sat, Apr 18", time: "8:00 PM" }
-        ],
-        tiers: [
-          { name: "General Admission", price: 2500, available: 2000, color: "zinc" },
-          { name: "VIP Experience", price: 5500, available: 300, color: "blue" }
-        ],
-      },
-      16: {
-        id: 16,
-        title: "The Greatest Showman Live in Manila",
-        type: "Theatre",
-        category: "theatre",
-        location: "Cultural Center of the Philippines, Pasay",
-        duration: "2 hours (incl. intermission)",
-        description: "Experience the magic of The Greatest Showman in his live performance in Manila. Get ready for an electrifying show filled with his biggest hits and unforgettable stage presence.",
-        images: [
-          "https://picsum.photos/id/277/1200/600",
-          "https://picsum.photos/id/278/1200/600",
-          "https://picsum.photos/id/279/1200/600"
-        ],
-        dates: [
-          { label: "Sat, May 16", time: "8:00 PM" }
-        ],
-        tiers: [
-          { name: "General Admission", price: 2000, available: 1500, color: "zinc" },
-          { name: "VIP Experience", price: 5000, available: 200, color: "blue" }
-        ],
+          <!-- Use the proper seating locations for every venue. -->
+          tiers: [
+            { name: "Upper Box", price: 400, available: 900, color: "zinc" },
+            { name: "Lower Box", price: 800, available: 420, color: "blue" },
+            { name: "Courtside", price: 3500, available: 30, color: "violet" },
+          ],
+        },
+        3: {
+          id: 3,
+          title: "Miss Saigon - Manila",
+          type: "Theatre",
+          category: "theatre",
+          location: "Cultural Center of the Philippines, Pasay",
+          duration: "2 hours 45 minutes (incl. intermission)",
+          description:
+            "The legendary West End and Broadway musical returns to its birthplace. Miss Saigon tells the timeless story of Kim and Chris — a love story set against the backdrop of the Vietnam War. Featuring a Filipino cast and the iconic helicopter sequence, this is a theatrical event not to be missed.",
+          images: [
+            "https://picsum.photos/id/237/1200/600",
+            "https://picsum.photos/id/240/1200/600",
+            "https://picsum.photos/id/242/1200/600",
+          ],
+          dates: [
+            { label: "Tue, Jun 10", time: "8:00 PM" },
+            { label: "Wed, Jun 11", time: "3:00 PM" },
+            { label: "Sat, Jun 14", time: "8:00 PM" },
+            { label: "Sun, Jun 15", time: "2:00 PM" },
+          ],
+          tiers: [
+            { name: "Balcony", price: 1200, available: 280, color: "zinc" },
+            { name: "Orchestra", price: 2200, available: 150, color: "blue" },
+            {
+              name: "Front Orchestra",
+              price: 4500,
+              available: 40,
+              color: "violet",
+            },
+          ],
+        },
+        4: {
+          id: 4,
+          title: "Coldplay World Tour",
+          type: "Concert",
+          category: "concert",
+          location: "SM Mall Of Asia Arena, Pasay",
+          duration: "2 hours 15 minutes",
+          description:
+            "Coldplay's Music of the Spheres World Tour — one of the highest-grossing concert tours of all time — makes its Philippine stop. Known for their breathtaking LED wristband light shows, confetti cannons, and massive set production, Chris Martin and the band will perform hits across their entire catalog.",
+          images: [
+            "https://picsum.photos/id/870/1200/600",
+            "https://picsum.photos/id/871/1200/600",
+            "https://picsum.photos/id/873/1200/600",
+            "https://picsum.photos/id/875/1200/600",
+          ],
+          dates: [
+            { label: "Sun, Jul 5", time: "7:30 PM" },
+            { label: "Mon, Jul 6", time: "7:30 PM" },
+          ],
+          tiers: [
+            {
+              name: "SVIP SEATED",
+              price: 22500,
+              status: "Reserved Seating",
+              available: 800,
+              color: "violet",
+            },
+            {
+              name: "VIP A PREMIUM",
+              price: 17500,
+              status: "Reserved Seating",
+              available: 1200,
+              color: "blue",
+            },
+            {
+              name: "VIP A REGULAR",
+              price: 12500,
+              status: "Reserved Seating",
+              available: 1500,
+              color: "blue",
+            },
+            {
+              name: "VIP A REGULAR RESTRICTED VIEW",
+              price: 11000,
+              status: "Reserved Seating",
+              available: 400,
+              color: "blue",
+            },
+            {
+              name: "VIP B PREMIUM",
+              price: 7500,
+              status: "Reserved Seating",
+              available: 2000,
+              color: "blue",
+            },
+            {
+              name: "VIP B REGULAR",
+              price: 6500,
+              status: "Reserved Seating",
+              available: 2500,
+              color: "blue",
+            },
+            {
+              name: "VIP B REGULAR RESTRICTED VIEW",
+              price: 5500,
+              status: "Reserved Seating",
+              available: 600,
+              color: "blue",
+            },
+            {
+              name: "SVIP STANDING",
+              price: 18000,
+              status: "Standing",
+              available: 2500,
+              color: "violet",
+            },
+            {
+              name: "BOX A PREMIUM",
+              price: 4500,
+              status: "Reserved Seating",
+              available: 1800,
+              color: "zinc",
+            },
+            {
+              name: "BOX B PREMIUM",
+              price: 3500,
+              status: "Reserved Seating",
+              available: 2200,
+              color: "zinc",
+            },
+            {
+              name: "BOX B RESTRICTED VIEW",
+              price: 2800,
+              status: "Reserved Seating",
+              available: 500,
+              color: "zinc",
+            },
+            {
+              name: "BOX REGULAR",
+              price: 1800,
+              status: "Reserved Seating",
+              available: 3000,
+              color: "zinc",
+            },
+            {
+              name: "BOX REGULAR RESTRICTED VIEW",
+              price: 1500,
+              status: "Reserved Seating",
+              available: 1000,
+              color: "zinc",
+            },
+          ],
+        },
+        5: {
+          id: 5,
+          title: "UAAP: Ateneo vs La Salle",
+          type: "Sports",
+          category: "sports",
+          location: "SM Mall Of Asia Arena, Pasay",
+          duration: "~2 hours",
+          description:
+            "The most storied rivalry in Philippine college basketball is back. Ateneo Blue Eagles face the De La Salle Green Archers in a Season 87 elimination round battle. Bragging rights, playoff seeding, and pure school spirit are all on the line. Wear your colors and cheer your team to victory.",
+          images: [
+            "https://picsum.photos/id/180/1200/600",
+            "https://picsum.photos/id/181/1200/600",
+            "https://picsum.photos/id/182/1200/600",
+          ],
+          dates: [
+            { label: "Sun, May 25", time: "12:00 PM" },
+            { label: "Sat, May 31", time: "2:00 PM" },
+          ],
+          tiers: [
+            { name: "Upper Box", price: 300, available: 1100, color: "zinc" },
+            { name: "Lower Box", price: 600, available: 480, color: "blue" },
+            { name: "Patron", price: 2000, available: 60, color: "violet" },
+          ],
+        },
+        6: {
+          id: 6,
+          title: "Music Festival 2026",
+          type: "Festival",
+          category: "festival",
+          location: "Mall of Asia Grounds, Pasay",
+          duration: "8 hours (12 NN – 9 PM)",
+          description:
+            "The biggest outdoor music festival in the Philippines returns with an all-star lineup spanning OPM legends, indie acts, and international headliners. Multiple stages, food stalls, art installations, and non-stop live music across every genre. A full-day celebration of Philippine music culture.",
+          images: [
+            "https://picsum.photos/id/1016/1200/600",
+            "https://picsum.photos/id/1018/1200/600",
+            "https://picsum.photos/id/1019/1200/600",
+            "https://picsum.photos/id/1022/1200/600",
+          ],
+          dates: [
+            { label: "Sat, Jun 20", time: "12:00 PM" },
+            { label: "Sun, Jun 21", time: "12:00 PM" },
+          ],
+          tiers: [
+            {
+              name: "General Admission",
+              price: 1200,
+              available: 5000,
+              color: "zinc",
+            },
+            {
+              name: "Day + Night Pass",
+              price: 1800,
+              available: 1500,
+              color: "blue",
+            },
+            {
+              name: "VIP Lounge",
+              price: 4500,
+              available: 200,
+              color: "violet",
+            },
+          ],
+        },
+        7: {
+          id: 7,
+          title: "Hamilton - Manila",
+          type: "Theatre",
+          category: "theatre",
+          location: "SM Mall Of Asia Arena, Pasay",
+          duration: "2 hours 30 minutes (incl. intermission)",
+          description:
+            "Experience the magic of Hamilton — a revolutionary musical that blends hip-hop, R&B, and traditional show tunes. With its groundbreaking storytelling and unforgettable score, Hamilton is a must-see event that will leave you inspired and moved.",
+          images: [
+            "https://picsum.photos/id/250/1200/600",
+            "https://picsum.photos/id/251/1200/600",
+            "https://picsum.photos/id/252/1200/600",
+          ],
+          dates: [
+            { label: "Fri, Aug 14", time: "8:00 PM" },
+            { label: "Sat, Aug 15", time: "3:00 PM" },
+            { label: "Sat, Aug 15", time: "8:00 PM" },
+            { label: "Sun, Aug 16", time: "2:00 PM" },
+          ],
+          tiers: [
+            { name: "Balcony", price: 1500, available: 300, color: "zinc" },
+            { name: "Orchestra", price: 3000, available: 120, color: "blue" },
+            {
+              name: "Front Orchestra",
+              price: 6000,
+              available: 50,
+              color: "violet",
+            },
+          ],
+        },
+        8: {
+          id: 8,
+          title: "Daniel Caesar Live in Manila",
+          type: "Concert",
+          category: "concert",
+          location: "SM Mall Of Asia Arena, Pasay",
+          duration: "2 hours (incl. intermission)",
+          description:
+            "Join Daniel Caesar for an unforgettable night of soulful R&B and pop hits. Experience his powerful vocals and magnetic stage presence in an intimate concert setting.",
+          images: [
+            "https://picsum.photos/id/253/1200/600",
+            "https://picsum.photos/id/254/1200/600",
+            "https://picsum.photos/id/255/1200/600",
+          ],
+          dates: [{ label: "Sat, Sep 13", time: "8:00 PM" }],
+          tiers: [
+            {
+              name: "EARLY ENTRANCE PACKAGE",
+              price: 10600,
+              status: "Reserved Seating",
+              available: 600,
+              color: "violet",
+            },
+            {
+              name: "VIP A PREMIUM",
+              price: 9500,
+              status: "Reserved Seating",
+              available: 1200,
+              color: "blue",
+            },
+            {
+              name: "VIP A REGULAR",
+              price: 8250,
+              status: "Reserved Seating",
+              available: 1500,
+              color: "blue",
+            },
+            {
+              name: "VIP A REGULAR RESTRICTED VIEW",
+              price: 8250,
+              status: "Reserved Seating",
+              available: 400,
+              color: "blue",
+            },
+            {
+              name: "VIP B PREMIUM",
+              price: 7500,
+              status: "Reserved Seating",
+              available: 1800,
+              color: "blue",
+            },
+            {
+              name: "VIP B REGULAR",
+              price: 6500,
+              status: "Reserved Seating",
+              available: 2200,
+              color: "blue",
+            },
+            {
+              name: "VIP RESTRICTED VIEW",
+              price: 6500,
+              status: "Reserved Seating",
+              available: 500,
+              color: "blue",
+            },
+            {
+              name: "SVIP STANDING",
+              price: 5500,
+              status: "Standing",
+              available: 2500,
+              color: "violet",
+            },
+            {
+              name: "BOX A PREMIUM",
+              price: 5500,
+              status: "Reserved Seating",
+              available: 2000,
+              color: "zinc",
+            },
+            {
+              name: "BOX B PREMIUM",
+              price: 4500,
+              status: "Reserved Seating",
+              available: 2500,
+              color: "zinc",
+            },
+            {
+              name: "BOX PREMIUM RESTRICTED VIEW",
+              price: 4500,
+              status: "Reserved Seating",
+              available: 600,
+              color: "zinc",
+            },
+            {
+              name: "BOX REGULAR",
+              price: 2750,
+              status: "Reserved Seating",
+              available: 3500,
+              color: "zinc",
+            },
+            {
+              name: "BOX REGULAR RESTRICTED VIEW",
+              price: 2750,
+              status: "Reserved Seating",
+              available: 1000,
+              color: "zinc",
+            },
+          ],
+        },
+        9: {
+          id: 9,
+          title: "My Chemical Romance Reunion Tour",
+          type: "Concert",
+          category: "concert",
+          location: "SM Mall Of Asia Arena, Pasay",
+          duration: "2 hours (incl. intermission)",
+          description:
+            "Witness the return of My Chemical Romance in a spectacular reunion tour. Experience the band's iconic hits and unforgettable stage presence in an electrifying live performance.",
+          images: [
+            "https://picsum.photos/id/256/1200/600",
+            "https://picsum.photos/id/257/1200/600",
+            "https://picsum.photos/id/258/1200/600",
+          ],
+          dates: [{ label: "Sat, Oct 10", time: "8:00 PM" }],
+          tiers: [
+            {
+              name: "SVIP SEATED",
+              price: 15900,
+              status: "Reserved Seating",
+              available: 2000,
+              color: "violet",
+            },
+            {
+              name: "VIP A PREMIUM",
+              price: 13250,
+              status: "Reserved Seating",
+              available: 2000,
+              color: "blue",
+            },
+            {
+              name: "VIP A REGULAR",
+              price: 11130,
+              status: "Reserved Seating",
+              available: 2000,
+              color: "blue",
+            },
+            {
+              name: "VIP A REGULAR RESTRICTED VIEW",
+              price: 9500,
+              status: "Reserved Seating",
+              available: 2000,
+              color: "blue",
+            },
+            {
+              name: "VIP B PREMIUM",
+              price: 7950,
+              status: "Reserved Seating",
+              available: 2000,
+              color: "blue",
+            },
+            {
+              name: "VIP B REGULAR",
+              price: 6890,
+              status: "Reserved Seating",
+              available: 2000,
+              color: "blue",
+            },
+            {
+              name: "VIP B REGULAR RESTRICTED VIEW",
+              price: 5500,
+              status: "Reserved Seating",
+              available: 2000,
+              color: "blue",
+            },
+            {
+              name: "SVIP STANDING",
+              price: 21200,
+              status: "Standing",
+              available: 2000,
+              color: "violet",
+            },
+            {
+              name: "BOX A PREMIUM",
+              price: 4770,
+              status: "Reserved Seating",
+              available: 2000,
+              color: "zinc",
+            },
+            {
+              name: "BOX B PREMIUM",
+              price: 3180,
+              status: "Reserved Seating",
+              available: 2000,
+              color: "zinc",
+            },
+            {
+              name: "BOX B RESTRICTED VIEW",
+              price: 2500,
+              status: "Reserved Seating",
+              available: 2000,
+              color: "zinc",
+            },
+            {
+              name: "BOX REGULAR",
+              price: 2120,
+              status: "Reserved Seating",
+              available: 2000,
+              color: "zinc",
+            },
+            {
+              name: "BOX REGULAR RESTRICTED VIEW",
+              price: 1800,
+              status: "Reserved Seating",
+              available: 2000,
+              color: "zinc",
+            },
+          ],
+        },
+        10: {
+          id: 10,
+          title: "Bruno Mars 24K Magic Tour",
+          type: "Concert",
+          category: "concert",
+          location: "SM Mall Of Asia Arena, Pasay",
+          duration: "2 hours (incl. intermission)",
+          description:
+            "Experience the magic of Bruno Mars in his 24K Magic Tour. Get ready for an electrifying performance filled with his biggest hits and unforgettable stage presence.",
+          images: [
+            "https://picsum.photos/id/259/1200/600",
+            "https://picsum.photos/id/260/1200/600",
+            "https://picsum.photos/id/261/1200/600",
+          ],
+          dates: [{ label: "Sat, Nov 14", time: "8:00 PM" }],
+          tiers: [
+            {
+              name: "SVIP SEATED",
+              price: 23850,
+              status: "Reserved Seating",
+              available: 600,
+              color: "violet",
+            },
+            {
+              name: "SVIP STANDING",
+              price: 18750,
+              status: "Standing",
+              available: 2500,
+              color: "violet",
+            },
+            {
+              name: "VIP A PREMIUM",
+              price: 18850,
+              status: "Reserved Seating",
+              available: 1200,
+              color: "blue",
+            },
+            {
+              name: "VIP A REGULAR",
+              price: 13250,
+              status: "Reserved Seating",
+              available: 1500,
+              color: "blue",
+            },
+            {
+              name: "VIP A REGULAR RESTRICTED VIEW",
+              price: 11500,
+              status: "Reserved Seating",
+              available: 400,
+              color: "blue",
+            },
+            {
+              name: "VIP B PREMIUM",
+              price: 8480,
+              status: "Reserved Seating",
+              available: 1800,
+              color: "blue",
+            },
+            {
+              name: "VIP B REGULAR",
+              price: 7250,
+              status: "Reserved Seating",
+              available: 2200,
+              color: "blue",
+            },
+            {
+              name: "VIP B REGULAR RESTRICTED VIEW",
+              price: 6500,
+              status: "Reserved Seating",
+              available: 500,
+              color: "blue",
+            },
+            {
+              name: "BOX A PREMIUM",
+              price: 5550,
+              status: "Reserved Seating",
+              available: 2000,
+              color: "zinc",
+            },
+            {
+              name: "BOX B PREMIUM",
+              price: 4770,
+              status: "Reserved Seating",
+              available: 2500,
+              color: "zinc",
+            },
+            {
+              name: "BOX B RESTRICTED VIEW",
+              price: 3800,
+              status: "Reserved Seating",
+              available: 600,
+              color: "zinc",
+            },
+            {
+              name: "BOX REGULAR",
+              price: 2750,
+              status: "Reserved Seating",
+              available: 3500,
+              color: "zinc",
+            },
+            {
+              name: "BOX REGULAR RESTRICTED VIEW",
+              price: 2500,
+              status: "Reserved Seating",
+              available: 1000,
+              color: "zinc",
+            },
+          ],
+        },
+        11: {
+          id: 11,
+          title: "Epic: The Musical - Manila",
+          type: "Theatre",
+          category: "theatre",
+          location: "Cultural Center of the Philippines, Pasay",
+          duration: "2 hours (incl. intermission)",
+          description:
+            "Join us for an unforgettable experience of Epic: The Musical in Manila. Witness the magic of this award-winning production in an intimate theatre setting.",
+          images: [
+            "https://picsum.photos/id/262/1200/600",
+            "https://picsum.photos/id/263/1200/600",
+            "https://picsum.photos/id/264/1200/600",
+          ],
+          dates: [{ label: "Sat, Dec 12", time: "8:00 PM" }],
+          tiers: [
+            {
+              name: "General Admission",
+              price: 2800,
+              available: 1500,
+              color: "zinc",
+            },
+            {
+              name: "VIP Experience",
+              price: 5500,
+              available: 300,
+              color: "blue",
+            },
+          ],
+        },
+        12: {
+          id: 12,
+          title: "The 1975 Live in Manila",
+          type: "Concert",
+          category: "concert",
+          location: "SM Mall Of Asia Arena, Pasay",
+          duration: "2 hours (incl. intermission)",
+          description:
+            "Experience the magic of The 1975 in their live performance in Manila. Get ready for an electrifying show filled with their biggest hits and unforgettable stage presence.",
+          images: [
+            "https://picsum.photos/id/265/1200/600",
+            "https://picsum.photos/id/266/1200/600",
+            "https://picsum.photos/id/267/1200/600",
+          ],
+          dates: [{ label: "Sat, Jan 18", time: "8:00 PM" }],
+          tiers: [
+            {
+              name: "SVIP SEATED",
+              price: 10340,
+              status: "Reserved Seating",
+              available: 600,
+              color: "violet",
+            },
+            {
+              name: "SVIP STANDING",
+              price: 9750,
+              status: "Standing",
+              available: 2500,
+              color: "violet",
+            },
+            {
+              name: "VIP A PREMIUM",
+              price: 8480,
+              status: "Reserved Seating",
+              available: 1200,
+              color: "blue",
+            },
+            {
+              name: "VIP A REGULAR",
+              price: 7950,
+              status: "Reserved Seating",
+              available: 1500,
+              color: "blue",
+            },
+            {
+              name: "VIP A REGULAR RESTRICTED VIEW",
+              price: 7420,
+              status: "Reserved Seating",
+              available: 400,
+              color: "blue",
+            },
+            {
+              name: "VIP B PREMIUM",
+              price: 7000,
+              status: "Reserved Seating",
+              available: 1800,
+              color: "blue",
+            },
+            {
+              name: "VIP B REGULAR",
+              price: 6360,
+              status: "Reserved Seating",
+              available: 2200,
+              color: "blue",
+            },
+            {
+              name: "VIP B REGULAR RESTRICTED VIEW",
+              price: 6000,
+              status: "Reserved Seating",
+              available: 500,
+              color: "blue",
+            },
+            {
+              name: "BOX A PREMIUM",
+              price: 5300,
+              status: "Reserved Seating",
+              available: 2000,
+              color: "zinc",
+            },
+            {
+              name: "BOX B PREMIUM",
+              price: 4240,
+              status: "Reserved Seating",
+              available: 2500,
+              color: "zinc",
+            },
+            {
+              name: "BOX B RESTRICTED VIEW",
+              price: 4000,
+              status: "Reserved Seating",
+              available: 600,
+              color: "zinc",
+            },
+            {
+              name: "BOX REGULAR",
+              price: 2650,
+              status: "Reserved Seating",
+              available: 3500,
+              color: "zinc",
+            },
+            {
+              name: "BOX REGULAR RESTRICTED VIEW",
+              price: 1975,
+              status: "Reserved Seating",
+              available: 1000,
+              color: "zinc",
+            },
+          ],
+        },
+        13: {
+          id: 13,
+          title: "Hatsune Miku Expo 2026",
+          type: "Festival",
+          category: "festival",
+          location: "Mall of Asia Grounds",
+          duration: "2 hours (incl. intermission)",
+          description:
+            "Join us for the ultimate Hatsune Miku experience at the Hatsune Miku Expo 2026. Witness the magic of this beloved virtual singer in an immersive festival setting.",
+          images: [
+            "https://picsum.photos/id/268/1200/600",
+            "https://picsum.photos/id/269/1200/600",
+            "https://picsum.photos/id/270/1200/600",
+          ],
+          dates: [{ label: "Sat, Feb 14", time: "8:00 PM" }],
+          tiers: [
+            {
+              name: "General Admission",
+              price: 1500,
+              available: 2000,
+              color: "zinc",
+            },
+            {
+              name: "VIP Experience",
+              price: 4500,
+              available: 300,
+              color: "blue",
+            },
+          ],
+        },
+        14: {
+          id: 14,
+          title: "Ado Live in Manila",
+          type: "Concert",
+          category: "concert",
+          location: "Philippine Arena, Bulacan",
+          duration: "2 hours (incl. intermission)",
+          description:
+            "Experience the magic of Ado in her live performance in Manila. Get ready for an electrifying show filled with her biggest hits and unforgettable stage presence.",
+          images: [
+            "https://picsum.photos/id/271/1200/600",
+            "https://picsum.photos/id/272/1200/600",
+            "https://picsum.photos/id/273/1200/600",
+          ],
+          dates: [{ label: "Sat, Mar 14", time: "8:00 PM" }],
+          tiers: [
+            {
+              name: "General Admission",
+              price: 2200,
+              available: 2500,
+              color: "zinc",
+            },
+            {
+              name: "VIP Experience",
+              price: 5500,
+              available: 400,
+              color: "blue",
+            },
+          ],
+        },
+        15: {
+          id: 15,
+          title: "Laufey A matter of time Tour - Manila",
+          type: "Concert",
+          category: "concert",
+          location: "SM Mall Of Asia Arena, Pasay",
+          duration: "2 hours (incl. intermission)",
+          description:
+            "Experience the magic of Laufey in her live performance in Manila. Get ready for an electrifying show filled with her biggest hits and unforgettable stage presence.",
+          images: [
+            "https://picsum.photos/id/274/1200/600",
+            "https://picsum.photos/id/275/1200/600",
+            "https://picsum.photos/id/276/1200/600",
+          ],
+          dates: [{ label: "Sat, Apr 18", time: "8:00 PM" }],
+          tiers: [
+            {
+              name: "SVIP SEATED",
+              price: 9500,
+              status: "Reserved Seating",
+              available: 800,
+              color: "violet",
+            },
+            {
+              name: "VIP A PREMIUM",
+              price: 8500,
+              status: "Reserved Seating",
+              available: 1200,
+              color: "blue",
+            },
+            {
+              name: "VIP A REGULAR",
+              price: 7750,
+              status: "Reserved Seating",
+              available: 1500,
+              color: "blue",
+            },
+            {
+              name: "VIP A REGULAR RESTRICTED VIEW",
+              price: 7750,
+              status: "Reserved Seating",
+              available: 400,
+              color: "blue",
+            },
+            {
+              name: "VIP B PREMIUM",
+              price: 7250,
+              status: "Reserved Seating",
+              available: 1800,
+              color: "blue",
+            },
+            {
+              name: "VIP B REGULAR",
+              price: 6500,
+              status: "Reserved Seating",
+              available: 2200,
+              color: "blue",
+            },
+            {
+              name: "VIP B REGULAR RESTRICTED VIEW",
+              price: 6500,
+              status: "Reserved Seating",
+              available: 500,
+              color: "blue",
+            },
+            {
+              name: "SVIP STANDING",
+              price: 5500,
+              status: "Standing",
+              available: 2500,
+              color: "violet",
+            },
+            {
+              name: "BOX A PREMIUM",
+              price: 4500,
+              status: "Reserved Seating",
+              available: 2000,
+              color: "zinc",
+            },
+            {
+              name: "BOX B PREMIUM",
+              price: 3500,
+              status: "Reserved Seating",
+              available: 2500,
+              color: "zinc",
+            },
+            {
+              name: "BOX B RESTRICTED VIEW",
+              price: 3500,
+              status: "Reserved Seating",
+              available: 600,
+              color: "zinc",
+            },
+            {
+              name: "BOX REGULAR",
+              price: 2500,
+              status: "Reserved Seating",
+              available: 3500,
+              color: "zinc",
+            },
+            {
+              name: "BOX REGULAR RESTRICTED VIEW",
+              price: 2500,
+              status: "Reserved Seating",
+              available: 1000,
+              color: "zinc",
+            },
+          ],
+        },
+        16: {
+          id: 16,
+          title: "The Greatest Showman Live in Manila",
+          type: "Theatre",
+          category: "theatre",
+          location: "Cultural Center of the Philippines, Pasay",
+          duration: "2 hours (incl. intermission)",
+          description:
+            "Experience the magic of The Greatest Showman in his live performance in Manila. Get ready for an electrifying show filled with his biggest hits and unforgettable stage presence.",
+          images: [
+            "https://picsum.photos/id/277/1200/600",
+            "https://picsum.photos/id/278/1200/600",
+            "https://picsum.photos/id/279/1200/600",
+          ],
+          dates: [{ label: "Sat, May 16", time: "8:00 PM" }],
+          tiers: [
+            {
+              name: "General Admission",
+              price: 2000,
+              available: 1500,
+              color: "zinc",
+            },
+            {
+              name: "VIP Experience",
+              price: 5000,
+              available: 200,
+              color: "blue",
+            },
+          ],
+        },
+      };
+
+      // ─── State ────────────────────────────────────────────────────────────────────
+      let state = {
+        event: null,
+        activeImg: 0,
+        selectedDate: 0,
+        selectedTier: 0,
+        qty: 1,
+      };
+
+      // ─── Init ─────────────────────────────────────────────────────────────────────
+      function init() {
+        const params = new URLSearchParams(window.location.search);
+        const id = parseInt(params.get("eventId")) || 1;
+        state.event = events[id];
+        if (!state.event) {
+          document.getElementById("pageContent").innerHTML =
+            '<p class="text-center text-zinc-500 py-32">Event not found.</p>';
+          return;
+        }
+        document.title = `${state.event.title} — Ticketo`;
+        renderPage();
       }
 
-    };
-
-    // ─── State ────────────────────────────────────────────────────────────────────
-    let state = {
-      event: null,
-      activeImg: 0,
-      selectedDate: 0,
-      selectedTier: 0,
-      qty: 1
-    };
-
-    // ─── Init ─────────────────────────────────────────────────────────────────────
-    function init() {
-      const params = new URLSearchParams(window.location.search);
-      const id = parseInt(params.get('eventId')) || 1;
-      state.event = events[id];
-      if (!state.event) {
-        document.getElementById('pageContent').innerHTML = '<p class="text-center text-zinc-500 py-32">Event not found.</p>';
-        return;
-      }
-      document.title = `${state.event.title} — Ticketo`;
-      renderPage();
-    }
-
-    function renderPage() {
-      const e = state.event;
-      document.getElementById('pageContent').innerHTML = `
+      function renderPage() {
+        const e = state.event;
+        document.getElementById("pageContent").innerHTML = `
 
         <!-- Hero Banner -->
         <div class="relative overflow-hidden" style="height: 420px;">
-          <div class="hero-blur" id="heroBg" style="background-image: url('${e.images[0]}')"></div>
+          <div class="hero-blur" id="heroBg" style="background-image: url('${
+            e.images[0]
+          }')"></div>
           <div class="relative z-10 h-full flex flex-col justify-end max-w-6xl mx-auto px-6 pb-8">
-            <span class="inline-block mb-3 text-xs font-medium px-3 py-1 bg-violet-600 text-white rounded-full w-fit">${e.type}</span>
-            <h1 class="serif text-white text-4xl md:text-5xl leading-tight mb-2">${e.title}</h1>
+            <span class="inline-block mb-3 text-xs font-medium px-3 py-1 bg-violet-600 text-white rounded-full w-fit">${
+              e.type
+            }</span>
+            <h1 class="serif text-white text-4xl md:text-5xl leading-tight mb-2">${
+              e.title
+            }</h1>
             <div class="flex flex-wrap items-center gap-4 text-sm text-zinc-300">
-              <span><i class="fa-solid fa-location-dot text-violet-400 mr-1"></i>${e.location}</span>
-              <span><i class="fa-solid fa-clock text-violet-400 mr-1"></i>${e.duration}</span>
+              <span><i class="fa-solid fa-location-dot text-violet-400 mr-1"></i>${
+                e.location
+              }</span>
+              <span><i class="fa-solid fa-clock text-violet-400 mr-1"></i>${
+                e.duration
+              }</span>
             </div>
           </div>
         </div>
@@ -511,21 +1224,31 @@
             <section>
               <h2 class="serif text-xl text-white mb-4">Gallery</h2>
               <div class="rounded-2xl overflow-hidden mb-3" style="height:300px">
-                <img id="mainImg" src="${e.images[0]}" alt="Event" class="w-full h-full object-cover transition-opacity duration-300">
+                <img id="mainImg" src="${
+                  e.images[0]
+                }" alt="Event" class="w-full h-full object-cover transition-opacity duration-300">
               </div>
               <div class="flex gap-2">
-                ${e.images.map((img, i) => `
-                  <div class="thumb ${i === 0 ? 'active' : 'opacity-50'} rounded-xl overflow-hidden flex-1" style="height:70px" onclick="switchImage(${i})">
+                ${e.images
+                  .map(
+                    (img, i) => `
+                  <div class="thumb ${
+                    i === 0 ? "active" : "opacity-50"
+                  } rounded-xl overflow-hidden flex-1" style="height:70px" onclick="switchImage(${i})">
                     <img src="${img}" class="w-full h-full object-cover">
                   </div>
-                `).join('')}
+                `
+                  )
+                  .join("")}
               </div>
             </section>
 
             <!-- About -->
             <section>
               <h2 class="serif text-xl text-white mb-3">About This Event</h2>
-              <p class="text-zinc-400 leading-relaxed text-sm">${e.description}</p>
+              <p class="text-zinc-400 leading-relaxed text-sm">${
+                e.description
+              }</p>
             </section>
 
             <!-- Event Info -->
@@ -546,7 +1269,9 @@
                 </div>
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
                   <p class="text-xs text-zinc-500 mb-1 uppercase tracking-wide">Available Shows</p>
-                  <p class="text-white text-sm font-medium">${e.dates.length} date${e.dates.length > 1 ? 's' : ''}</p>
+                  <p class="text-white text-sm font-medium">${
+                    e.dates.length
+                  } date${e.dates.length > 1 ? "s" : ""}</p>
                 </div>
               </div>
             </section>
@@ -561,13 +1286,21 @@
               <div>
                 <p class="text-xs text-zinc-400 uppercase tracking-wide font-medium mb-3">Select Date & Time</p>
                 <div class="space-y-2">
-                  ${e.dates.map((d, i) => `
-                    <button class="date-btn w-full border border-zinc-700 rounded-xl px-4 py-3 text-left flex justify-between items-center ${i === 0 ? 'selected' : 'hover:border-zinc-500'}"
+                  ${e.dates
+                    .map(
+                      (d, i) => `
+                    <button class="date-btn w-full border border-zinc-700 rounded-xl px-4 py-3 text-left flex justify-between items-center ${
+                      i === 0 ? "selected" : "hover:border-zinc-500"
+                    }"
                       onclick="selectDate(${i})">
-                      <span class="text-sm font-medium text-white">${d.label}</span>
+                      <span class="text-sm font-medium text-white">${
+                        d.label
+                      }</span>
                       <span class="text-xs text-zinc-400">${d.time}</span>
                     </button>
-                  `).join('')}
+                  `
+                    )
+                    .join("")}
                 </div>
               </div>
 
@@ -575,21 +1308,32 @@
               <div>
                 <p class="text-xs text-zinc-400 uppercase tracking-wide font-medium mb-3">Ticket Tier</p>
                 <div class="space-y-2">
-                  ${e.tiers.map((t, i) => `
-                    <div class="tier-card border border-zinc-700 rounded-xl p-4 cursor-pointer ${i === 0 ? 'selected' : ''}" onclick="selectTier(${i})">
+                  ${e.tiers
+                    .map(
+                      (t, i) => `
+                    <div class="tier-card border border-zinc-700 rounded-xl p-4 cursor-pointer ${
+                      i === 0 ? "selected" : ""
+                    }" onclick="selectTier(${i})">
                       <div class="flex justify-between items-start">
                         <div>
-                          <p class="text-white text-sm font-medium">${t.name}</p>
+                          <p class="text-white text-sm font-medium">${
+                            t.name
+                          }</p>
                           <p class="text-xs text-zinc-500 mt-0.5">${t.available.toLocaleString()} available</p>
                         </div>
                         <span class="text-violet-400 font-bold text-sm">₱${t.price.toLocaleString()}</span>
                       </div>
                       <!-- Availability Bar -->
                       <div class="mt-3 h-1 bg-zinc-700 rounded-full overflow-hidden">
-                        <div class="h-full bg-violet-500 rounded-full" style="width: ${Math.min(100, 100 - (t.available / (t.available * 1.5)) * 100 + 40)}%"></div>
+                        <div class="h-full bg-violet-500 rounded-full" style="width: ${Math.min(
+                          100,
+                          100 - (t.available / (t.available * 1.5)) * 100 + 40
+                        )}%"></div>
                       </div>
                     </div>
-                  `).join('')}
+                  `
+                    )
+                    .join("")}
                 </div>
               </div>
 
@@ -621,99 +1365,117 @@
 
         </div>
       `;
-    }
+      }
 
-    // ─── Interactions ─────────────────────────────────────────────────────────────
-    function switchImage(i) {
-      state.activeImg = i;
-      document.getElementById('mainImg').src = state.event.images[i];
-      document.querySelectorAll('.thumb').forEach((el, idx) => {
-        el.classList.toggle('active', idx === i);
-        el.style.opacity = idx === i ? '1' : '0.5';
-      });
-    }
+      // ─── Interactions ─────────────────────────────────────────────────────────────
+      function switchImage(i) {
+        state.activeImg = i;
+        document.getElementById("mainImg").src = state.event.images[i];
+        document.querySelectorAll(".thumb").forEach((el, idx) => {
+          el.classList.toggle("active", idx === i);
+          el.style.opacity = idx === i ? "1" : "0.5";
+        });
+      }
 
-    function selectDate(i) {
-      state.selectedDate = i;
-      document.querySelectorAll('.date-btn').forEach((b, idx) => {
-        b.classList.toggle('selected', idx === i);
-        if (idx !== i) b.classList.remove('selected');
-      });
-    }
+      function selectDate(i) {
+        state.selectedDate = i;
+        document.querySelectorAll(".date-btn").forEach((b, idx) => {
+          b.classList.toggle("selected", idx === i);
+          if (idx !== i) b.classList.remove("selected");
+        });
+      }
 
-    function selectTier(i) {
-      state.selectedTier = i;
-      document.querySelectorAll('.tier-card').forEach((c, idx) => c.classList.toggle('selected', idx === i));
-      updateTotal();
-    }
+      function selectTier(i) {
+        state.selectedTier = i;
+        document
+          .querySelectorAll(".tier-card")
+          .forEach((c, idx) => c.classList.toggle("selected", idx === i));
+        updateTotal();
+      }
 
-    function changeQty(delta) {
-      state.qty = Math.max(1, Math.min(10, state.qty + delta));
-      document.getElementById('qtyDisplay').textContent = state.qty;
-      updateTotal();
-    }
+      function changeQty(delta) {
+        state.qty = Math.max(1, Math.min(10, state.qty + delta));
+        document.getElementById("qtyDisplay").textContent = state.qty;
+        updateTotal();
+      }
 
-    function updateTotal() {
-      const tier = state.event.tiers[state.selectedTier];
-      const total = tier.price * state.qty;
-      document.getElementById('totalPrice').textContent = `₱${total.toLocaleString()}`;
-    }
+      function updateTotal() {
+        const tier = state.event.tiers[state.selectedTier];
+        const total = tier.price * state.qty;
+        document.getElementById(
+          "totalPrice"
+        ).textContent = `₱${total.toLocaleString()}`;
+      }
 
-    function openModal() {
-      const e = state.event;
-      const tier = e.tiers[state.selectedTier];
-      const date = e.dates[state.selectedDate];
-      const total = tier.price * state.qty;
+      function openModal() {
+        const e = state.event;
+        const tier = e.tiers[state.selectedTier];
+        const date = e.dates[state.selectedDate];
+        const total = tier.price * state.qty;
 
-      document.getElementById('modalSummary').innerHTML = `
-        <div class="flex justify-between text-zinc-300"><span>Event</span><span class="font-medium text-white text-right ml-4">${e.title}</span></div>
-        <div class="flex justify-between text-zinc-300"><span>Date</span><span class="text-white">${date.label} · ${date.time}</span></div>
-        <div class="flex justify-between text-zinc-300"><span>Tier</span><span class="text-white">${tier.name}</span></div>
-        <div class="flex justify-between text-zinc-300"><span>Quantity</span><span class="text-white">${state.qty} ticket${state.qty > 1 ? 's' : ''}</span></div>
+        document.getElementById("modalSummary").innerHTML = `
+        <div class="flex justify-between text-zinc-300"><span>Event</span><span class="font-medium text-white text-right ml-4">${
+          e.title
+        }</span></div>
+        <div class="flex justify-between text-zinc-300"><span>Date</span><span class="text-white">${
+          date.label
+        } · ${date.time}</span></div>
+        <div class="flex justify-between text-zinc-300"><span>Tier</span><span class="text-white">${
+          tier.name
+        }</span></div>
+        <div class="flex justify-between text-zinc-300"><span>Quantity</span><span class="text-white">${
+          state.qty
+        } ticket${state.qty > 1 ? "s" : ""}</span></div>
         <div class="border-t border-zinc-700 pt-2 flex justify-between font-semibold"><span class="text-zinc-300">Total</span><span class="text-violet-400 text-base">₱${total.toLocaleString()}</span></div>
       `;
-      document.getElementById('buyModal').classList.add('open');
-    }
+        document.getElementById("buyModal").classList.add("open");
+      }
 
-    function closeModal() {
-      document.getElementById('buyModal').classList.remove('open');
-    }
+      function closeModal() {
+        document.getElementById("buyModal").classList.remove("open");
+      }
 
-    function selectPayment(btn) {
-      document.querySelectorAll('.pay-btn').forEach(b => {
-        b.classList.remove('border-violet-500', 'text-white', 'bg-violet-950');
-        b.classList.add('border-zinc-700', 'text-zinc-400');
-      });
-      btn.classList.add('border-violet-500', 'text-white', 'bg-violet-950');
-      btn.classList.remove('border-zinc-700', 'text-zinc-400');
-    }
+      function selectPayment(btn) {
+        document.querySelectorAll(".pay-btn").forEach((b) => {
+          b.classList.remove(
+            "border-violet-500",
+            "text-white",
+            "bg-violet-950"
+          );
+          b.classList.add("border-zinc-700", "text-zinc-400");
+        });
+        btn.classList.add("border-violet-500", "text-white", "bg-violet-950");
+        btn.classList.remove("border-zinc-700", "text-zinc-400");
+      }
 
-  function submitOrder() {
-    const e = state.event;
-    const tier = e.tiers[state.selectedTier];
-    const date = e.dates[state.selectedDate];
-    const total = tier.price * state.qty;
+      function submitOrder() {
+        const e = state.event;
+        const tier = e.tiers[state.selectedTier];
+        const date = e.dates[state.selectedDate];
+        const total = tier.price * state.qty;
 
-    // Pass order data via URL parameters
-    const params = new URLSearchParams({
-      eventId: e.id,
-      eventTitle: e.title,
-      date: date.label + " • " + date.time,
-      tier: tier.name,
-      quantity: state.qty,
-      total: total,
-      location: e.location
-    });
+        // Pass order data via URL parameters
+        const params = new URLSearchParams({
+          eventId: e.id,
+          eventTitle: e.title,
+          date: date.label + " • " + date.time,
+          tier: tier.name,
+          quantity: state.qty,
+          total: total,
+          location: e.location,
+        });
 
-    window.location.href = `order-summary.html?${params.toString()}`;
-  }
+        window.location.href = `order-summary.html?${params.toString()}`;
+      }
 
-    // Close modal on backdrop click
-    document.getElementById('buyModal').addEventListener('click', function(e) {
-      if (e.target === this) closeModal();
-    });
+      // Close modal on backdrop click
+      document
+        .getElementById("buyModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) closeModal();
+        });
 
-    init();
-  </script>
-</body>
+      init();
+    </script>
+  </body>
 </html>
