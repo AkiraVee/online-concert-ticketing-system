@@ -174,6 +174,47 @@
       <p>© 2026 Absolute Cinema. All rights reserved.</p>
     </footer>
 
+    <!-- 
+    LOGIN PROMPT MODAL 
+    This modal will be triggered when a user tries to
+    buy a ticket without being logged in. 
+    -->
+
+    <div
+      id="loginPromptModal"
+      class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4"
+    >
+      <div
+        class="bg-zinc-900 border border-zinc-700 rounded-2xl w-full max-w-sm p-6 relative text-center"
+      >
+        <button
+          onclick="closeLoginPrompt()"
+          class="absolute top-4 right-4 text-zinc-500 hover:text-white"
+        >
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+        <i class="fa-solid fa-lock text-violet-400 text-4xl mb-4 block"></i>
+        <h3 class="text-xl text-white font-semibold mb-2">Sign In Required</h3>
+        <p class="text-zinc-400 text-sm mb-6">
+          You need to be logged in to purchase tickets.
+        </p>
+        <div class="flex flex-col gap-3">
+          <button
+            onclick="window.location.href='login.html'"
+            class="w-full bg-violet-600 hover:bg-violet-500 text-white py-3 rounded-xl font-medium text-sm"
+          >
+            Sign In
+          </button>
+          <button
+            onclick="window.location.href='signup.html'"
+            class="w-full bg-zinc-800 hover:bg-zinc-700 text-white py-3 rounded-xl font-medium text-sm"
+          >
+            Create Account
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script>
       const events = [
         {
@@ -340,6 +381,22 @@
 
       let currentFilter = "all";
 
+      // ── AUTH HELPER ──────────────────────────────────────────
+      // Checks if user is logged in via localStorage flag set on login
+      function isLoggedIn() {
+        return localStorage.getItem("userLoggedIn") === "true";
+      }
+
+      // Opens the login prompt modal
+      function openLoginPrompt() {
+        document.getElementById("loginPromptModal").classList.remove("hidden");
+      }
+
+      // Closes the login prompt modal
+      function closeLoginPrompt() {
+        document.getElementById("loginPromptModal").classList.add("hidden");
+      }
+
       function renderEvents(list) {
         const grid = document.getElementById("eventsGrid");
         const empty = document.getElementById("emptyMsg");
@@ -363,7 +420,12 @@
             <p class="text-zinc-500 text-xs mb-4 flex items-center gap-1"><i class="fa-solid fa-location-dot"></i> ${e.location}</p>
             <div class="flex items-center justify-between">
               <span class="text-violet-400 font-semibold">${e.price}</span>
-              <button class="text-xs text-white bg-zinc-800 hover:bg-zinc-700 px-3 py-1.5 rounded-lg">Buy →</button>
+
+             <button class="text-xs text-white bg-zinc-800 hover:bg-zinc-700 px-3 py-1.5 rounded-lg"
+                  onclick="event.stopPropagation(); isLoggedIn() ? viewEvent(${e.id}) : openLoginPrompt()">
+                  Buy →
+                </button>
+                
             </div>
           </div>
         </div>
