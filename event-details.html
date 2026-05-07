@@ -138,10 +138,17 @@
           >
           <input
             type="text"
+            id="modalName"
             placeholder="Juan dela Cruz"
             class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-2.5 text-white text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500"
           />
+          <!-- Paste after the Full Name input -->
+          <span
+            id="nameError"
+            class="hidden text-red-500 text-xs mt-1 block"
+          ></span>
         </div>
+
         <div class="mb-5">
           <label
             class="block text-xs text-zinc-400 mb-1.5 font-medium uppercase tracking-wide"
@@ -149,10 +156,17 @@
           >
           <input
             type="email"
+            id="modalEmail"
             placeholder="juan@example.com"
             class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-2.5 text-white text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500"
           />
+          <!-- Paste after the Email input -->
+          <span
+            id="emailError"
+            class="hidden text-red-500 text-xs mt-1 block"
+          ></span>
         </div>
+
         <div class="mb-6">
           <label
             class="block text-xs text-zinc-400 mb-1.5 font-medium uppercase tracking-wide"
@@ -179,6 +193,12 @@
             </button>
           </div>
         </div>
+
+        <!-- Paste after the closing </div> of the payment grid -->
+        <span
+          id="paymentError"
+          class="hidden text-red-500 text-xs mt-1 block"
+        ></span>
 
         <button
           onclick="submitOrder()"
@@ -1755,26 +1775,21 @@
       }
 
       function openModal() {
+        // ── LOGIN GATE ───────────────────────────────────────────
+        // If user is not logged in, redirect them to login page instead of opening modal
+        if (localStorage.getItem("userLoggedIn") !== "true") {
+          alert("Please log in first to purchase tickets.");
+          window.location.href = "login.html";
+          return; // Stop here — don't open the modal
+        }
+
+        // Rest of the existing openModal code stays exactly the same ↓
         const e = state.event;
         const tier = e.tiers[state.selectedTier];
         const date = e.dates[state.selectedDate];
         const total = tier.price * state.qty;
 
-        document.getElementById("modalSummary").innerHTML = `
-        <div class="flex justify-between text-zinc-300"><span>Event</span><span class="font-medium text-white text-right ml-4">${
-          e.title
-        }</span></div>
-        <div class="flex justify-between text-zinc-300"><span>Date</span><span class="text-white">${
-          date.label
-        } · ${date.time}</span></div>
-        <div class="flex justify-between text-zinc-300"><span>Tier</span><span class="text-white">${
-          tier.name
-        }</span></div>
-        <div class="flex justify-between text-zinc-300"><span>Quantity</span><span class="text-white">${
-          state.qty
-        } ticket${state.qty > 1 ? "s" : ""}</span></div>
-        <div class="border-t border-zinc-700 pt-2 flex justify-between font-semibold"><span class="text-zinc-300">Total</span><span class="text-violet-400 text-base">₱${total.toLocaleString()}</span></div>
-      `;
+        document.getElementById("modalSummary").innerHTML = `...`; // leave your existing template as-is
         document.getElementById("buyModal").classList.add("open");
       }
 
@@ -1796,12 +1811,59 @@
       }
 
       function submitOrder() {
+        const name = document.getElementById("modalName").value.trim();
+        const email = document.getElementById("modalEmail").value.trim();
+
+        // Check if any payment button has been selected (has the 'bg-violet-950' class)
+        const paymentSelected = document.querySelector(
+          ".pay-btn.bg-violet-950"
+        );
+
+        // Hide all previous errors before re-validating
+        document.getElementById("nameError").classList.add("hidden");
+        document.getElementById("emailError").classList.add("hidden");
+        document.getElementById("paymentError").classList.add("hidden");
+
+        let valid = true;
+
+        // Validate: Full Name must not be empty
+        if (!name) {
+          document.getElementById("nameError").textContent =
+            "Full name is required.";
+          document.getElementById("nameError").classList.remove("hidden");
+          valid = false;
+        }
+
+        // Validate: Email must not be empty and must be proper format
+        if (!email) {
+          document.getElementById("emailError").textContent =
+            "Email is required.";
+          document.getElementById("emailError").classList.remove("hidden");
+          valid = false;
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          document.getElementById("emailError").textContent =
+            "Please enter a valid email.";
+          document.getElementById("emailError").classList.remove("hidden");
+          valid = false;
+        }
+
+        // Validate: A payment method must be selected
+        if (!paymentSelected) {
+          document.getElementById("paymentError").textContent =
+            "Please select a payment method.";
+          document.getElementById("paymentError").classList.remove("hidden");
+          valid = false;
+        }
+
+        if (!valid) return; // Stop here if anything failed
+
+        // ── All valid — proceed to order-summary ────────────────
+        // The rest of your existing submitOrder code stays the same ↓
         const e = state.event;
         const tier = e.tiers[state.selectedTier];
         const date = e.dates[state.selectedDate];
         const total = tier.price * state.qty;
 
-        // Pass order data via URL parameters
         const params = new URLSearchParams({
           eventId: e.id,
           eventTitle: e.title,
