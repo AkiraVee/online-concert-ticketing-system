@@ -9,79 +9,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
     />
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      body {
-        font-family: "DM Sans", sans-serif;
-      }
-      .serif {
-        font-family: "DM Serif Display", serif;
-      }
-
-      .hero-blur {
-        position: absolute;
-        inset: 0;
-        background-size: cover;
-        background-position: center;
-        filter: blur(28px) brightness(0.3);
-        transform: scale(1.05);
-      }
-
-      .thumb {
-        transition: all 0.2s;
-        cursor: pointer;
-      }
-      .thumb:hover {
-        opacity: 1 !important;
-      }
-      .thumb.active {
-        outline: 2px solid #7c3aed;
-        outline-offset: 2px;
-        opacity: 1 !important;
-      }
-
-      .date-btn {
-        transition: all 0.2s;
-      }
-      .date-btn.selected {
-        background: #7c3aed;
-        color: white;
-        border-color: #7c3aed;
-      }
-
-      .tier-card {
-        transition: all 0.2s;
-      }
-      .tier-card.selected {
-        border-color: #7c3aed;
-        background: rgba(124, 58, 237, 0.08);
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(12px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      .fade-in {
-        animation: fadeIn 0.4s ease forwards;
-      }
-
-      /* Modal */
-      #buyModal {
-        display: none;
-      }
-      #buyModal.open {
-        display: flex;
-      }
-    </style>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body class="bg-zinc-950 text-zinc-300 min-h-screen">
     <!-- Nav -->
@@ -130,7 +58,7 @@
           id="modalSummary"
           class="bg-zinc-800 rounded-xl p-4 mb-5 space-y-2 text-sm"
         >
-      </div>
+        </div>
 
         <div class="mb-5">
           <label
@@ -143,7 +71,6 @@
             placeholder="Juan dela Cruz"
             class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-2.5 text-white text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500"
           />
-          <!-- Paste after the Full Name input -->
           <span
             id="nameError"
             class="hidden text-red-500 text-xs mt-1 block"
@@ -161,7 +88,6 @@
             placeholder="juan@example.com"
             class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-2.5 text-white text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500"
           />
-          <!-- Paste after the Email input -->
           <span
             id="emailError"
             class="hidden text-red-500 text-xs mt-1 block"
@@ -195,7 +121,6 @@
           </div>
         </div>
 
-        <!-- Paste after the closing </div> of the payment grid -->
         <span
           id="paymentError"
           class="hidden text-red-500 text-xs mt-1 block"
@@ -219,7 +144,7 @@
       email.
     </div>
 
-        <!-- Footer -->
+    <!-- Footer -->
     <footer
       class="border-t border-zinc-800 py-8 text-center text-zinc-600 text-sm"
     >
@@ -229,7 +154,7 @@
       </div>
       <div class="flex justify-center gap-6 text-xs mb-4">
         <a href="faqs.html" class="hover:text-zinc-300">FAQs</a>
-                <a href= "https://www.facebook.com/jersey1705" target="_blank" class="hover:text-zinc-300">Contact</a>
+        <a href="https://www.facebook.com/jersey1705" target="_blank" class="hover:text-zinc-300">Contact</a>
         <a href="terms.html" class="hover:text-zinc-300">Terms</a>
       </div>
       <p>© 2026 Absolute Cinema. All rights reserved.</p>
@@ -259,90 +184,18 @@
             { label: "Fri, May 20", time: "7:00 PM" },
           ],
           tiers: [
-            {
-              name: "VIP PIT",
-              price: 26000,
-              status: "Seated/Standing",
-              available: 5000,
-              color: "violet",
-            },
-            {
-              name: "Floor Standing",
-              price: 19500,
-              status: "General Admission",
-              available: 8000,
-              color: "violet",
-            },
-            {
-              name: "LBA Lower Box A Premium",
-              price: 18500,
-              status: "Reserved Seating",
-              available: 4500,
-              color: "blue",
-            },
-            {
-              name: "LBA Lower Box A Regular",
-              price: 16500,
-              status: "Reserved Seating",
-              available: 6000,
-              color: "blue",
-            },
-            {
-              name: "LBB Lower Box B Premium",
-              price: 15500,
-              status: "Reserved Seating",
-              available: 5500,
-              color: "blue",
-            },
-            {
-              name: "LBB Lower Box B Regular",
-              price: 13500,
-              status: "Reserved Seating",
-              available: 7000,
-              color: "blue",
-            },
-            {
-              name: "UBA Upper Box A Premium",
-              price: 11000,
-              status: "Reserved Seating",
-              available: 6000,
-              color: "zinc",
-            },
-            {
-              name: "UBB Upper Box B Premium",
-              price: 9000,
-              status: "Reserved Seating",
-              available: 4000,
-              color: "zinc",
-            },
-            {
-              name: "UBB Upper Box B Sides",
-              price: 7500,
-              status: "Reserved Seating",
-              available: 2500,
-              color: "zinc",
-            },
-            {
-              name: "UBB Upper Box B Regular",
-              price: 6000,
-              status: "Reserved Seating",
-              available: 4000,
-              color: "zinc",
-            },
-            {
-              name: "UBC Upper Box C Premium",
-              price: 5000,
-              status: "Reserved Seating",
-              available: 3000,
-              color: "zinc",
-            },
-            {
-              name: "UBC Upper Box C Regular",
-              price: 3500,
-              status: "Reserved Seating",
-              available: 1500,
-              color: "zinc",
-            },
+            { name: "VIP PIT", price: 26000, status: "Seated/Standing", available: 5000, color: "violet" },
+            { name: "Floor Standing", price: 19500, status: "General Admission", available: 8000, color: "violet" },
+            { name: "LBA Lower Box A Premium", price: 18500, status: "Reserved Seating", available: 4500, color: "blue" },
+            { name: "LBA Lower Box A Regular", price: 16500, status: "Reserved Seating", available: 6000, color: "blue" },
+            { name: "LBB Lower Box B Premium", price: 15500, status: "Reserved Seating", available: 5500, color: "blue" },
+            { name: "LBB Lower Box B Regular", price: 13500, status: "Reserved Seating", available: 7000, color: "blue" },
+            { name: "UBA Upper Box A Premium", price: 11000, status: "Reserved Seating", available: 6000, color: "zinc" },
+            { name: "UBB Upper Box B Premium", price: 9000, status: "Reserved Seating", available: 4000, color: "zinc" },
+            { name: "UBB Upper Box B Sides", price: 7500, status: "Reserved Seating", available: 2500, color: "zinc" },
+            { name: "UBB Upper Box B Regular", price: 6000, status: "Reserved Seating", available: 4000, color: "zinc" },
+            { name: "UBC Upper Box C Premium", price: 5000, status: "Reserved Seating", available: 3000, color: "zinc" },
+            { name: "UBC Upper Box C Regular", price: 3500, status: "Reserved Seating", available: 1500, color: "zinc" },
           ],
         },
         2: {
@@ -363,51 +216,13 @@
             { label: "Wed, May 15", time: "7:00 PM" },
             { label: "Sat, May 18", time: "4:00 PM" },
           ],
-
-          <!-- Use the proper seating locations for every venue. -->
           tiers: [
-            {
-              name: "SEATED VIP",
-              price: 3300,
-              status: "Reserved Seating",
-              available: 150,
-              color: "violet",
-            },
-            {
-              name: "PATRON A",
-              price: 1000,
-              status: "Reserved Seating",
-              available: 800,
-              color: "violet",
-            },
-            {
-              name: "PATRON B",
-              price: 950,
-              status: "Reserved Seating",
-              available: 1200,
-              color: "violet",
-            },
-            {
-              name: "PATRON C",
-              price: 900,
-              status: "Reserved Seating",
-              available: 1500,
-              color: "violet",
-            },
-            {
-              name: "LOWER BOX A",
-              price: 600,
-              status: "Reserved Seating",
-              available: 2000,
-              color: "blue",
-            },
-            {
-              name: "LOWER BOX B",
-              price: 500,
-              status: "Reserved Seating",
-              available: 2500,
-              color: "blue",
-            },
+            { name: "SEATED VIP", price: 3300, status: "Reserved Seating", available: 150, color: "violet" },
+            { name: "PATRON A", price: 1000, status: "Reserved Seating", available: 800, color: "violet" },
+            { name: "PATRON B", price: 950, status: "Reserved Seating", available: 1200, color: "violet" },
+            { name: "PATRON C", price: 900, status: "Reserved Seating", available: 1500, color: "violet" },
+            { name: "LOWER BOX A", price: 600, status: "Reserved Seating", available: 2000, color: "blue" },
+            { name: "LOWER BOX B", price: 500, status: "Reserved Seating", available: 2500, color: "blue" },
           ],
         },
         3: {
@@ -431,48 +246,12 @@
             { label: "Sun, Jun 15", time: "2:00 PM" },
           ],
           tiers: [
-            {
-              name: "PLATINUM",
-              price: 8500,
-              status: "Reserved Seating",
-              available: 250,
-              color: "violet",
-            },
-            {
-              name: "SVIP",
-              price: 7500,
-              status: "Reserved Seating",
-              available: 350,
-              color: "violet",
-            },
-            {
-              name: "VIP",
-              price: 6500,
-              status: "Reserved Seating",
-              available: 400,
-              color: "blue",
-            },
-            {
-              name: "GOLD",
-              price: 4500,
-              status: "Reserved Seating",
-              available: 300,
-              color: "blue",
-            },
-            {
-              name: "SILVER",
-              price: 3500,
-              status: "Reserved Seating",
-              available: 200,
-              color: "zinc",
-            },
-            {
-              name: "BRONZE",
-              price: 1500,
-              status: "Reserved Seating",
-              available: 240,
-              color: "zinc",
-            },
+            { name: "PLATINUM", price: 8500, status: "Reserved Seating", available: 250, color: "violet" },
+            { name: "SVIP", price: 7500, status: "Reserved Seating", available: 350, color: "violet" },
+            { name: "VIP", price: 6500, status: "Reserved Seating", available: 400, color: "blue" },
+            { name: "GOLD", price: 4500, status: "Reserved Seating", available: 300, color: "blue" },
+            { name: "SILVER", price: 3500, status: "Reserved Seating", available: 200, color: "zinc" },
+            { name: "BRONZE", price: 1500, status: "Reserved Seating", available: 240, color: "zinc" },
           ],
         },
         4: {
@@ -495,97 +274,19 @@
             { label: "Mon, Jul 6", time: "7:30 PM" },
           ],
           tiers: [
-            {
-              name: "SVIP SEATED",
-              price: 22500,
-              status: "Reserved Seating",
-              available: 800,
-              color: "violet",
-            },
-            {
-              name: "VIP A PREMIUM",
-              price: 17500,
-              status: "Reserved Seating",
-              available: 1200,
-              color: "blue",
-            },
-            {
-              name: "VIP A REGULAR",
-              price: 12500,
-              status: "Reserved Seating",
-              available: 1500,
-              color: "blue",
-            },
-            {
-              name: "VIP A REGULAR RESTRICTED VIEW",
-              price: 11000,
-              status: "Reserved Seating",
-              available: 400,
-              color: "blue",
-            },
-            {
-              name: "VIP B PREMIUM",
-              price: 7500,
-              status: "Reserved Seating",
-              available: 2000,
-              color: "blue",
-            },
-            {
-              name: "VIP B REGULAR",
-              price: 6500,
-              status: "Reserved Seating",
-              available: 2500,
-              color: "blue",
-            },
-            {
-              name: "VIP B REGULAR RESTRICTED VIEW",
-              price: 5500,
-              status: "Reserved Seating",
-              available: 600,
-              color: "blue",
-            },
-            {
-              name: "SVIP STANDING",
-              price: 18000,
-              status: "Standing",
-              available: 2500,
-              color: "violet",
-            },
-            {
-              name: "BOX A PREMIUM",
-              price: 4500,
-              status: "Reserved Seating",
-              available: 1800,
-              color: "zinc",
-            },
-            {
-              name: "BOX B PREMIUM",
-              price: 3500,
-              status: "Reserved Seating",
-              available: 2200,
-              color: "zinc",
-            },
-            {
-              name: "BOX B RESTRICTED VIEW",
-              price: 2800,
-              status: "Reserved Seating",
-              available: 500,
-              color: "zinc",
-            },
-            {
-              name: "BOX REGULAR",
-              price: 1800,
-              status: "Reserved Seating",
-              available: 3000,
-              color: "zinc",
-            },
-            {
-              name: "BOX REGULAR RESTRICTED VIEW",
-              price: 1500,
-              status: "Reserved Seating",
-              available: 1000,
-              color: "zinc",
-            },
+            { name: "SVIP SEATED", price: 22500, status: "Reserved Seating", available: 800, color: "violet" },
+            { name: "VIP A PREMIUM", price: 17500, status: "Reserved Seating", available: 1200, color: "blue" },
+            { name: "VIP A REGULAR", price: 12500, status: "Reserved Seating", available: 1500, color: "blue" },
+            { name: "VIP A REGULAR RESTRICTED VIEW", price: 11000, status: "Reserved Seating", available: 400, color: "blue" },
+            { name: "VIP B PREMIUM", price: 7500, status: "Reserved Seating", available: 2000, color: "blue" },
+            { name: "VIP B REGULAR", price: 6500, status: "Reserved Seating", available: 2500, color: "blue" },
+            { name: "VIP B REGULAR RESTRICTED VIEW", price: 5500, status: "Reserved Seating", available: 600, color: "blue" },
+            { name: "SVIP STANDING", price: 18000, status: "Standing", available: 2500, color: "violet" },
+            { name: "BOX A PREMIUM", price: 4500, status: "Reserved Seating", available: 1800, color: "zinc" },
+            { name: "BOX B PREMIUM", price: 3500, status: "Reserved Seating", available: 2200, color: "zinc" },
+            { name: "BOX B RESTRICTED VIEW", price: 2800, status: "Reserved Seating", available: 500, color: "zinc" },
+            { name: "BOX REGULAR", price: 1800, status: "Reserved Seating", available: 3000, color: "zinc" },
+            { name: "BOX REGULAR RESTRICTED VIEW", price: 1500, status: "Reserved Seating", available: 1000, color: "zinc" },
           ],
         },
         5: {
@@ -607,48 +308,12 @@
             { label: "Sat, May 31", time: "2:00 PM" },
           ],
           tiers: [
-            {
-              name: "SEATED VIP",
-              price: 3300,
-              status: "Reserved Seating",
-              available: 150,
-              color: "violet",
-            },
-            {
-              name: "PATRON A",
-              price: 1000,
-              status: "Reserved Seating",
-              available: 800,
-              color: "violet",
-            },
-            {
-              name: "PATRON B",
-              price: 950,
-              status: "Reserved Seating",
-              available: 1200,
-              color: "violet",
-            },
-            {
-              name: "PATRON C",
-              price: 900,
-              status: "Reserved Seating",
-              available: 1500,
-              color: "violet",
-            },
-            {
-              name: "LOWER BOX A",
-              price: 600,
-              status: "Reserved Seating",
-              available: 2000,
-              color: "blue",
-            },
-            {
-              name: "LOWER BOX B",
-              price: 500,
-              status: "Reserved Seating",
-              available: 2500,
-              color: "blue",
-            },
+            { name: "SEATED VIP", price: 3300, status: "Reserved Seating", available: 150, color: "violet" },
+            { name: "PATRON A", price: 1000, status: "Reserved Seating", available: 800, color: "violet" },
+            { name: "PATRON B", price: 950, status: "Reserved Seating", available: 1200, color: "violet" },
+            { name: "PATRON C", price: 900, status: "Reserved Seating", available: 1500, color: "violet" },
+            { name: "LOWER BOX A", price: 600, status: "Reserved Seating", available: 2000, color: "blue" },
+            { name: "LOWER BOX B", price: 500, status: "Reserved Seating", available: 2500, color: "blue" },
           ],
         },
         6: {
@@ -671,24 +336,9 @@
             { label: "Sun, Jun 21", time: "12:00 PM" },
           ],
           tiers: [
-            {
-              name: "General Admission",
-              price: 1200,
-              available: 5000,
-              color: "zinc",
-            },
-            {
-              name: "Day + Night Pass",
-              price: 1800,
-              available: 1500,
-              color: "blue",
-            },
-            {
-              name: "VIP Lounge",
-              price: 4500,
-              available: 200,
-              color: "violet",
-            },
+            { name: "General Admission", price: 1200, available: 5000, color: "zinc" },
+            { name: "Day + Night Pass", price: 1800, available: 1500, color: "blue" },
+            { name: "VIP Lounge", price: 4500, available: 200, color: "violet" },
           ],
         },
         7: {
@@ -712,48 +362,12 @@
             { label: "Sun, Aug 16", time: "2:00 PM" },
           ],
           tiers: [
-            {
-              name: "PLATINUM",
-              price: 8993,
-              status: "Reserved Seating",
-              available: 250,
-              color: "violet",
-            },
-            {
-              name: "SVIP",
-              price: 6348,
-              status: "Reserved Seating",
-              available: 350,
-              color: "violet",
-            },
-            {
-              name: "VIP",
-              price: 5819,
-              status: "Reserved Seating",
-              available: 400,
-              color: "blue",
-            },
-            {
-              name: "GOLD",
-              price: 4761,
-              status: "Reserved Seating",
-              available: 300,
-              color: "blue",
-            },
-            {
-              name: "SILVER",
-              price: 3703,
-              status: "Reserved Seating",
-              available: 200,
-              color: "zinc",
-            },
-            {
-              name: "BRONZE",
-              price: 2645,
-              status: "Reserved Seating",
-              available: 240,
-              color: "zinc",
-            },
+            { name: "PLATINUM", price: 8993, status: "Reserved Seating", available: 250, color: "violet" },
+            { name: "SVIP", price: 6348, status: "Reserved Seating", available: 350, color: "violet" },
+            { name: "VIP", price: 5819, status: "Reserved Seating", available: 400, color: "blue" },
+            { name: "GOLD", price: 4761, status: "Reserved Seating", available: 300, color: "blue" },
+            { name: "SILVER", price: 3703, status: "Reserved Seating", available: 200, color: "zinc" },
+            { name: "BRONZE", price: 2645, status: "Reserved Seating", available: 240, color: "zinc" },
           ],
         },
         8: {
@@ -772,97 +386,19 @@
           ],
           dates: [{ label: "Sat, Sep 13", time: "8:00 PM" }],
           tiers: [
-            {
-              name: "EARLY ENTRANCE PACKAGE",
-              price: 10600,
-              status: "Reserved Seating",
-              available: 600,
-              color: "violet",
-            },
-            {
-              name: "VIP A PREMIUM",
-              price: 9500,
-              status: "Reserved Seating",
-              available: 1200,
-              color: "blue",
-            },
-            {
-              name: "VIP A REGULAR",
-              price: 8250,
-              status: "Reserved Seating",
-              available: 1500,
-              color: "blue",
-            },
-            {
-              name: "VIP A REGULAR RESTRICTED VIEW",
-              price: 8250,
-              status: "Reserved Seating",
-              available: 400,
-              color: "blue",
-            },
-            {
-              name: "VIP B PREMIUM",
-              price: 7500,
-              status: "Reserved Seating",
-              available: 1800,
-              color: "blue",
-            },
-            {
-              name: "VIP B REGULAR",
-              price: 6500,
-              status: "Reserved Seating",
-              available: 2200,
-              color: "blue",
-            },
-            {
-              name: "VIP RESTRICTED VIEW",
-              price: 6500,
-              status: "Reserved Seating",
-              available: 500,
-              color: "blue",
-            },
-            {
-              name: "SVIP STANDING",
-              price: 5500,
-              status: "Standing",
-              available: 2500,
-              color: "violet",
-            },
-            {
-              name: "BOX A PREMIUM",
-              price: 5500,
-              status: "Reserved Seating",
-              available: 2000,
-              color: "zinc",
-            },
-            {
-              name: "BOX B PREMIUM",
-              price: 4500,
-              status: "Reserved Seating",
-              available: 2500,
-              color: "zinc",
-            },
-            {
-              name: "BOX PREMIUM RESTRICTED VIEW",
-              price: 4500,
-              status: "Reserved Seating",
-              available: 600,
-              color: "zinc",
-            },
-            {
-              name: "BOX REGULAR",
-              price: 2750,
-              status: "Reserved Seating",
-              available: 3500,
-              color: "zinc",
-            },
-            {
-              name: "BOX REGULAR RESTRICTED VIEW",
-              price: 2750,
-              status: "Reserved Seating",
-              available: 1000,
-              color: "zinc",
-            },
+            { name: "EARLY ENTRANCE PACKAGE", price: 10600, status: "Reserved Seating", available: 600, color: "violet" },
+            { name: "VIP A PREMIUM", price: 9500, status: "Reserved Seating", available: 1200, color: "blue" },
+            { name: "VIP A REGULAR", price: 8250, status: "Reserved Seating", available: 1500, color: "blue" },
+            { name: "VIP A REGULAR RESTRICTED VIEW", price: 8250, status: "Reserved Seating", available: 400, color: "blue" },
+            { name: "VIP B PREMIUM", price: 7500, status: "Reserved Seating", available: 1800, color: "blue" },
+            { name: "VIP B REGULAR", price: 6500, status: "Reserved Seating", available: 2200, color: "blue" },
+            { name: "VIP RESTRICTED VIEW", price: 6500, status: "Reserved Seating", available: 500, color: "blue" },
+            { name: "SVIP STANDING", price: 5500, status: "Standing", available: 2500, color: "violet" },
+            { name: "BOX A PREMIUM", price: 5500, status: "Reserved Seating", available: 2000, color: "zinc" },
+            { name: "BOX B PREMIUM", price: 4500, status: "Reserved Seating", available: 2500, color: "zinc" },
+            { name: "BOX PREMIUM RESTRICTED VIEW", price: 4500, status: "Reserved Seating", available: 600, color: "zinc" },
+            { name: "BOX REGULAR", price: 2750, status: "Reserved Seating", available: 3500, color: "zinc" },
+            { name: "BOX REGULAR RESTRICTED VIEW", price: 2750, status: "Reserved Seating", available: 1000, color: "zinc" },
           ],
         },
         9: {
@@ -881,97 +417,19 @@
           ],
           dates: [{ label: "Sat, Oct 10", time: "8:00 PM" }],
           tiers: [
-            {
-              name: "SVIP SEATED",
-              price: 15900,
-              status: "Reserved Seating",
-              available: 2000,
-              color: "violet",
-            },
-            {
-              name: "VIP A PREMIUM",
-              price: 13250,
-              status: "Reserved Seating",
-              available: 2000,
-              color: "blue",
-            },
-            {
-              name: "VIP A REGULAR",
-              price: 11130,
-              status: "Reserved Seating",
-              available: 2000,
-              color: "blue",
-            },
-            {
-              name: "VIP A REGULAR RESTRICTED VIEW",
-              price: 9500,
-              status: "Reserved Seating",
-              available: 2000,
-              color: "blue",
-            },
-            {
-              name: "VIP B PREMIUM",
-              price: 7950,
-              status: "Reserved Seating",
-              available: 2000,
-              color: "blue",
-            },
-            {
-              name: "VIP B REGULAR",
-              price: 6890,
-              status: "Reserved Seating",
-              available: 2000,
-              color: "blue",
-            },
-            {
-              name: "VIP B REGULAR RESTRICTED VIEW",
-              price: 5500,
-              status: "Reserved Seating",
-              available: 2000,
-              color: "blue",
-            },
-            {
-              name: "SVIP STANDING",
-              price: 21200,
-              status: "Standing",
-              available: 2000,
-              color: "violet",
-            },
-            {
-              name: "BOX A PREMIUM",
-              price: 4770,
-              status: "Reserved Seating",
-              available: 2000,
-              color: "zinc",
-            },
-            {
-              name: "BOX B PREMIUM",
-              price: 3180,
-              status: "Reserved Seating",
-              available: 2000,
-              color: "zinc",
-            },
-            {
-              name: "BOX B RESTRICTED VIEW",
-              price: 2500,
-              status: "Reserved Seating",
-              available: 2000,
-              color: "zinc",
-            },
-            {
-              name: "BOX REGULAR",
-              price: 2120,
-              status: "Reserved Seating",
-              available: 2000,
-              color: "zinc",
-            },
-            {
-              name: "BOX REGULAR RESTRICTED VIEW",
-              price: 1800,
-              status: "Reserved Seating",
-              available: 2000,
-              color: "zinc",
-            },
+            { name: "SVIP SEATED", price: 15900, status: "Reserved Seating", available: 2000, color: "violet" },
+            { name: "VIP A PREMIUM", price: 13250, status: "Reserved Seating", available: 2000, color: "blue" },
+            { name: "VIP A REGULAR", price: 11130, status: "Reserved Seating", available: 2000, color: "blue" },
+            { name: "VIP A REGULAR RESTRICTED VIEW", price: 9500, status: "Reserved Seating", available: 2000, color: "blue" },
+            { name: "VIP B PREMIUM", price: 7950, status: "Reserved Seating", available: 2000, color: "blue" },
+            { name: "VIP B REGULAR", price: 6890, status: "Reserved Seating", available: 2000, color: "blue" },
+            { name: "VIP B REGULAR RESTRICTED VIEW", price: 5500, status: "Reserved Seating", available: 2000, color: "blue" },
+            { name: "SVIP STANDING", price: 21200, status: "Standing", available: 2000, color: "violet" },
+            { name: "BOX A PREMIUM", price: 4770, status: "Reserved Seating", available: 2000, color: "zinc" },
+            { name: "BOX B PREMIUM", price: 3180, status: "Reserved Seating", available: 2000, color: "zinc" },
+            { name: "BOX B RESTRICTED VIEW", price: 2500, status: "Reserved Seating", available: 2000, color: "zinc" },
+            { name: "BOX REGULAR", price: 2120, status: "Reserved Seating", available: 2000, color: "zinc" },
+            { name: "BOX REGULAR RESTRICTED VIEW", price: 1800, status: "Reserved Seating", available: 2000, color: "zinc" },
           ],
         },
         10: {
@@ -990,97 +448,19 @@
           ],
           dates: [{ label: "Sat, Nov 14", time: "8:00 PM" }],
           tiers: [
-            {
-              name: "SVIP SEATED",
-              price: 23850,
-              status: "Reserved Seating",
-              available: 600,
-              color: "violet",
-            },
-            {
-              name: "SVIP STANDING",
-              price: 18750,
-              status: "Standing",
-              available: 2500,
-              color: "violet",
-            },
-            {
-              name: "VIP A PREMIUM",
-              price: 18850,
-              status: "Reserved Seating",
-              available: 1200,
-              color: "blue",
-            },
-            {
-              name: "VIP A REGULAR",
-              price: 13250,
-              status: "Reserved Seating",
-              available: 1500,
-              color: "blue",
-            },
-            {
-              name: "VIP A REGULAR RESTRICTED VIEW",
-              price: 11500,
-              status: "Reserved Seating",
-              available: 400,
-              color: "blue",
-            },
-            {
-              name: "VIP B PREMIUM",
-              price: 8480,
-              status: "Reserved Seating",
-              available: 1800,
-              color: "blue",
-            },
-            {
-              name: "VIP B REGULAR",
-              price: 7250,
-              status: "Reserved Seating",
-              available: 2200,
-              color: "blue",
-            },
-            {
-              name: "VIP B REGULAR RESTRICTED VIEW",
-              price: 6500,
-              status: "Reserved Seating",
-              available: 500,
-              color: "blue",
-            },
-            {
-              name: "BOX A PREMIUM",
-              price: 5550,
-              status: "Reserved Seating",
-              available: 2000,
-              color: "zinc",
-            },
-            {
-              name: "BOX B PREMIUM",
-              price: 4770,
-              status: "Reserved Seating",
-              available: 2500,
-              color: "zinc",
-            },
-            {
-              name: "BOX B RESTRICTED VIEW",
-              price: 3800,
-              status: "Reserved Seating",
-              available: 600,
-              color: "zinc",
-            },
-            {
-              name: "BOX REGULAR",
-              price: 2750,
-              status: "Reserved Seating",
-              available: 3500,
-              color: "zinc",
-            },
-            {
-              name: "BOX REGULAR RESTRICTED VIEW",
-              price: 2500,
-              status: "Reserved Seating",
-              available: 1000,
-              color: "zinc",
-            },
+            { name: "SVIP SEATED", price: 23850, status: "Reserved Seating", available: 600, color: "violet" },
+            { name: "SVIP STANDING", price: 18750, status: "Standing", available: 2500, color: "violet" },
+            { name: "VIP A PREMIUM", price: 18850, status: "Reserved Seating", available: 1200, color: "blue" },
+            { name: "VIP A REGULAR", price: 13250, status: "Reserved Seating", available: 1500, color: "blue" },
+            { name: "VIP A REGULAR RESTRICTED VIEW", price: 11500, status: "Reserved Seating", available: 400, color: "blue" },
+            { name: "VIP B PREMIUM", price: 8480, status: "Reserved Seating", available: 1800, color: "blue" },
+            { name: "VIP B REGULAR", price: 7250, status: "Reserved Seating", available: 2200, color: "blue" },
+            { name: "VIP B REGULAR RESTRICTED VIEW", price: 6500, status: "Reserved Seating", available: 500, color: "blue" },
+            { name: "BOX A PREMIUM", price: 5550, status: "Reserved Seating", available: 2000, color: "zinc" },
+            { name: "BOX B PREMIUM", price: 4770, status: "Reserved Seating", available: 2500, color: "zinc" },
+            { name: "BOX B RESTRICTED VIEW", price: 3800, status: "Reserved Seating", available: 600, color: "zinc" },
+            { name: "BOX REGULAR", price: 2750, status: "Reserved Seating", available: 3500, color: "zinc" },
+            { name: "BOX REGULAR RESTRICTED VIEW", price: 2500, status: "Reserved Seating", available: 1000, color: "zinc" },
           ],
         },
         11: {
@@ -1099,48 +479,12 @@
           ],
           dates: [{ label: "Sat, Dec 12", time: "8:00 PM" }],
           tiers: [
-            {
-              name: "PLATINUM",
-              price: 6180,
-              status: "Reserved Seating",
-              available: 250,
-              color: "violet",
-            },
-            {
-              name: "SVIP",
-              price: 5768,
-              status: "Reserved Seating",
-              available: 350,
-              color: "violet",
-            },
-            {
-              name: "VIP",
-              price: 5150,
-              status: "Reserved Seating",
-              available: 400,
-              color: "blue",
-            },
-            {
-              name: "GOLD",
-              price: 4120,
-              status: "Reserved Seating",
-              available: 300,
-              color: "blue",
-            },
-            {
-              name: "SILVER",
-              price: 3090,
-              status: "Reserved Seating",
-              available: 200,
-              color: "zinc",
-            },
-            {
-              name: "BRONZE",
-              price: 1545,
-              status: "Reserved Seating",
-              available: 240,
-              color: "zinc",
-            },
+            { name: "PLATINUM", price: 6180, status: "Reserved Seating", available: 250, color: "violet" },
+            { name: "SVIP", price: 5768, status: "Reserved Seating", available: 350, color: "violet" },
+            { name: "VIP", price: 5150, status: "Reserved Seating", available: 400, color: "blue" },
+            { name: "GOLD", price: 4120, status: "Reserved Seating", available: 300, color: "blue" },
+            { name: "SILVER", price: 3090, status: "Reserved Seating", available: 200, color: "zinc" },
+            { name: "BRONZE", price: 1545, status: "Reserved Seating", available: 240, color: "zinc" },
           ],
         },
         12: {
@@ -1159,97 +503,19 @@
           ],
           dates: [{ label: "Sat, Jan 18", time: "8:00 PM" }],
           tiers: [
-            {
-              name: "SVIP SEATED",
-              price: 10340,
-              status: "Reserved Seating",
-              available: 600,
-              color: "violet",
-            },
-            {
-              name: "SVIP STANDING",
-              price: 9750,
-              status: "Standing",
-              available: 2500,
-              color: "violet",
-            },
-            {
-              name: "VIP A PREMIUM",
-              price: 8480,
-              status: "Reserved Seating",
-              available: 1200,
-              color: "blue",
-            },
-            {
-              name: "VIP A REGULAR",
-              price: 7950,
-              status: "Reserved Seating",
-              available: 1500,
-              color: "blue",
-            },
-            {
-              name: "VIP A REGULAR RESTRICTED VIEW",
-              price: 7420,
-              status: "Reserved Seating",
-              available: 400,
-              color: "blue",
-            },
-            {
-              name: "VIP B PREMIUM",
-              price: 7000,
-              status: "Reserved Seating",
-              available: 1800,
-              color: "blue",
-            },
-            {
-              name: "VIP B REGULAR",
-              price: 6360,
-              status: "Reserved Seating",
-              available: 2200,
-              color: "blue",
-            },
-            {
-              name: "VIP B REGULAR RESTRICTED VIEW",
-              price: 6000,
-              status: "Reserved Seating",
-              available: 500,
-              color: "blue",
-            },
-            {
-              name: "BOX A PREMIUM",
-              price: 5300,
-              status: "Reserved Seating",
-              available: 2000,
-              color: "zinc",
-            },
-            {
-              name: "BOX B PREMIUM",
-              price: 4240,
-              status: "Reserved Seating",
-              available: 2500,
-              color: "zinc",
-            },
-            {
-              name: "BOX B RESTRICTED VIEW",
-              price: 4000,
-              status: "Reserved Seating",
-              available: 600,
-              color: "zinc",
-            },
-            {
-              name: "BOX REGULAR",
-              price: 2650,
-              status: "Reserved Seating",
-              available: 3500,
-              color: "zinc",
-            },
-            {
-              name: "BOX REGULAR RESTRICTED VIEW",
-              price: 1975,
-              status: "Reserved Seating",
-              available: 1000,
-              color: "zinc",
-            },
+            { name: "SVIP SEATED", price: 10340, status: "Reserved Seating", available: 600, color: "violet" },
+            { name: "SVIP STANDING", price: 9750, status: "Standing", available: 2500, color: "violet" },
+            { name: "VIP A PREMIUM", price: 8480, status: "Reserved Seating", available: 1200, color: "blue" },
+            { name: "VIP A REGULAR", price: 7950, status: "Reserved Seating", available: 1500, color: "blue" },
+            { name: "VIP A REGULAR RESTRICTED VIEW", price: 7420, status: "Reserved Seating", available: 400, color: "blue" },
+            { name: "VIP B PREMIUM", price: 7000, status: "Reserved Seating", available: 1800, color: "blue" },
+            { name: "VIP B REGULAR", price: 6360, status: "Reserved Seating", available: 2200, color: "blue" },
+            { name: "VIP B REGULAR RESTRICTED VIEW", price: 6000, status: "Reserved Seating", available: 500, color: "blue" },
+            { name: "BOX A PREMIUM", price: 5300, status: "Reserved Seating", available: 2000, color: "zinc" },
+            { name: "BOX B PREMIUM", price: 4240, status: "Reserved Seating", available: 2500, color: "zinc" },
+            { name: "BOX B RESTRICTED VIEW", price: 4000, status: "Reserved Seating", available: 600, color: "zinc" },
+            { name: "BOX REGULAR", price: 2650, status: "Reserved Seating", available: 3500, color: "zinc" },
+            { name: "BOX REGULAR RESTRICTED VIEW", price: 1975, status: "Reserved Seating", available: 1000, color: "zinc" },
           ],
         },
         13: {
@@ -1268,18 +534,8 @@
           ],
           dates: [{ label: "Sat, Feb 14", time: "8:00 PM" }],
           tiers: [
-            {
-              name: "General Admission",
-              price: 1500,
-              available: 2000,
-              color: "zinc",
-            },
-            {
-              name: "VIP Experience",
-              price: 4500,
-              available: 300,
-              color: "blue",
-            },
+            { name: "General Admission", price: 1500, available: 2000, color: "zinc" },
+            { name: "VIP Experience", price: 4500, available: 300, color: "blue" },
           ],
         },
         14: {
@@ -1298,83 +554,17 @@
           ],
           dates: [{ label: "Sat, Mar 14", time: "8:00 PM" }],
           tiers: [
-            {
-              name: "VIP PIT (Floor Standing)",
-              price: 11000,
-              status: "Standing",
-              available: 8000,
-              color: "violet",
-            },
-            {
-              name: "LBA Lower Box A Premium",
-              price: 22000,
-              status: "Reserved Seating",
-              available: 4500,
-              color: "blue",
-            },
-            {
-              name: "LBA Lower Box A Regular",
-              price: 17000,
-              status: "Reserved Seating",
-              available: 6000,
-              color: "blue",
-            },
-            {
-              name: "LBB Lower Box B Premium",
-              price: 15500,
-              status: "Reserved Seating",
-              available: 5500,
-              color: "blue",
-            },
-            {
-              name: "LBB Lower Box B Regular",
-              price: 11000,
-              status: "Reserved Seating",
-              available: 7000,
-              color: "blue",
-            },
-            {
-              name: "UBA Upper Box A Premium",
-              price: 10000,
-              status: "Reserved Seating",
-              available: 6000,
-              color: "zinc",
-            },
-            {
-              name: "UBB Upper Box B Premium",
-              price: 6500,
-              status: "Reserved Seating",
-              available: 5000,
-              color: "zinc",
-            },
-            {
-              name: "UBB Upper Box B Regular",
-              price: 6500,
-              status: "Reserved Seating",
-              available: 5000,
-              color: "zinc",
-            },
-            {
-              name: "UBB Upper Box B Sides",
-              price: 3000,
-              status: "Reserved Seating",
-              available: 2000,
-              color: "zinc",
-            },
-            {
-              name: "UBC Upper Box C Premium",
-              price: 5000,
-              status: "Reserved Seating",
-              available: 4000,
-              color: "zinc",
-            },
-            {
-              name: "UBC Upper Box C Regular",
-              price: 2500,
-              status: "Reserved Seating",
-              available: 2000,
-              color: "zinc",
-            },
+            { name: "VIP PIT (Floor Standing)", price: 11000, status: "Standing", available: 8000, color: "violet" },
+            { name: "LBA Lower Box A Premium", price: 22000, status: "Reserved Seating", available: 4500, color: "blue" },
+            { name: "LBA Lower Box A Regular", price: 17000, status: "Reserved Seating", available: 6000, color: "blue" },
+            { name: "LBB Lower Box B Premium", price: 15500, status: "Reserved Seating", available: 5500, color: "blue" },
+            { name: "LBB Lower Box B Regular", price: 11000, status: "Reserved Seating", available: 7000, color: "blue" },
+            { name: "UBA Upper Box A Premium", price: 10000, status: "Reserved Seating", available: 6000, color: "zinc" },
+            { name: "UBB Upper Box B Premium", price: 6500, status: "Reserved Seating", available: 5000, color: "zinc" },
+            { name: "UBB Upper Box B Regular", price: 6500, status: "Reserved Seating", available: 5000, color: "zinc" },
+            { name: "UBB Upper Box B Sides", price: 3000, status: "Reserved Seating", available: 2000, color: "zinc" },
+            { name: "UBC Upper Box C Premium", price: 5000, status: "Reserved Seating", available: 4000, color: "zinc" },
+            { name: "UBC Upper Box C Regular", price: 2500, status: "Reserved Seating", available: 2000, color: "zinc" },
           ],
         },
         15: {
@@ -1393,97 +583,19 @@
           ],
           dates: [{ label: "Sat, Apr 18", time: "8:00 PM" }],
           tiers: [
-            {
-              name: "SVIP SEATED",
-              price: 9500,
-              status: "Reserved Seating",
-              available: 800,
-              color: "violet",
-            },
-            {
-              name: "VIP A PREMIUM",
-              price: 8500,
-              status: "Reserved Seating",
-              available: 1200,
-              color: "blue",
-            },
-            {
-              name: "VIP A REGULAR",
-              price: 7750,
-              status: "Reserved Seating",
-              available: 1500,
-              color: "blue",
-            },
-            {
-              name: "VIP A REGULAR RESTRICTED VIEW",
-              price: 7750,
-              status: "Reserved Seating",
-              available: 400,
-              color: "blue",
-            },
-            {
-              name: "VIP B PREMIUM",
-              price: 7250,
-              status: "Reserved Seating",
-              available: 1800,
-              color: "blue",
-            },
-            {
-              name: "VIP B REGULAR",
-              price: 6500,
-              status: "Reserved Seating",
-              available: 2200,
-              color: "blue",
-            },
-            {
-              name: "VIP B REGULAR RESTRICTED VIEW",
-              price: 6500,
-              status: "Reserved Seating",
-              available: 500,
-              color: "blue",
-            },
-            {
-              name: "SVIP STANDING",
-              price: 5500,
-              status: "Standing",
-              available: 2500,
-              color: "violet",
-            },
-            {
-              name: "BOX A PREMIUM",
-              price: 4500,
-              status: "Reserved Seating",
-              available: 2000,
-              color: "zinc",
-            },
-            {
-              name: "BOX B PREMIUM",
-              price: 3500,
-              status: "Reserved Seating",
-              available: 2500,
-              color: "zinc",
-            },
-            {
-              name: "BOX B RESTRICTED VIEW",
-              price: 3500,
-              status: "Reserved Seating",
-              available: 600,
-              color: "zinc",
-            },
-            {
-              name: "BOX REGULAR",
-              price: 2500,
-              status: "Reserved Seating",
-              available: 3500,
-              color: "zinc",
-            },
-            {
-              name: "BOX REGULAR RESTRICTED VIEW",
-              price: 2500,
-              status: "Reserved Seating",
-              available: 1000,
-              color: "zinc",
-            },
+            { name: "SVIP SEATED", price: 9500, status: "Reserved Seating", available: 800, color: "violet" },
+            { name: "VIP A PREMIUM", price: 8500, status: "Reserved Seating", available: 1200, color: "blue" },
+            { name: "VIP A REGULAR", price: 7750, status: "Reserved Seating", available: 1500, color: "blue" },
+            { name: "VIP A REGULAR RESTRICTED VIEW", price: 7750, status: "Reserved Seating", available: 400, color: "blue" },
+            { name: "VIP B PREMIUM", price: 7250, status: "Reserved Seating", available: 1800, color: "blue" },
+            { name: "VIP B REGULAR", price: 6500, status: "Reserved Seating", available: 2200, color: "blue" },
+            { name: "VIP B REGULAR RESTRICTED VIEW", price: 6500, status: "Reserved Seating", available: 500, color: "blue" },
+            { name: "SVIP STANDING", price: 5500, status: "Standing", available: 2500, color: "violet" },
+            { name: "BOX A PREMIUM", price: 4500, status: "Reserved Seating", available: 2000, color: "zinc" },
+            { name: "BOX B PREMIUM", price: 3500, status: "Reserved Seating", available: 2500, color: "zinc" },
+            { name: "BOX B RESTRICTED VIEW", price: 3500, status: "Reserved Seating", available: 600, color: "zinc" },
+            { name: "BOX REGULAR", price: 2500, status: "Reserved Seating", available: 3500, color: "zinc" },
+            { name: "BOX REGULAR RESTRICTED VIEW", price: 2500, status: "Reserved Seating", available: 1000, color: "zinc" },
           ],
         },
         16: {
@@ -1502,48 +614,12 @@
           ],
           dates: [{ label: "Sat, May 16", time: "8:00 PM" }],
           tiers: [
-            {
-              name: "PLATINUM",
-              price: 8500,
-              status: "Reserved Seating",
-              available: 250,
-              color: "violet",
-            },
-            {
-              name: "SVIP",
-              price: 7500,
-              status: "Reserved Seating",
-              available: 350,
-              color: "violet",
-            },
-            {
-              name: "VIP",
-              price: 6500,
-              status: "Reserved Seating",
-              available: 400,
-              color: "blue",
-            },
-            {
-              name: "GOLD",
-              price: 4500,
-              status: "Reserved Seating",
-              available: 300,
-              color: "blue",
-            },
-            {
-              name: "SILVER",
-              price: 3500,
-              status: "Reserved Seating",
-              available: 200,
-              color: "zinc",
-            },
-            {
-              name: "BRONZE",
-              price: 1500,
-              status: "Reserved Seating",
-              available: 240,
-              color: "zinc",
-            },
+            { name: "PLATINUM", price: 8500, status: "Reserved Seating", available: 250, color: "violet" },
+            { name: "SVIP", price: 7500, status: "Reserved Seating", available: 350, color: "violet" },
+            { name: "VIP", price: 6500, status: "Reserved Seating", available: 400, color: "blue" },
+            { name: "GOLD", price: 4500, status: "Reserved Seating", available: 300, color: "blue" },
+            { name: "SILVER", price: 3500, status: "Reserved Seating", available: 200, color: "zinc" },
+            { name: "BRONZE", price: 1500, status: "Reserved Seating", available: 240, color: "zinc" },
           ],
         },
       };
@@ -1577,23 +653,13 @@
 
         <!-- Hero Banner -->
         <div class="relative overflow-hidden" style="height: 420px;">
-          <div class="hero-blur" id="heroBg" style="background-image: url('${
-            e.images[0]
-          }')"></div>
+          <div class="hero-blur" id="heroBg" style="background-image: url('${e.images[0]}')"></div>
           <div class="relative z-10 h-full flex flex-col justify-end max-w-6xl mx-auto px-6 pb-8">
-            <span class="inline-block mb-3 text-xs font-medium px-3 py-1 bg-violet-600 text-white rounded-full w-fit">${
-              e.type
-            }</span>
-            <h1 class="serif text-white text-4xl md:text-5xl leading-tight mb-2">${
-              e.title
-            }</h1>
+            <span class="inline-block mb-3 text-xs font-medium px-3 py-1 bg-violet-600 text-white rounded-full w-fit">${e.type}</span>
+            <h1 class="serif text-white text-4xl md:text-5xl leading-tight mb-2">${e.title}</h1>
             <div class="flex flex-wrap items-center gap-4 text-sm text-zinc-300">
-              <span><i class="fa-solid fa-location-dot text-violet-400 mr-1"></i>${
-                e.location
-              }</span>
-              <span><i class="fa-solid fa-clock text-violet-400 mr-1"></i>${
-                e.duration
-              }</span>
+              <span><i class="fa-solid fa-location-dot text-violet-400 mr-1"></i>${e.location}</span>
+              <span><i class="fa-solid fa-clock text-violet-400 mr-1"></i>${e.duration}</span>
             </div>
           </div>
         </div>
@@ -1608,31 +674,21 @@
             <section>
               <h2 class="serif text-xl text-white mb-4">Gallery</h2>
               <div class="rounded-2xl overflow-hidden mb-3" style="height:300px">
-                <img id="mainImg" src="${
-                  e.images[0]
-                }" alt="Event" class="w-full h-full object-cover transition-opacity duration-300">
+                <img id="mainImg" src="${e.images[0]}" alt="Event" class="w-full h-full object-cover transition-opacity duration-300">
               </div>
               <div class="flex gap-2">
-                ${e.images
-                  .map(
-                    (img, i) => `
-                  <div class="thumb ${
-                    i === 0 ? "active" : "opacity-50"
-                  } rounded-xl overflow-hidden flex-1" style="height:70px" onclick="switchImage(${i})">
+                ${e.images.map((img, i) => `
+                  <div class="thumb ${i === 0 ? "active" : "opacity-50"} rounded-xl overflow-hidden flex-1" style="height:70px" onclick="switchImage(${i})">
                     <img src="${img}" class="w-full h-full object-cover">
                   </div>
-                `
-                  )
-                  .join("")}
+                `).join("")}
               </div>
             </section>
 
             <!-- About -->
             <section>
               <h2 class="serif text-xl text-white mb-3">About This Event</h2>
-              <p class="text-zinc-400 leading-relaxed text-sm">${
-                e.description
-              }</p>
+              <p class="text-zinc-400 leading-relaxed text-sm">${e.description}</p>
             </section>
 
             <!-- Event Info -->
@@ -1653,9 +709,7 @@
                 </div>
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
                   <p class="text-xs text-zinc-500 mb-1 uppercase tracking-wide">Available Shows</p>
-                  <p class="text-white text-sm font-medium">${
-                    e.dates.length
-                  } date${e.dates.length > 1 ? "s" : ""}</p>
+                  <p class="text-white text-sm font-medium">${e.dates.length} date${e.dates.length > 1 ? "s" : ""}</p>
                 </div>
               </div>
             </section>
@@ -1670,21 +724,13 @@
               <div>
                 <p class="text-xs text-zinc-400 uppercase tracking-wide font-medium mb-3">Select Date & Time</p>
                 <div class="space-y-2">
-                  ${e.dates
-                    .map(
-                      (d, i) => `
-                    <button class="date-btn w-full border border-zinc-700 rounded-xl px-4 py-3 text-left flex justify-between items-center ${
-                      i === 0 ? "selected" : "hover:border-zinc-500"
-                    }"
+                  ${e.dates.map((d, i) => `
+                    <button class="date-btn w-full border border-zinc-700 rounded-xl px-4 py-3 text-left flex justify-between items-center ${i === 0 ? "selected" : "hover:border-zinc-500"}"
                       onclick="selectDate(${i})">
-                      <span class="text-sm font-medium text-white">${
-                        d.label
-                      }</span>
+                      <span class="text-sm font-medium text-white">${d.label}</span>
                       <span class="text-xs text-zinc-400">${d.time}</span>
                     </button>
-                  `
-                    )
-                    .join("")}
+                  `).join("")}
                 </div>
               </div>
 
@@ -1692,32 +738,20 @@
               <div>
                 <p class="text-xs text-zinc-400 uppercase tracking-wide font-medium mb-3">Ticket Tier</p>
                 <div class="space-y-2">
-                  ${e.tiers
-                    .map(
-                      (t, i) => `
-                    <div class="tier-card border border-zinc-700 rounded-xl p-4 cursor-pointer ${
-                      i === 0 ? "selected" : ""
-                    }" onclick="selectTier(${i})">
+                  ${e.tiers.map((t, i) => `
+                    <div class="tier-card border border-zinc-700 rounded-xl p-4 cursor-pointer ${i === 0 ? "selected" : ""}" onclick="selectTier(${i})">
                       <div class="flex justify-between items-start">
                         <div>
-                          <p class="text-white text-sm font-medium">${
-                            t.name
-                          }</p>
+                          <p class="text-white text-sm font-medium">${t.name}</p>
                           <p class="text-xs text-zinc-500 mt-0.5">${t.available.toLocaleString()} available</p>
                         </div>
                         <span class="text-violet-400 font-bold text-sm">₱${t.price.toLocaleString()}</span>
                       </div>
-                      <!-- Availability Bar -->
                       <div class="mt-3 h-1 bg-zinc-700 rounded-full overflow-hidden">
-                        <div class="h-full bg-violet-500 rounded-full" style="width: ${Math.min(
-                          100,
-                          100 - (t.available / (t.available * 1.5)) * 100 + 40
-                        )}%"></div>
+                        <div class="h-full bg-violet-500 rounded-full" style="width: ${Math.min(100, 100 - (t.available / (t.available * 1.5)) * 100 + 40)}%"></div>
                       </div>
                     </div>
-                  `
-                    )
-                    .join("")}
+                  `).join("")}
                 </div>
               </div>
 
@@ -1771,9 +805,7 @@
 
       function selectTier(i) {
         state.selectedTier = i;
-        document
-          .querySelectorAll(".tier-card")
-          .forEach((c, idx) => c.classList.toggle("selected", idx === i));
+        document.querySelectorAll(".tier-card").forEach((c, idx) => c.classList.toggle("selected", idx === i));
         updateTotal();
       }
 
@@ -1786,27 +818,22 @@
       function updateTotal() {
         const tier = state.event.tiers[state.selectedTier];
         const total = tier.price * state.qty;
-        document.getElementById(
-          "totalPrice"
-        ).textContent = `₱${total.toLocaleString()}`;
+        document.getElementById("totalPrice").textContent = `₱${total.toLocaleString()}`;
       }
 
       function openModal() {
-        // ── LOGIN GATE ───────────────────────────────────────────
-        // If user is not logged in, redirect them to login page instead of opening modal
         if (localStorage.getItem("userLoggedIn") !== "true") {
           alert("Please log in first to purchase tickets.");
           window.location.href = "login.html";
-          return; // Stop here — don't open the modal
+          return;
         }
 
-        // Rest of the existing openModal code stays exactly the same ↓
         const e = state.event;
         const tier = e.tiers[state.selectedTier];
         const date = e.dates[state.selectedDate];
         const total = tier.price * state.qty;
 
-        document.getElementById("modalSummary").innerHTML = `...`; // leave your existing template as-is
+        document.getElementById("modalSummary").innerHTML = `...`;
         document.getElementById("buyModal").classList.add("open");
       }
 
@@ -1816,11 +843,7 @@
 
       function selectPayment(btn) {
         document.querySelectorAll(".pay-btn").forEach((b) => {
-          b.classList.remove(
-            "border-violet-500",
-            "text-white",
-            "bg-violet-950"
-          );
+          b.classList.remove("border-violet-500", "text-white", "bg-violet-950");
           b.classList.add("border-zinc-700", "text-zinc-400");
         });
         btn.classList.add("border-violet-500", "text-white", "bg-violet-950");
@@ -1830,52 +853,38 @@
       function submitOrder() {
         const name = document.getElementById("modalName").value.trim();
         const email = document.getElementById("modalEmail").value.trim();
+        const paymentSelected = document.querySelector(".pay-btn.bg-violet-950");
 
-        // Check if any payment button has been selected (has the 'bg-violet-950' class)
-        const paymentSelected = document.querySelector(
-          ".pay-btn.bg-violet-950"
-        );
-
-        // Hide all previous errors before re-validating
         document.getElementById("nameError").classList.add("hidden");
         document.getElementById("emailError").classList.add("hidden");
         document.getElementById("paymentError").classList.add("hidden");
 
         let valid = true;
 
-        // Validate: Full Name must not be empty
         if (!name) {
-          document.getElementById("nameError").textContent =
-            "Full name is required.";
+          document.getElementById("nameError").textContent = "Full name is required.";
           document.getElementById("nameError").classList.remove("hidden");
           valid = false;
         }
 
-        // Validate: Email must not be empty and must be proper format
         if (!email) {
-          document.getElementById("emailError").textContent =
-            "Email is required.";
+          document.getElementById("emailError").textContent = "Email is required.";
           document.getElementById("emailError").classList.remove("hidden");
           valid = false;
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          document.getElementById("emailError").textContent =
-            "Please enter a valid email.";
+          document.getElementById("emailError").textContent = "Please enter a valid email.";
           document.getElementById("emailError").classList.remove("hidden");
           valid = false;
         }
 
-        // Validate: A payment method must be selected
         if (!paymentSelected) {
-          document.getElementById("paymentError").textContent =
-            "Please select a payment method.";
+          document.getElementById("paymentError").textContent = "Please select a payment method.";
           document.getElementById("paymentError").classList.remove("hidden");
           valid = false;
         }
 
-        if (!valid) return; // Stop here if anything failed
+        if (!valid) return;
 
-        // ── All valid — proceed to order-summary ────────────────
-        // The rest of your existing submitOrder code stays the same ↓
         const e = state.event;
         const tier = e.tiers[state.selectedTier];
         const date = e.dates[state.selectedDate];
@@ -1894,12 +903,9 @@
         window.location.href = `order-summary.html?${params.toString()}`;
       }
 
-      // Close modal on backdrop click
-      document
-        .getElementById("buyModal")
-        .addEventListener("click", function (e) {
-          if (e.target === this) closeModal();
-        });
+      document.getElementById("buyModal").addEventListener("click", function (e) {
+        if (e.target === this) closeModal();
+      });
 
       init();
     </script>

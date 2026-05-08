@@ -6,11 +6,7 @@
   <title>Order Summary - Absolute Cinema</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap');
-    body { font-family: 'DM Sans', sans-serif; }
-    .serif { font-family: 'DM Serif Display', serif; }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body class="bg-zinc-950 text-zinc-300 min-h-screen">
 
@@ -104,21 +100,19 @@
     </div>
   </div>
 
-    <!-- Footer -->
-    <footer
-      class="border-t border-zinc-800 py-8 text-center text-zinc-600 text-sm"
-    >
-      <div class="flex justify-center items-center gap-2 text-zinc-400 mb-3">
-        <i class="fa-solid fa-ticket text-violet-400"></i>
-        <span class="font-medium">Absolute Cinema</span>
-      </div>
-      <div class="flex justify-center gap-6 text-xs mb-4">
-        <a href="faqs.html" class="hover:text-zinc-300">FAQs</a>
-        <a href= "https://www.facebook.com/jersey1705" target="_blank" class="hover:text-zinc-300">Contact</a>
-        <a href="terms.html" class="hover:text-zinc-300">Terms</a>
-      </div>
-      <p>© 2026 Absolute Cinema. All rights reserved.</p>
-    </footer>
+  <!-- Footer -->
+  <footer class="border-t border-zinc-800 py-8 text-center text-zinc-600 text-sm">
+    <div class="flex justify-center items-center gap-2 text-zinc-400 mb-3">
+      <i class="fa-solid fa-ticket text-violet-400"></i>
+      <span class="font-medium">Absolute Cinema</span>
+    </div>
+    <div class="flex justify-center gap-6 text-xs mb-4">
+      <a href="faqs.html" class="hover:text-zinc-300">FAQs</a>
+      <a href="https://www.facebook.com/jersey1705" target="_blank" class="hover:text-zinc-300">Contact</a>
+      <a href="terms.html" class="hover:text-zinc-300">Terms</a>
+    </div>
+    <p>© 2026 Absolute Cinema. All rights reserved.</p>
+  </footer>
 
   <script>
     function getOrderData() {
@@ -144,7 +138,7 @@
       document.getElementById('pricePerTicket').textContent = `₱${(order.total / order.quantity).toLocaleString()}`;
 
       const subtotal = order.total;
-      const serviceFee = Math.round(subtotal * 0.08); // 8% service fee
+      const serviceFee = Math.round(subtotal * 0.08);
       const grandTotal = subtotal + serviceFee;
 
       document.getElementById('subtotal').textContent = `₱${subtotal.toLocaleString()}`;
@@ -180,23 +174,21 @@
     }
 
     function proceedToPayment() {
-    const agreed = document.getElementById('agreeTerms').checked;
-    
-    if (!agreed) {
+      const agreed = document.getElementById('agreeTerms').checked;
+
+      if (!agreed) {
         alert("Please agree to the Terms of Service before proceeding.");
         return;
-    }
-    if (!selectedPayment) {
+      }
+      if (!selectedPayment) {
         alert("Please select a payment method.");
         return;
-    }
+      }
 
-    // Redirect to success page with payment method
-    const url = new URL('payment-success.html', window.location.origin);
-    const params = new URLSearchParams(window.location.search);
-    params.set('paymentMethod', selectedPayment);
-    
-    window.location.href = `payment-success.html?${params.toString()}`;
+      const params = new URLSearchParams(window.location.search);
+      params.set('paymentMethod', selectedPayment);
+
+      window.location.href = `payment-success.html?${params.toString()}`;
     }
 
     // Initialize
