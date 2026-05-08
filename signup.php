@@ -1,3 +1,33 @@
+<?php
+// signup.php
+
+// Handle form submission
+$message = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $fullName = trim($_POST['fullName'] ?? '');
+    $email    = trim($_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
+    $confirm  = $_POST['confirmPassword'] ?? '';
+
+    if (empty($fullName) || empty($email) || empty($password)) {
+        $message = '<p class="text-red-400 text-sm">Please fill in all required fields.</p>';
+    } elseif ($password !== $confirm) {
+        $message = '<p class="text-red-400 text-sm">Passwords do not match.</p>';
+    } else {
+        // Demo: Simulate account creation
+        $message = '<p class="text-emerald-400 text-sm">Account created successfully!</p>';
+        
+        // In a real app, you would save to database here
+        // For demo, redirect to login after 1.5 seconds
+        echo "<script>
+            setTimeout(() => {
+                window.location.href = 'login.php';
+            }, 1500);
+        </script>";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,7 +52,7 @@
         <span class="text-lg font-semibold tracking-tight">Absolute Cinema</span>
       </div>
       <div class="flex items-center gap-3">
-        <a href="homepage.html" class="text-sm text-zinc-400 hover:text-white">← Back to Home</a>
+        <a href="homepage.php" class="text-sm text-zinc-400 hover:text-white">← Back to Home</a>
       </div>
     </div>
   </nav>
@@ -35,32 +65,40 @@
       </div>
 
       <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
-        <form id="signupForm">
+        <?php if ($message): ?>
+          <div class="mb-6 text-center">
+            <?= $message ?>
+          </div>
+        <?php endif; ?>
+
+        <form method="POST" action="signup.php">
           <div class="space-y-5">
             <div>
               <label class="block text-sm text-zinc-400 mb-2">Full Name</label>
-              <input type="text" required
+              <input type="text" name="fullName" required
                 class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-5 py-3 text-white focus:outline-none focus:border-violet-500 transition-colors"
-                placeholder="Juan Dela Cruz">
+                placeholder="Juan Dela Cruz"
+                value="<?= htmlspecialchars($_POST['fullName'] ?? '') ?>">
             </div>
 
             <div>
               <label class="block text-sm text-zinc-400 mb-2">Email Address</label>
-              <input type="email" required
+              <input type="email" name="email" required
                 class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-5 py-3 text-white focus:outline-none focus:border-violet-500 transition-colors"
-                placeholder="you@example.com">
+                placeholder="you@example.com"
+                value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
             </div>
 
             <div>
               <label class="block text-sm text-zinc-400 mb-2">Password</label>
-              <input type="password" required
+              <input type="password" name="password" required
                 class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-5 py-3 text-white focus:outline-none focus:border-violet-500 transition-colors"
                 placeholder="Create a strong password">
             </div>
 
             <div>
               <label class="block text-sm text-zinc-400 mb-2">Confirm Password</label>
-              <input type="password" required
+              <input type="password" name="confirmPassword" required
                 class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-5 py-3 text-white focus:outline-none focus:border-violet-500 transition-colors"
                 placeholder="Confirm password">
             </div>
@@ -68,8 +106,8 @@
             <div class="flex items-start gap-2 pt-2">
               <input type="checkbox" required class="mt-1 w-4 h-4 accent-violet-600">
               <p class="text-xs text-zinc-500 leading-relaxed">
-                I agree to the <a href="#" class="text-violet-400 hover:underline">Terms of Service</a> and 
-                <a href="#" class="text-violet-400 hover:underline">Privacy Policy</a>
+                I agree to the <a href="terms.php" class="text-violet-400 hover:underline">Terms of Service</a> and 
+                <a href="terms.php" class="text-violet-400 hover:underline">Privacy Policy</a>
               </p>
             </div>
 
@@ -83,35 +121,26 @@
         <div class="mt-8 text-center">
           <p class="text-zinc-400">
             Already have an account? 
-            <a href="login.html" class="text-violet-400 hover:text-violet-300 font-medium">Sign in</a>
+            <a href="login.php" class="text-violet-400 hover:text-violet-300 font-medium">Sign in</a>
           </p>
         </div>
       </div>
     </div>
   </div>
 
-    <!-- Footer -->
-    <footer
-      class="border-t border-zinc-800 py-8 text-center text-zinc-600 text-sm"
-    >
-      <div class="flex justify-center items-center gap-2 text-zinc-400 mb-3">
-        <i class="fa-solid fa-ticket text-violet-400"></i>
-        <span class="font-medium">Absolute Cinema</span>
-      </div>
-      <div class="flex justify-center gap-6 text-xs mb-4">
-        <a href="faqs.html" class="hover:text-zinc-300">FAQs</a>
-                <a href= "https://www.facebook.com/jersey1705" target="_blank" class="hover:text-zinc-300">Contact</a>
-        <a href="terms.html" class="hover:text-zinc-300">Terms</a>
-      </div>
-      <p>© 2026 Absolute Cinema. All rights reserved.</p>
-    </footer>
+  <!-- Footer -->
+  <footer class="border-t border-zinc-800 py-8 text-center text-zinc-600 text-sm">
+    <div class="flex justify-center items-center gap-2 text-zinc-400 mb-3">
+      <i class="fa-solid fa-ticket text-violet-400"></i>
+      <span class="font-medium">Absolute Cinema</span>
+    </div>
+    <div class="flex justify-center gap-6 text-xs mb-4">
+      <a href="faqs.php" class="hover:text-zinc-300">FAQs</a>
+      <a href="https://www.facebook.com/jersey1705" target="_blank" class="hover:text-zinc-300">Contact</a>
+      <a href="terms.php" class="hover:text-zinc-300">Terms</a>
+    </div>
+    <p>© 2026 Absolute Cinema. All rights reserved.</p>
+  </footer>
 
-  <script>
-    document.getElementById('signupForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      alert("Account created successfully! (Demo)");
-      window.location.href = "login.html";
-    });
-  </script>
 </body>
 </html>

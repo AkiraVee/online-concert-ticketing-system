@@ -1,3 +1,21 @@
+<?php
+// order-summary.php
+
+// Fetch data from URL parameters
+$eventTitle    = isset($_GET['eventTitle']) ? htmlspecialchars($_GET['eventTitle']) : 'Untitled Event';
+$eventDate     = isset($_GET['date']) ? htmlspecialchars($_GET['date']) : '';
+$eventLocation = isset($_GET['location']) ? htmlspecialchars($_GET['location']) : '';
+$tier          = isset($_GET['tier']) ? htmlspecialchars($_GET['tier']) : 'General Admission';
+$quantity      = max(1, (int)($_GET['quantity'] ?? 1));
+$total         = max(0, (int)($_GET['total'] ?? 0));
+
+// Calculations
+$pricePerTicket = $quantity > 0 ? round($total / $quantity, 2) : 0;
+$subtotal       = $total;
+$serviceFee     = round($subtotal * 0.08);
+$grandTotal     = $subtotal + $serviceFee;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +35,7 @@
         <i class="fa-solid fa-ticket text-violet-400 text-xl"></i>
         <span class="text-lg font-semibold tracking-tight">Absolute Cinema</span>
       </div>
-      <a href="homepage.html" class="text-sm text-zinc-400 hover:text-white">← Back</a>
+      <a href="homepage.php" class="text-sm text-zinc-400 hover:text-white">← Back</a>
     </div>
   </nav>
 
@@ -28,10 +46,10 @@
 
       <!-- Event Details -->
       <div>
-        <h2 class="text-white text-xl font-semibold mb-4" id="eventTitle"></h2>
+        <h2 class="text-white text-xl font-semibold mb-4"><?= $eventTitle ?></h2>
         <div class="flex items-center gap-4 text-sm text-zinc-400">
-          <span id="eventDate"></span>
-          <span id="eventLocation"></span>
+          <span><i class="fa-solid fa-calendar mr-2"></i><?= $eventDate ?></span>
+          <span><i class="fa-solid fa-location-dot mr-2"></i><?= $eventLocation ?></span>
         </div>
       </div>
 
@@ -41,15 +59,15 @@
         <div class="space-y-3">
           <div class="flex justify-between">
             <span class="text-zinc-400">Section / Tier</span>
-            <span class="font-medium text-white" id="tierName"></span>
+            <span class="font-medium text-white"><?= $tier ?></span>
           </div>
           <div class="flex justify-between">
             <span class="text-zinc-400">Quantity</span>
-            <span class="font-medium text-white" id="quantity"></span>
+            <span class="font-medium text-white"><?= $quantity ?> Ticket<?= $quantity > 1 ? 's' : '' ?></span>
           </div>
           <div class="flex justify-between">
             <span class="text-zinc-400">Price per Ticket</span>
-            <span class="font-medium text-white" id="pricePerTicket"></span>
+            <span class="font-medium text-white">₱<?= number_format($pricePerTicket) ?></span>
           </div>
         </div>
       </div>
@@ -60,15 +78,15 @@
         <div class="space-y-3">
           <div class="flex justify-between text-zinc-400">
             <span>Tickets Subtotal</span>
-            <span id="subtotal"></span>
+            <span>₱<?= number_format($subtotal) ?></span>
           </div>
           <div class="flex justify-between text-zinc-400">
             <span>Online Service Fee</span>
-            <span id="serviceFee"></span>
+            <span>₱<?= number_format($serviceFee) ?></span>
           </div>
           <div class="flex justify-between text-lg font-semibold border-t border-zinc-700 pt-4">
             <span class="text-white">Total</span>
-            <span class="text-violet-400" id="grandTotal"></span>
+            <span class="text-violet-400">₱<?= number_format($grandTotal) ?></span>
           </div>
         </div>
       </div>
@@ -76,9 +94,7 @@
       <!-- Payment Method -->
       <div class="border-t border-zinc-700 pt-6">
         <h3 class="uppercase text-xs tracking-widest text-zinc-500 mb-4">Choose Payment Method</h3>
-        <div class="grid grid-cols-3 gap-3" id="paymentOptions">
-          <!-- Populated by JS -->
-        </div>
+        <div class="grid grid-cols-3 gap-3" id="paymentOptions"></div>
       </div>
 
       <!-- Terms -->
@@ -86,8 +102,8 @@
         <label class="flex items-start gap-3 text-sm">
           <input type="checkbox" id="agreeTerms" class="mt-1 w-5 h-5 accent-violet-600">
           <span class="text-zinc-400">
-            I agree to the <a href="terms.html" target="_blank" class="text-violet-400 hover:underline">Terms of Service</a> and 
-            <a href="terms.html" target="_blank" class="text-violet-400 hover:underline">Ticket Refund Policy</a>.
+            I agree to the <a href="terms.php" target="_blank" class="text-violet-400 hover:underline">Terms of Service</a> and 
+            <a href="terms.php" target="_blank" class="text-violet-400 hover:underline">Ticket Refund Policy</a>.
           </span>
         </label>
       </div>
@@ -107,44 +123,15 @@
       <span class="font-medium">Absolute Cinema</span>
     </div>
     <div class="flex justify-center gap-6 text-xs mb-4">
-      <a href="faqs.html" class="hover:text-zinc-300">FAQs</a>
+      <a href="faqs.php" class="hover:text-zinc-300">FAQs</a>
       <a href="https://www.facebook.com/jersey1705" target="_blank" class="hover:text-zinc-300">Contact</a>
-      <a href="terms.html" class="hover:text-zinc-300">Terms</a>
+      <a href="terms.php" class="hover:text-zinc-300">Terms</a>
     </div>
     <p>© 2026 Absolute Cinema. All rights reserved.</p>
   </footer>
 
   <script>
-    function getOrderData() {
-      const params = new URLSearchParams(window.location.search);
-      return {
-        eventTitle: params.get('eventTitle'),
-        date: params.get('date'),
-        location: params.get('location'),
-        tier: params.get('tier'),
-        quantity: parseInt(params.get('quantity')),
-        total: parseInt(params.get('total'))
-      };
-    }
-
-    function renderOrderSummary() {
-      const order = getOrderData();
-
-      document.getElementById('eventTitle').textContent = order.eventTitle;
-      document.getElementById('eventDate').innerHTML = `<i class="fa-solid fa-calendar mr-2"></i>${order.date}`;
-      document.getElementById('eventLocation').innerHTML = `<i class="fa-solid fa-location-dot mr-2"></i>${order.location}`;
-      document.getElementById('tierName').textContent = order.tier;
-      document.getElementById('quantity').textContent = `${order.quantity} Ticket${order.quantity > 1 ? 's' : ''}`;
-      document.getElementById('pricePerTicket').textContent = `₱${(order.total / order.quantity).toLocaleString()}`;
-
-      const subtotal = order.total;
-      const serviceFee = Math.round(subtotal * 0.08);
-      const grandTotal = subtotal + serviceFee;
-
-      document.getElementById('subtotal').textContent = `₱${subtotal.toLocaleString()}`;
-      document.getElementById('serviceFee').textContent = `₱${serviceFee.toLocaleString()}`;
-      document.getElementById('grandTotal').textContent = `₱${grandTotal.toLocaleString()}`;
-    }
+    let selectedPayment = null;
 
     function renderPaymentMethods() {
       const methods = [
@@ -163,14 +150,12 @@
       `).join('');
     }
 
-    let selectedPayment = null;
-
     function selectPayment(btn) {
       document.querySelectorAll('.pay-btn').forEach(b => {
         b.classList.remove('border-violet-500', 'bg-violet-950/30');
       });
       btn.classList.add('border-violet-500', 'bg-violet-950/30');
-      selectedPayment = btn.textContent.trim();
+      selectedPayment = btn.querySelector('span').textContent.trim();
     }
 
     function proceedToPayment() {
@@ -187,12 +172,12 @@
 
       const params = new URLSearchParams(window.location.search);
       params.set('paymentMethod', selectedPayment);
+      params.set('grandTotal', <?= $grandTotal ?>);
 
-      window.location.href = `payment-success.html?${params.toString()}`;
+      window.location.href = `payment-success.php?${params.toString()}`;
     }
 
     // Initialize
-    renderOrderSummary();
     renderPaymentMethods();
   </script>
 </body>
