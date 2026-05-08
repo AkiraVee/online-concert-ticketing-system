@@ -150,8 +150,6 @@ $eventId = isset($_GET['eventId']) ? (int)$_GET['eventId'] : 1;
       window.location.href = `order-summary.php?${params.toString()}`;
     }
 
-    // Include all your other functions (switchImage, selectTier, changeQty, etc.)
-    // ... [Your full original script continues here]
 
     init();
   </script>
