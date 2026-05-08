@@ -5,27 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Absolute Cinema Tickets</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-    />
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap");
-      body {
-        font-family: "DM Sans", sans-serif;
-      }
-      h1,
-      h2 {
-        font-family: "DM Serif Display", serif;
-      }
-      .card {
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-      }
-      .card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
-      }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body class="bg-zinc-950 text-zinc-300">
     <!-- Nav -->
@@ -165,18 +146,13 @@
       </div>
       <div class="flex justify-center gap-6 text-xs mb-4">
         <a href="faqs.html" class="hover:text-zinc-300">FAQs</a>
-                <a href= "https://www.facebook.com/jersey1705" target="_blank" class="hover:text-zinc-300">Contact</a>
+        <a href="https://www.facebook.com/jersey1705" target="_blank" class="hover:text-zinc-300">Contact</a>
         <a href="terms.html" class="hover:text-zinc-300">Terms</a>
       </div>
       <p>© 2026 Absolute Cinema. All rights reserved.</p>
-    </footer>-->
+    </footer>
 
-    <!-- 
-    LOGIN PROMPT MODAL 
-    This modal will be triggered when a user tries to
-    buy a ticket without being logged in. 
-    -->
-
+    <!-- LOGIN PROMPT MODAL -->
     <div
       id="loginPromptModal"
       class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4"
@@ -378,18 +354,14 @@
 
       let currentFilter = "all";
 
-      // ── AUTH HELPER ──────────────────────────────────────────
-      // Checks if user is logged in via localStorage flag set on login
       function isLoggedIn() {
         return localStorage.getItem("userLoggedIn") === "true";
       }
 
-      // Opens the login prompt modal
       function openLoginPrompt() {
         document.getElementById("loginPromptModal").classList.remove("hidden");
       }
 
-      // Closes the login prompt modal
       function closeLoginPrompt() {
         document.getElementById("loginPromptModal").classList.add("hidden");
       }
@@ -417,12 +389,10 @@
             <p class="text-zinc-500 text-xs mb-4 flex items-center gap-1"><i class="fa-solid fa-location-dot"></i> ${e.location}</p>
             <div class="flex items-center justify-between">
               <span class="text-violet-400 font-semibold">${e.price}</span>
-
-             <button class="text-xs text-white bg-zinc-800 hover:bg-zinc-700 px-3 py-1.5 rounded-lg"
-                  onclick="event.stopPropagation(); isLoggedIn() ? viewEvent(${e.id}) : openLoginPrompt()">
-                  Buy →
-                </button>
-                
+              <button class="text-xs text-white bg-zinc-800 hover:bg-zinc-700 px-3 py-1.5 rounded-lg"
+                onclick="event.stopPropagation(); isLoggedIn() ? viewEvent(${e.id}) : openLoginPrompt()">
+                Buy →
+              </button>
             </div>
           </div>
         </div>
@@ -485,4 +455,3 @@
     </script>
   </body>
 </html>
->

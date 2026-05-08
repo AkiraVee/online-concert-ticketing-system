@@ -1,0 +1,119 @@
+/* ─── Google Fonts ───────────────────────────────────────────────────────────── */
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap");
+
+/* ─── Base ───────────────────────────────────────────────────────────────────── */
+body {
+  font-family: "DM Sans", sans-serif;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "DM Serif Display", serif;
+}
+
+.serif {
+  font-family: "DM Serif Display", serif;
+}
+
+/* ─── Event / Ticket Cards ───────────────────────────────────────────────────── */
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* ─── Event Details — Hero Blur ──────────────────────────────────────────────── */
+.hero-blur {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(28px) brightness(0.3);
+  transform: scale(1.05);
+}
+
+/* ─── Event Details — Gallery Thumbnails ────────────────────────────────────── */
+.thumb {
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.thumb:hover {
+  opacity: 1 !important;
+}
+
+.thumb.active {
+  outline: 2px solid #7c3aed;
+  outline-offset: 2px;
+  opacity: 1 !important;
+}
+
+/* ─── Event Details — Date Buttons ──────────────────────────────────────────── */
+.date-btn {
+  transition: all 0.2s;
+}
+
+.date-btn.selected {
+  background: #7c3aed;
+  color: white;
+  border-color: #7c3aed;
+}
+
+/* ─── Event Details — Tier Cards ─────────────────────────────────────────────── */
+.tier-card {
+  transition: all 0.2s;
+}
+
+.tier-card.selected {
+  border-color: #7c3aed;
+  background: rgba(124, 58, 237, 0.08);
+}
+
+/* ─── Fade In Animation ──────────────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+/* ─── Buy Modal ──────────────────────────────────────────────────────────────── */
+#buyModal {
+  display: none;
+}
+
+#buyModal.open {
+  display: flex;
+}
+
+/* ─── FAQ Items ──────────────────────────────────────────────────────────────── */
+.faq-item {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.faq-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* ─── Terms Section Cards ────────────────────────────────────────────────────── */
+.section-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.section-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
