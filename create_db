@@ -1,0 +1,28 @@
+Create Database ticketdb;
+show databases;
+use ticketDb;
+
+Create TABLE usertb
+
+(
+UserID int(8) PRIMARY KEY AUTO_INCREMENT,
+FullName varchar(30),
+Email varchar(30),
+Birthdate date,
+Age int(2),
+ContactNumber(11),
+Password varchar(50)
+);
+
+
+Create TABLE ordertb
+
+(
+TicketID int(8)
+EventDate date,
+SeatLocation varchar(50),
+TicketQuantity int(5),
+TotalPrice int(50),
+TransactionPin int(8),
+PurchaseDate date,
+);
