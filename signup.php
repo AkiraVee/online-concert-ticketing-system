@@ -38,11 +38,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <title>Sign Up - Absolute Cinema</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap');
     body { font-family: 'DM Sans', sans-serif; }
     h1, h2 { font-family: 'DM Serif Display', serif; }
-    
+
     .form-input {
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
@@ -137,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <div class="relative">
                 <i class="fa-solid fa-phone absolute left-5 top-1/2 -translate-y-1/2 text-zinc-500"></i>
                 <input type="tel" 
-                       name="contactNumber" 
+                       name="contactNumber"
                        required
                        maxlength="11"
                        pattern="09[0-9]{9}"
@@ -189,3 +191,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
 
         <div class="mt-8 text-center">
+          <p class="text-zinc-400">
+            Already have an account? 
+            <a href="login.php" class="text-violet-400 hover:text-violet-300 font-medium">Sign in</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-zinc-800 py-8 text-center text-zinc-600 text-sm">
+    <div class="flex justify-center items-center gap-2 text-zinc-400 mb-3">
+      <i class="fa-solid fa-ticket text-violet-400"></i>
+      <span class="font-medium">Absolute Cinema</span>
+    </div>
+    <div class="flex justify-center gap-6 text-xs mb-4">
+      <a href="faqs.php" class="hover:text-zinc-300">FAQs</a>
+      <a href="https://www.facebook.com/jersey1705" target="_blank" class="hover:text-zinc-300">Contact</a>
+      <a href="terms.php" class="hover:text-zinc-300">Terms</a>
+    </div>
+    <p>© 2026 Absolute Cinema. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
