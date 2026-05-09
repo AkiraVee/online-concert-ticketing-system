@@ -1,11 +1,5 @@
 <?php
-// login.php
 
-// Optional: Redirect if already logged in
-if (isset($_COOKIE['userLoggedIn']) && $_COOKIE['userLoggedIn'] === 'true') {
-    header("Location: homepage.php");
-    exit;
-}
 ?>
 
 <!DOCTYPE html>
