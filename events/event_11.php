@@ -8,7 +8,7 @@ $event = [
     "type"        => "Theatre",
     "date"        => "December 10, 2026",
     "location"    => "Newport Performing Arts Theater",
-    "price"       => "₱1,545",
+    "price"       => "₱2,800",
     "images"      => [
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLyeZHMjAKjedyosMPPtKMDEkhXOUGP-FKLQ&s",
         "https://cdn.prod.website-files.com/67934a6191c320fb7fdaa5b1/67aa94b9bf59fb4e0b5eda15_ggPN1WwpGzuLgAb34peoX_7f7ac2c46789459eac5ff6e40f0c155e.jpeg",

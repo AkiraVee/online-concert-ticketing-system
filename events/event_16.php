@@ -8,7 +8,7 @@ $event = [
     "type"        => "Theatre",
     "date"        => "May 20, 2027",
     "location"    => "Newport Performing Arts Theater",
-    "price"       => "₱1,500",
+    "price"       => "₱3,200",
     "images"      => [
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqkgJb8uKCbWDDTQnM53jlsgiNOc-2gjbkew&s",
         "https://cms.entertainmentquarter.com.au/wp-content/uploads/2025/11/COME-ALIVE-The-Greatest-Showman-Sydney-Entertainment-Quarter-1.jpg",

@@ -8,7 +8,7 @@ $event = [
     "type"        => "Theatre",
     "date"        => "June 10, 2026",
     "location"    => "Newport Performing Arts Theater",
-    "price"       => "₱1,500",
+    "price"       => "₱2,200",
     "images"      => [
         "https://theaterfansmanila.com/wp-content/uploads/2023/10/Miss-Saigon-feat-pic.jpg",
         "https://deadline.com/wp-content/uploads/2019/07/miss-saigon.jpg?w=1000",
