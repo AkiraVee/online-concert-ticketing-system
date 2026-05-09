@@ -4,21 +4,23 @@
 // Handle form submission
 $message = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $fullName = trim($_POST['fullName'] ?? '');
-    $email    = trim($_POST['email'] ?? '');
-    $password = $_POST['password'] ?? '';
-    $confirm  = $_POST['confirmPassword'] ?? '';
+    $fullName      = trim($_POST['fullName'] ?? '');
+    $email         = trim($_POST['email'] ?? '');
+    $birthday      = $_POST['birthday'] ?? '';
+    $age           = $_POST['age'] ?? '';
+    $contactNumber = trim($_POST['contactNumber'] ?? '');
+    $password      = $_POST['password'] ?? '';
+    $confirm       = $_POST['confirmPassword'] ?? '';
 
-    if (empty($fullName) || empty($email) || empty($password)) {
+    if (empty($fullName) || empty($email) || empty($password) || empty($birthday) || empty($age) || empty($contactNumber)) {
         $message = '<p class="text-red-400 text-sm">Please fill in all required fields.</p>';
     } elseif ($password !== $confirm) {
         $message = '<p class="text-red-400 text-sm">Passwords do not match.</p>';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $message = '<p class="text-red-400 text-sm">Please enter a valid email address.</p>';
     } else {
-        // Demo: Simulate account creation
         $message = '<p class="text-emerald-400 text-sm">Account created successfully!</p>';
         
-        // In a real app, you would save to database here
-        // For demo, redirect to login after 1.5 seconds
         echo "<script>
             setTimeout(() => {
                 window.location.href = 'login.php';
@@ -40,6 +42,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap');
     body { font-family: 'DM Sans', sans-serif; }
     h1, h2 { font-family: 'DM Serif Display', serif; }
+    
+    .form-input {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .form-input:focus {
+      border-color: rgb(167 139 250);
+      box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.15);
+      transform: translateY(-1px);
+    }
   </style>
 </head>
 <body class="bg-zinc-950 text-zinc-300 min-h-screen">
@@ -51,96 +62,130 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <i class="fa-solid fa-ticket text-violet-400 text-xl"></i>
         <span class="text-lg font-semibold tracking-tight">Absolute Cinema</span>
       </div>
-      <div class="flex items-center gap-3">
-        <a href="homepage.php" class="text-sm text-zinc-400 hover:text-white">← Back to Home</a>
-      </div>
+      <a href="homepage.php" class="text-sm text-zinc-400 hover:text-white flex items-center gap-1">
+        ← Back to Home
+      </a>
     </div>
   </nav>
 
   <div class="min-h-[calc(100vh-80px)] flex items-center justify-center px-6 py-12">
     <div class="w-full max-w-md">
       <div class="text-center mb-10">
-        <h1 class="text-4xl text-white mb-3">Create Account</h1>
-        <p class="text-zinc-400">Join us and never miss a live experience</p>
+        <h1 class="text-5xl text-white mb-3 tracking-tight">Create Account</h1>
+        <p class="text-zinc-400 text-lg">Join the ultimate cinema experience</p>
       </div>
 
-      <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
+      <!-- Main Card -->
+      <div class="bg-zinc-900 border border-zinc-700/50 rounded-3xl p-10 shadow-2xl shadow-black/60">
+        
         <?php if ($message): ?>
-          <div class="mb-6 text-center">
+          <div class="mb-8 text-center">
             <?= $message ?>
           </div>
         <?php endif; ?>
 
         <form method="POST" action="signup.php">
-          <div class="space-y-5">
+          <div class="space-y-6">
+            
+            <!-- Full Name -->
             <div>
               <label class="block text-sm text-zinc-400 mb-2">Full Name</label>
-              <input type="text" name="fullName" required
-                class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-5 py-3 text-white focus:outline-none focus:border-violet-500 transition-colors"
-                placeholder="Juan Dela Cruz"
-                value="<?= htmlspecialchars($_POST['fullName'] ?? '') ?>">
+              <div class="relative">
+                <i class="fa-solid fa-user absolute left-5 top-1/2 -translate-y-1/2 text-zinc-500"></i>
+                <input type="text" name="fullName" required
+                  class="form-input w-full bg-zinc-950 border border-zinc-700 rounded-2xl pl-12 pr-5 py-4 text-white placeholder-zinc-500 focus:outline-none"
+                  placeholder="Juan Dela Cruz"
+                  value="<?= htmlspecialchars($_POST['fullName'] ?? '') ?>">
+              </div>
             </div>
 
+            <!-- Email -->
             <div>
               <label class="block text-sm text-zinc-400 mb-2">Email Address</label>
-              <input type="email" name="email" required
-                class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-5 py-3 text-white focus:outline-none focus:border-violet-500 transition-colors"
-                placeholder="you@example.com"
-                value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+              <div class="relative">
+                <i class="fa-solid fa-envelope absolute left-5 top-1/2 -translate-y-1/2 text-zinc-500"></i>
+                <input type="email" name="email" required
+                  class="form-input w-full bg-zinc-950 border border-zinc-700 rounded-2xl pl-12 pr-5 py-4 text-white placeholder-zinc-500 focus:outline-none"
+                  placeholder="you@example.com"
+                  value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+              </div>
             </div>
 
+            <!-- Birthday & Age -->
+            <div class="grid grid-cols-2 gap-5">
+              <div>
+                <label class="block text-sm text-zinc-400 mb-2">Birthday</label>
+                <div class="relative">
+                  <i class="fa-solid fa-calendar absolute left-5 top-1/2 -translate-y-1/2 text-zinc-500"></i>
+                  <input type="date" name="birthday" required
+                    class="form-input w-full bg-zinc-950 border border-zinc-700 rounded-2xl pl-12 pr-5 py-4 text-white focus:outline-none">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm text-zinc-400 mb-2">Age</label>
+                <input type="number" name="age" min="13" max="100" required
+                  class="form-input w-full bg-zinc-950 border border-zinc-700 rounded-2xl px-5 py-4 text-white placeholder-zinc-500 focus:outline-none"
+                  placeholder="25"
+                  value="<?= htmlspecialchars($_POST['age'] ?? '') ?>">
+              </div>
+            </div>
+
+            <!-- Contact Number -->
+            <div>
+              <label class="block text-sm text-zinc-400 mb-2">Contact Number</label>
+              <div class="relative">
+                <i class="fa-solid fa-phone absolute left-5 top-1/2 -translate-y-1/2 text-zinc-500"></i>
+                <input type="tel" 
+                       name="contactNumber" 
+                       required
+                       maxlength="11"
+                       pattern="09[0-9]{9}"
+                       class="form-input w-full bg-zinc-950 border border-zinc-700 rounded-2xl pl-12 pr-5 py-4 text-white placeholder-zinc-500 focus:outline-none"
+                       placeholder="09123456789"
+                       value="<?= htmlspecialchars($_POST['contactNumber'] ?? '') ?>">
+              </div>
+              <p class="text-xs text-zinc-500 mt-2">Must start with 09 (11 digits)</p>
+            </div>
+
+            <!-- Password -->
             <div>
               <label class="block text-sm text-zinc-400 mb-2">Password</label>
-              <input type="password" name="password" required
-                class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-5 py-3 text-white focus:outline-none focus:border-violet-500 transition-colors"
-                placeholder="Create a strong password">
+              <div class="relative">
+                <i class="fa-solid fa-lock absolute left-5 top-1/2 -translate-y-1/2 text-zinc-500"></i>
+                <input type="password" name="password" required
+                  class="form-input w-full bg-zinc-950 border border-zinc-700 rounded-2xl pl-12 pr-5 py-4 text-white placeholder-zinc-500 focus:outline-none"
+                  placeholder="Create a strong password">
+              </div>
             </div>
 
+            <!-- Confirm Password -->
             <div>
               <label class="block text-sm text-zinc-400 mb-2">Confirm Password</label>
-              <input type="password" name="confirmPassword" required
-                class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-5 py-3 text-white focus:outline-none focus:border-violet-500 transition-colors"
-                placeholder="Confirm password">
+              <div class="relative">
+                <i class="fa-solid fa-lock absolute left-5 top-1/2 -translate-y-1/2 text-zinc-500"></i>
+                <input type="password" name="confirmPassword" required
+                  class="form-input w-full bg-zinc-950 border border-zinc-700 rounded-2xl pl-12 pr-5 py-4 text-white placeholder-zinc-500 focus:outline-none"
+                  placeholder="Confirm your password">
+              </div>
             </div>
 
-            <div class="flex items-start gap-2 pt-2">
-              <input type="checkbox" required class="mt-1 w-4 h-4 accent-violet-600">
+            <!-- Terms -->
+            <div class="flex items-start gap-3 pt-2">
+              <input type="checkbox" required class="mt-1 w-5 h-5 accent-violet-600 bg-zinc-950 border-zinc-600">
               <p class="text-xs text-zinc-500 leading-relaxed">
-                I agree to the <a href="terms.php" class="text-violet-400 hover:underline">Terms of Service</a> and 
-                <a href="terms.php" class="text-violet-400 hover:underline">Privacy Policy</a>
+                I agree to the <a href="terms.php" class="text-violet-400 hover:text-violet-300">Terms of Service</a> and 
+                <a href="terms.php" class="text-violet-400 hover:text-violet-300">Privacy Policy</a>
               </p>
             </div>
 
+            <!-- Submit Button -->
             <button type="submit"
-              class="w-full bg-violet-600 hover:bg-violet-500 text-white py-3.5 rounded-2xl font-medium text-base transition-colors mt-4">
+              class="w-full bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white py-4 rounded-2xl font-semibold text-lg tracking-wide transition-all duration-300 shadow-lg shadow-violet-500/30 hover:shadow-xl hover:-translate-y-0.5">
               Create Account
             </button>
+
           </div>
         </form>
 
         <div class="mt-8 text-center">
-          <p class="text-zinc-400">
-            Already have an account? 
-            <a href="login.php" class="text-violet-400 hover:text-violet-300 font-medium">Sign in</a>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <footer class="border-t border-zinc-800 py-8 text-center text-zinc-600 text-sm">
-    <div class="flex justify-center items-center gap-2 text-zinc-400 mb-3">
-      <i class="fa-solid fa-ticket text-violet-400"></i>
-      <span class="font-medium">Absolute Cinema</span>
-    </div>
-    <div class="flex justify-center gap-6 text-xs mb-4">
-      <a href="faqs.php" class="hover:text-zinc-300">FAQs</a>
-      <a href="https://www.facebook.com/jersey1705" target="_blank" class="hover:text-zinc-300">Contact</a>
-      <a href="terms.php" class="hover:text-zinc-300">Terms</a>
-    </div>
-    <p>© 2026 Absolute Cinema. All rights reserved.</p>
-  </footer>
-
-</body>
-</html>
