@@ -193,7 +193,7 @@ function renderPage() {
           <section>
             <div class="flex justify-between items-end mb-3">
               <h2 class="text-xl font-bold text-white" style="font-family: Georgia, serif;">About This Event</h2>
-              <button onclick="openSeatPlan('${e.images[0]}')" class="text-violet-400 hover:text-violet-300 text-sm font-medium transition-colors">
+              <button onclick="openSeatPlan('${e.images[3]}')" class="text-violet-400 hover:text-violet-300 text-sm font-medium transition-colors">
                 <i class="fa-solid fa-map mr-1"></i> View Seat Plan
               </button>
             </div>

@@ -11,10 +11,10 @@ $event = [
     "price"       => "₱3,500",
     "duration"    => "3 hours",
     "images"      => [
-        "Images/SeatPlanTaylor.jpg",
-        "Images/taylor-swift-1681860050.jpg",
         "https://cdn-0001.qstv.on.epicgames.com/LZGCXcoMsVIGYlcyBG/image/landscape_comp.jpeg",
+        "Images/taylor-swift-1681860050.jpg",
         "Images/taylor-swift-1681860494.jpg",
+        "Images/SeatPlanTaylor.jpg",
     ],
     "description" => "The most spectacular tour of the decade returns to the Philippines. Taylor Swift brings all her eras to life in one unforgettable night.",
     "dates" => [
