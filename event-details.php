@@ -191,7 +191,12 @@ function renderPage() {
 
           <!-- About This Event -->
           <section>
-            <h2 class="text-xl font-bold text-white mb-3" style="font-family: Georgia, serif;">About This Event</h2>
+            <div class="flex justify-between items-end mb-3">
+              <h2 class="text-xl font-bold text-white" style="font-family: Georgia, serif;">About This Event</h2>
+              <button onclick="openSeatPlan('${e.images[0]}')" class="text-violet-400 hover:text-violet-300 text-sm font-medium transition-colors">
+                <i class="fa-solid fa-map mr-1"></i> View Seat Plan
+              </button>
+            </div>
             <p class="text-zinc-400 leading-relaxed text-sm">${e.description}</p>
           </section>
 
@@ -360,6 +365,47 @@ function submitOrder() {
 }
 
 init();
+
+// --- Seat Plan Popup Logic ---
+
+function openSeatPlan(imgSrc) {
+    const lightbox = document.getElementById('imageLightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    
+    // Set the seat plan image and show the modal
+    if (lightbox && lightboxImg) {
+        lightboxImg.src = imgSrc;
+        lightbox.classList.remove('hidden');
+        lightbox.classList.add('flex');
+        // Prevent background scrolling for a focused view
+        document.body.style.overflow = 'hidden'; 
+    }
+}
+
+function closeLightbox() {
+    const lightbox = document.getElementById('imageLightbox');
+    if (lightbox) {
+        lightbox.classList.add('hidden');
+        lightbox.classList.remove('flex');
+        // Restore scrolling when closed
+        document.body.style.overflow = 'auto'; 
+    }
+}
+
+// Close if user clicks the dark background area
+document.getElementById('imageLightbox').onclick = function(e) {
+    if (e.target === this) closeLightbox();
+};
 </script>
+<!-- New feature: Pop Up window -->
+<div id="imageLightbox" 
+     class="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md hidden flex items-center justify-center p-4 lg:p-10">
+    
+    <button onclick="closeLightbox()" class="absolute top-8 right-8 text-white/50 hover:text-white transition-colors z-50">
+      <i class="fa-solid fa-xmark text-4xl"></i>
+    </button>
+    
+    <img id="lightboxImg" src="" class="max-w-full max-h-full object-contain shadow-2xl rounded-lg">
+</div>
 </body>
 </html>

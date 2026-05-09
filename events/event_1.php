@@ -11,10 +11,10 @@ $event = [
     "price"       => "₱3,500",
     "duration"    => "3 hours",
     "images"      => [
-        "https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/88477c99-c357-4758-a37e-b1b750215b2f/compose?aspectRatio=1.78&format=webp&width=1200",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStfpu5gL8vKcfQNhvj8FgkE42A4QNO-3uxmA&s",
+        "Images/SeatPlanTaylor.jpg",
+        "Images/taylor-swift-1681860050.jpg",
         "https://cdn-0001.qstv.on.epicgames.com/LZGCXcoMsVIGYlcyBG/image/landscape_comp.jpeg",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWnjhwzD22W08_Pu0on6saTiwQhpnTQ5gRaw&s",
+        "Images/taylor-swift-1681860494.jpg",
     ],
     "description" => "The most spectacular tour of the decade returns to the Philippines. Taylor Swift brings all her eras to life in one unforgettable night.",
     "dates" => [
