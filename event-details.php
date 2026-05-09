@@ -30,7 +30,21 @@ $eventJson = json_encode($event, JSON_UNESCAPED_SLASHES);
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    .tier-bar-track {
+      height: 3px;
+      background: #3f3f46;
+      border-radius: 9999px;
+      margin-top: 8px;
+    }
+    .tier-bar-fill {
+      height: 3px;
+      background: #7c3aed;
+      border-radius: 9999px;
+    }
+  </style>
 </head>
+
 <body class="bg-zinc-950 text-zinc-300 min-h-screen">
 
   <!-- Nav -->
@@ -59,21 +73,17 @@ $eventJson = json_encode($event, JSON_UNESCAPED_SLASHES);
       </button>
       <h3 class="serif text-2xl text-white mb-1">Confirm Order</h3>
       <p class="text-zinc-400 text-sm mb-6">Review your ticket selection before checkout.</p>
-
       <div id="modalSummary" class="bg-zinc-800 rounded-xl p-4 mb-5 space-y-2 text-sm"></div>
-
       <div class="mb-5">
         <label class="block text-xs text-zinc-400 mb-1.5 font-medium uppercase tracking-wide">Full Name</label>
         <input type="text" id="modalName" placeholder="Juan dela Cruz"
           class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-2.5 text-white text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500">
       </div>
-
       <div class="mb-5">
         <label class="block text-xs text-zinc-400 mb-1.5 font-medium uppercase tracking-wide">Email</label>
         <input type="email" id="modalEmail" placeholder="juan@example.com"
           class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-2.5 text-white text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500">
       </div>
-
       <div class="mb-6">
         <label class="block text-xs text-zinc-400 mb-1.5 font-medium uppercase tracking-wide">Payment Method</label>
         <div class="grid grid-cols-3 gap-2">
@@ -82,7 +92,6 @@ $eventJson = json_encode($event, JSON_UNESCAPED_SLASHES);
           <button onclick="selectPayment(this)" class="pay-btn border border-zinc-700 rounded-xl py-2 text-xs text-zinc-400 hover:border-violet-500 hover:text-white transition-all">Card</button>
         </div>
       </div>
-
       <button onclick="submitOrder()" class="w-full bg-violet-600 hover:bg-violet-500 text-white py-3 rounded-xl font-semibold text-sm">
         Confirm & Pay
       </button>
@@ -95,11 +104,15 @@ $eventJson = json_encode($event, JSON_UNESCAPED_SLASHES);
       <i class="fa-solid fa-ticket text-violet-400"></i>
       <span class="font-medium">Absolute Cinema</span>
     </div>
+    <div class="flex justify-center gap-6 text-xs mb-4">
+      <a href="faqs.php" class="hover:text-zinc-300">FAQs</a>
+      <a href="https://www.facebook.com/jersey1705" target="_blank" class="hover:text-zinc-300">Contact</a>
+      <a href="terms.php" class="hover:text-zinc-300">Terms</a>
+    </div>
     <p>© 2026 Absolute Cinema. All rights reserved.</p>
   </footer>
 
 <script>
-// Event Data from PHP
 const eventData = <?= $eventJson ?>;
 
 let state = {
@@ -119,54 +132,131 @@ function renderPage() {
   const e = state.event;
   const tier = e.tiers[state.selectedTier];
   const date = e.dates[state.selectedDate];
+  const maxCapacity = Math.max(...e.tiers.map(t => t.available || 0)) || 1;
+
+  const steps = [
+    { icon: 'fa-house',         label: 'Browse available events from the homepage.' },
+    { icon: 'fa-calendar-days', label: 'Select the event you want to attend.' },
+    { icon: 'fa-chair',         label: 'Choose your preferred ticket section and seat(s).' },
+    { icon: 'fa-ticket',        label: 'Click the <strong class="text-white">Buy Ticket</strong> button.' },
+    { icon: 'fa-user-circle',   label: 'Login or create an account.' },
+    { icon: 'fa-list-check',    label: 'Review your order summary.' },
+    { icon: 'fa-credit-card',   label: 'Select your payment method.' },
+    { icon: 'fa-lock',          label: 'Complete the payment process.' },
+    { icon: 'fa-circle-check',  label: 'Your ticket will appear under <strong class="text-white">My Account → My Tickets</strong>.' },
+  ];
 
   const html = `
-    <div class="max-w-6xl mx-auto px-6 py-12">
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Images -->
-        <div class="lg:col-span-2 space-y-6">
-          <div class="relative rounded-2xl overflow-hidden" style="height: 400px;">
-            <img id="mainImg" src="${e.images[0]}" alt="${e.title}" class="w-full h-full object-cover">
-          </div>
-          <div class="flex gap-2">
-            ${e.images.map((img, i) => `
-              <div onclick="switchImage(${i})" class="thumb cursor-pointer rounded-lg overflow-hidden flex-1" style="height: 80px;">
-                <img src="${img}" class="w-full h-full object-cover ${i === 0 ? '' : 'opacity-50'}">
-              </div>
-            `).join('')}
-          </div>
+    <!-- Hero Header -->
+    <div class="border-b border-zinc-800 bg-zinc-950 py-8">
+      <div class="max-w-6xl mx-auto px-6">
+        <span class="inline-block bg-violet-600 text-white text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full mb-4">${e.type}</span>
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-3" style="font-family: Georgia, serif;">${e.title}</h1>
+        <div class="flex flex-wrap items-center gap-5 text-sm text-zinc-400">
+          <span class="flex items-center gap-1.5">
+            <i class="fa-solid fa-map-pin text-violet-400"></i>
+            ${e.location}
+          </span>
+          <span class="flex items-center gap-1.5">
+            <i class="fa-regular fa-clock text-violet-400"></i>
+            ${e.duration}
+          </span>
         </div>
+      </div>
+    </div>
 
-        <!-- Details -->
-        <div class="space-y-6">
-          <div>
-            <h1 class="serif text-4xl text-white mb-2">${e.title}</h1>
-            <div class="flex items-center gap-2 text-zinc-400">
-              <i class="fa-solid fa-tag"></i>
-              <span class="uppercase tracking-wide">${e.type}</span>
+    <!-- Page Body -->
+    <div class="max-w-6xl mx-auto px-6 py-10">
+      <div class="flex flex-col lg:flex-row gap-10">
+
+        <!-- LEFT COLUMN -->
+        <div class="flex-1 min-w-0 space-y-10">
+
+          <!-- Gallery -->
+          <section>
+            <h2 class="text-base font-semibold text-zinc-400 uppercase tracking-widest mb-4">Gallery</h2>
+            <div class="rounded-2xl overflow-hidden mb-3" style="height: 380px;">
+              <img id="mainImg" src="${e.images[state.activeImg]}" alt="${e.title}" class="w-full h-full object-cover">
             </div>
-          </div>
-
-          <div class="border-t border-zinc-800 pt-4">
-            <p class="text-zinc-400 text-sm mb-2">Event Details</p>
-            <div class="space-y-2 text-sm">
-              <div class="flex items-center gap-2"><i class="fa-solid fa-calendar text-violet-400 w-4"></i> ${e.date}</div>
-              <div class="flex items-center gap-2"><i class="fa-solid fa-map-pin text-violet-400 w-4"></i> ${e.location}</div>
-            </div>
-          </div>
-
-          <!-- Date Selection -->
-          <div class="border-t border-zinc-800 pt-4">
-            <p class="text-zinc-400 text-sm mb-3">Select Date</p>
-            <div class="space-y-2">
-              ${e.dates.map((d, i) => `
-                <button onclick="selectDate(${i})" 
-                  class="w-full py-2.5 px-4 rounded-lg border text-left ${state.selectedDate === i ? 'border-violet-500 bg-violet-500/10' : 'border-zinc-700 hover:border-zinc-600'}">
-                  ${d.label} • ${d.time}
-                </button>
+            <div class="flex gap-2">
+              ${e.images.map((img, i) => `
+                <div onclick="switchImage(${i})"
+                  class="cursor-pointer rounded-xl overflow-hidden flex-1 ring-2 transition-all ${i === state.activeImg ? 'ring-violet-500' : 'ring-transparent opacity-50 hover:opacity-75'}"
+                  style="height: 72px;">
+                  <img src="${img}" class="w-full h-full object-cover">
+                </div>
               `).join('')}
             </div>
-          </div>
+          </section>
+
+          <!-- About This Event -->
+          <section>
+            <h2 class="text-xl font-bold text-white mb-3" style="font-family: Georgia, serif;">About This Event</h2>
+            <p class="text-zinc-400 leading-relaxed text-sm">${e.description}</p>
+          </section>
+
+          <!-- Event Info -->
+          <section>
+            <h2 class="text-xl font-bold text-white mb-4" style="font-family: Georgia, serif;">Event Info</h2>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
+                <p class="text-xs text-zinc-500 mb-1 uppercase tracking-wide">Venue</p>
+                <p class="text-white text-sm font-medium">${e.location}</p>
+              </div>
+              <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
+                <p class="text-xs text-zinc-500 mb-1 uppercase tracking-wide">Duration</p>
+                <p class="text-white text-sm font-medium">${e.duration}</p>
+              </div>
+              <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
+                <p class="text-xs text-zinc-500 mb-1 uppercase tracking-wide">Type</p>
+                <p class="text-white text-sm font-medium">${e.type}</p>
+              </div>
+              <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
+                <p class="text-xs text-zinc-500 mb-1 uppercase tracking-wide">Available Shows</p>
+                <p class="text-white text-sm font-medium">${e.dates.length} date${e.dates.length > 1 ? 's' : ''}</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- How to Purchase Tickets -->
+          <section>
+            <h2 class="text-xl font-bold text-white mb-4" style="font-family: Georgia, serif;">How to Purchase Tickets</h2>
+            <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
+              ${steps.map((step, i) => `
+                <div class="flex gap-4 items-start py-4 ${i !== steps.length - 1 ? 'border-b border-zinc-800' : ''}">
+                  <div class="flex-shrink-0 w-8 h-8 rounded-full bg-violet-600/20 border border-violet-500/40 flex items-center justify-center mt-0.5">
+                    <span class="text-violet-400 text-xs font-bold">${i + 1}</span>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <i class="fa-solid ${step.icon} text-violet-400 text-sm w-4 text-center flex-shrink-0"></i>
+                    <p class="text-zinc-400 text-sm leading-relaxed">${step.label}</p>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </section>
+
+        </div>
+
+        <!-- RIGHT SIDEBAR -->
+        <div class="lg:w-72 xl:w-80 flex-shrink-0">
+          <div class="sticky top-20 bg-zinc-900 border border-zinc-800 rounded-2xl p-5 space-y-6">
+
+            <!-- Date & Time -->
+            <div>
+              <p class="text-xs text-zinc-500 uppercase tracking-widest font-semibold mb-3">Select Date &amp; Time</p>
+              <div class="space-y-2">
+                ${e.dates.map((d, i) => `
+                  <button onclick="selectDate(${i})"
+                    class="w-full flex justify-between items-center px-4 py-3 rounded-xl border text-sm transition-all ${state.selectedDate === i
+                      ? 'border-violet-500 bg-violet-600 text-white font-medium'
+                      : 'border-zinc-700 text-zinc-300 hover:border-zinc-500'}">
+                    <span>${d.label}</span>
+                    <span class="${state.selectedDate === i ? 'text-white' : 'text-zinc-400'}">${d.time}</span>
+                  </button>
+                `).join('')}
+              </div>
+            </div>
 
           <!-- Tier Selection -->
           <div class="border-t border-zinc-800 pt-4">
@@ -184,32 +274,30 @@ function renderPage() {
             </div>
           </div>
 
-          <!-- Quantity -->
-          <div class="border-t border-zinc-800 pt-4">
-            <p class="text-zinc-400 text-sm mb-3">Quantity (max 5)</p>
-            <div class="flex items-center gap-4">
-              <button onclick="changeQty(-1)" class="w-10 h-10 rounded-lg border border-zinc-700 hover:border-violet-500">-</button>
-              <span class="flex-1 text-center font-semibold text-lg">${state.qty}</span>
-              <button onclick="changeQty(1)" class="w-10 h-10 rounded-lg border border-zinc-700 hover:border-violet-500">+</button>
+            <!-- Quantity -->
+            <div>
+              <p class="text-xs text-zinc-500 uppercase tracking-widest font-semibold mb-3">Quantity <span class="normal-case">(max 5)</span></p>
+              <div class="flex items-center gap-3">
+                <button onclick="changeQty(-1)" class="w-10 h-10 rounded-lg border border-zinc-700 hover:border-violet-500 text-white text-lg flex items-center justify-center transition-colors">&#8722;</button>
+                <span class="flex-1 text-center font-bold text-xl text-white">${state.qty}</span>
+                <button onclick="changeQty(1)" class="w-10 h-10 rounded-lg border border-zinc-700 hover:border-violet-500 text-white text-lg flex items-center justify-center transition-colors">+</button>
+              </div>
             </div>
-          </div>
 
-          <div class="border-t border-zinc-800 pt-6">
-            <div class="flex justify-between text-lg mb-4">
-              <span class="text-zinc-400">Total:</span>
-              <span class="font-bold text-white">₱${(tier.price * state.qty).toLocaleString()}</span>
+            <!-- Total & Buy -->
+            <div class="border-t border-zinc-800 pt-4">
+              <div class="flex justify-between items-center mb-4">
+                <span class="text-zinc-400 text-sm">Total</span>
+                <span class="text-white font-bold text-xl">&#8369;${(tier.price * state.qty).toLocaleString()}</span>
+              </div>
+              <button onclick="openModal()" class="w-full bg-violet-600 hover:bg-violet-500 text-white py-3.5 rounded-xl font-semibold text-sm transition-colors">
+                Buy Tickets
+              </button>
             </div>
-            <button onclick="openModal()" class="w-full bg-violet-600 hover:bg-violet-500 py-4 rounded-xl font-semibold text-lg">
-              Buy Tickets
-            </button>
+
           </div>
         </div>
-      </div>
 
-      <!-- Description -->
-      <div class="mt-16 border-t border-zinc-800 pt-8">
-        <h2 class="text-2xl text-white mb-4">About This Event</h2>
-        <p class="text-zinc-300 leading-relaxed">${e.description}</p>
       </div>
     </div>
   `;
@@ -231,7 +319,7 @@ function changeQty(delta) {
 
 function switchImage(i) {
   state.activeImg = i;
-  document.getElementById("mainImg").src = state.event.images[i];
+  renderPage();
 }
 
 function openModal() {
@@ -240,9 +328,22 @@ function openModal() {
     window.location.href = "login.php";
     return;
   }
-  // ... your modal logic (you can expand this part if needed)
-  // For now, keeping it simple
-  alert("Order modal opened! (You can expand this later)");
+
+  const e = state.event;
+  const tier = e.tiers[state.selectedTier];
+  const date = e.dates[state.selectedDate];
+  const total = tier.price * state.qty;
+
+  const params = new URLSearchParams({
+    eventTitle: e.title,
+    date:       date.label + ' • ' + date.time,
+    location:   e.location,
+    tier:       tier.name,
+    quantity:   state.qty,
+    total:      total,
+  });
+
+  window.location.href = `order-summary.php?${params.toString()}`;
 }
 
 function closeModal() {
@@ -255,11 +356,10 @@ function selectPayment(btn) {
 }
 
 function submitOrder() {
-  alert("Order submitted! (Redirect to order-summary.php can be added here)");
+  // Handled by openModal redirect
 }
 
-// Start the page
 init();
 </script>
 </body>
-</html> 
+</html>

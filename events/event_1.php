@@ -9,6 +9,7 @@ $event = [
     "date"        => "May 20, 2026",
     "location"    => "Philippine Arena, Bulacan",
     "price"       => "₱3,500",
+    "duration"    => "3 hours",
     "images"      => [
         "https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/88477c99-c357-4758-a37e-b1b750215b2f/compose?aspectRatio=1.78&format=webp&width=1200",
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStfpu5gL8vKcfQNhvj8FgkE42A4QNO-3uxmA&s",
