@@ -20,7 +20,7 @@ $event = [
     "dates" => [
         ["label" => "Sat, May 16", "time" => "6:00 PM"],
         ["label" => "Sun, May 17", "time" => "5:30 PM"],
-        ["label" => "Fri, May 20", "time" => "7:00 PM"],
+        ["label" => "Wed, May 20", "time" => "7:00 PM"]
     ],
     "tiers" => [
         ["name" => "VIP PIT", "price" => 26000, "status" => "Seated/Standing", "available" => 5000, "color" => "violet"],
