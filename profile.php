@@ -83,6 +83,10 @@ $orderID = "AC-" . date("Y") . "-" . rand(10000, 99999); // Example for future u
 
             <div class="mt-8 pt-6 border-t border-zinc-800 text-left space-y-4 text-sm">
               <div class="flex justify-between">
+                <span class="text-zinc-500">Age</span>
+                <span class="text-zinc-300">--</span>
+              </div>
+              <div class="flex justify-between">
                 <span class="text-zinc-500">Member since</span>
                 <span class="text-zinc-300">March 2025</span>
               </div>
