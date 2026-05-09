@@ -20,9 +20,9 @@ $event = [
         ["label" => "Sat, Feb 14", "time" => "8:00 PM"],
     ],
     "tiers" => [
-        ["name" => "VIP Experience (Day 1-3)", "price" => 4500, "available" => 300, "color" => "violet"],
+        ["name" => "VIP Experience (Expo Day 1-3)", "price" => 4500, "available" => 300, "color" => "violet"],
         ["name" => "Expo Day 1", "price" => 1500, "available" => 2000, "color" => "blue"],
         ["name" => "Expo Day 2", "price" => 1500, "available" => 2000, "color" => "blue"],
-        ["name" => "General Admission", "price" => 1500, "available" => 2000, "color" => "zinc"],
+        ["name" => "General Admission", "price" => 800, "available" => 2000, "color" => "zinc"],
     ]
 ];
