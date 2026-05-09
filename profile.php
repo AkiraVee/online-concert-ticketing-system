@@ -11,18 +11,7 @@ $orderID = "AC-" . date("Y") . "-" . rand(10000, 99999); // Example for future u
   <title>My Profile - Absolute Cinema</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
-  <style>
-    @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap");
-    body { font-family: "DM Sans", sans-serif; }
-    h1, h2 { font-family: "DM Serif Display", serif; }
-    .card {
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="bg-zinc-950 text-zinc-300">
 
