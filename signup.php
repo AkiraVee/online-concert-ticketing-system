@@ -18,20 +18,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $message = '<p class="text-red-400 text-sm">Please enter a valid email address.</p>';
     } else {
-      include('mysql-connect.php');
+        include('mysql-connect.php');
 
-      $query = "INSERT INTO usertb(FullName, Email, Birthdate, Age, ContactNumber, Password)
-                VALUES('$fullName', '$email', '$birthday', '$age', '$contactNumber', SHA('$password'))";
+        $query = "INSERT INTO usertb(FullName, Email, Birthdate, Age, ContactNumber, Password)
+                  VALUES('$fullName', '$email', '$birthday', '$age', '$contactNumber', SHA('$password'))";
 
-      $result = @mysqli_query($conn, $query);
+        $result = @mysqli_query($conn, $query);
 
-      if ($result) {
-          $message = '<p class="text-emerald-400 text-sm">Account created successfully!</p>';
-      } else {
-          $message = '<p class="text-red-400 text-sm">Error: ' . mysqli_error($conn) . '</p>';
-      }
+        if ($result) {
+            $message = '<p class="text-emerald-400 text-sm">Account created successfully!</p>';
+            echo "<script>
+                setTimeout(() => {
+                    window.location.href = 'login.php';
+                }, 1500);
+            </script>";
+        } else {
+            $message = '<p class="text-red-400 text-sm">Something went wrong. Please try again.</p>';
+        }
 
-      mysqli_close($conn);
+        mysqli_close($conn);
     }
 }
 ?>
