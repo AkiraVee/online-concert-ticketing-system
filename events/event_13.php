@@ -10,9 +10,9 @@ $event = [
     "location"    => "Mall of Asia Grounds",
     "price"       => "₱1,500",
     "images"      => [
-        "https://mikuexpo.com/europe2026/images/og.jpg",
+        "Images/MikuExpo.jpg",
         "https://mikuexpo.com/na2026/images/og.jpg",
-        "https://cdn-0001.qstv.on.epicgames.com/LZGCXcoMsVIGYlcyBG/image/landscape_comp.jpeg",
+        "https://mikuexpo.com/europe2026/images/og.jpg",
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWnjhwzD22W08_Pu0on6saTiwQhpnTQ5gRaw&s",
     ],
     "description" => "The virtual idol phenomenon comes to life with stunning holographic performances and a full festival experience.",
