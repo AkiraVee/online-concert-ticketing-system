@@ -1,18 +1,26 @@
 <?php
+// login.php
 session_start();
+
+// Already logged in? Go home.
+if (isset($_SESSION['UserID'])) {
+    header("Location: profile.php");
+    exit();
+}
 
 $error = '';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (isset($_POST['submit'])) {
     $e = trim($_POST['email'] ?? '');
     $p = $_POST['password'] ?? '';
 
     if (empty($e) || empty($p)) {
-        $error = 'Please enter email and/or password.';
+        $error = 'Please enter your email and password.';
     } else {
         include('mysql-connect.php');
 
-        $query = "SELECT UserID, FullName, Email FROM usertb WHERE Email='$e' AND Password=SHA('$p')";
+        // password column is lowercase in the DB, hashed with SHA()
+        $query = "SELECT UserID, FullName, Email FROM usertb WHERE Email='$e' AND password=SHA('$p')";
         $result = @mysqli_query($conn, $query);
         $row = mysqli_fetch_array($result);
 
@@ -22,10 +30,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['Email']    = $row['Email'];
 
             mysqli_close($conn);
-            header("Location: homepage.php");
+            header("Location: profile.php");
             exit();
         } else {
-            $error = 'The email address and password entered do not match those on file.';
+            $error = 'The email address and/or password you entered is incorrect.';
         }
 
         mysqli_close($conn);
@@ -102,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <a href="#" class="text-sm text-violet-400 hover:text-violet-300">Forgot Password?</a>
             </div>
 
-            <button type="submit"
+            <button type="submit" name="submit"
               class="w-full bg-violet-600 hover:bg-violet-500 text-white py-3.5 rounded-2xl font-medium text-base transition-colors">
               Sign In
             </button>
@@ -117,14 +125,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
       </div>
 
-      <!-- Social Login -->
+      <!-- Social Login (UI only) -->
       <div class="mt-6">
         <div class="relative">
           <div class="absolute inset-0 flex items-center">
             <div class="w-full border-t border-zinc-800"></div>
           </div>
           <div class="relative text-center">
-            <span class="bg-zinc-900 px-4 text-xs text-zinc-500">OR</span>
+            <span class="bg-zinc-950 px-4 text-xs text-zinc-500">OR</span>
           </div>
         </div>
 

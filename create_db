@@ -10,7 +10,7 @@ Email varchar(30),
 Birthdate date,
 Age int(2),
 ContactNumber int (11),
-Password varchar(50)
+password varchar(50)
 );
 
 
