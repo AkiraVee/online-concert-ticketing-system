@@ -2,7 +2,8 @@
 // signup.php
 
 $message = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (isset($_POST['submit'])) {
+    // Field names match the HTML form's name="" attributes below
     $fullName      = trim($_POST['fullName'] ?? '');
     $email         = trim($_POST['email'] ?? '');
     $birthday      = $_POST['birthday'] ?? '';
@@ -20,23 +21,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         include('mysql-connect.php');
 
-        $query = "INSERT INTO usertb(FullName, Email, Birthdate, Age, ContactNumber, Password)
-                  VALUES('$fullName', '$email', '$birthday', '$age', '$contactNumber', SHA('$password'))";
-
-        $result = @mysqli_query($conn, $query);
-
-        if ($result) {
-            $message = '<p class="text-emerald-400 text-sm">Account created successfully!</p>';
-            echo "<script>
-                setTimeout(() => {
-                    window.location.href = 'login.php';
-                }, 1500);
-            </script>";
+        // Check if email already exists
+        $checkQuery = "SELECT UserID FROM usertb WHERE Email='$email'";
+        $checkResult = @mysqli_query($conn, $checkQuery);
+        if (mysqli_num_rows($checkResult) > 0) {
+            $message = '<p class="text-red-400 text-sm">An account with that email already exists.</p>';
         } else {
-            $message = '<p class="text-red-400 text-sm">Something went wrong. Please try again.</p>';
-        }
+            // Column names match exactly what's in the DB: FullName, Email, Birthdate, Age, ContactNumber, password
+            $query = "INSERT INTO usertb (FullName, Email, Birthdate, Age, ContactNumber, password)
+            VALUES ('$fullName', '$email', '$birthday', '$age', '$contactNumber', SHA('$password'))";
 
-        mysqli_close($conn);
+            $result = @mysqli_query($conn, $query);
+
+            if ($result) {
+                $message = '<p class="text-emerald-400 text-sm">Account created successfully! Redirecting to login...</p>';
+                echo "<script>
+                    setTimeout(() => {
+                        window.location.href = 'login.php';
+                    }, 1500);
+                </script>";
+            } else {
+                $message = '<p class="text-red-400 text-sm">Something went wrong. Please try again.</p>';
+            }
+
+            mysqli_close($conn);
+        }
     }
 }
 ?>
@@ -131,7 +140,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="relative">
                   <i class="fa-solid fa-calendar absolute left-5 top-1/2 -translate-y-1/2 text-zinc-500"></i>
                   <input type="date" name="birthday" required
-                    class="form-input w-full bg-zinc-950 border border-zinc-700 rounded-2xl pl-12 pr-5 py-4 text-white focus:outline-none">
+                    class="form-input w-full bg-zinc-950 border border-zinc-700 rounded-2xl pl-12 pr-5 py-4 text-white focus:outline-none"
+                    value="<?= htmlspecialchars($_POST['birthday'] ?? '') ?>">
                 </div>
               </div>
 
@@ -193,7 +203,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <!-- Submit Button -->
-            <button type="submit"
+            <button type="submit" name="submit"
               class="w-full bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white py-4 rounded-2xl font-semibold text-lg tracking-wide transition-all duration-300 shadow-lg shadow-violet-500/30 hover:shadow-xl hover:-translate-y-0.5">
               Create Account
             </button>

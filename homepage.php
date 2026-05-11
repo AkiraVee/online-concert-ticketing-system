@@ -1,5 +1,6 @@
 <?php
 // homepage.php
+session_start();
 ?>
 
 <!DOCTYPE html>
@@ -22,11 +23,19 @@
         <span class="text-lg font-semibold tracking-tight">Absolute Cinema</span>
       </div>
       <div class="hidden md:flex items-center gap-6 text-sm text-zinc-400">
+      <?php if (isset($_SESSION['UserID'])): ?>
         <a href="profile.php" class="hover:text-white">My Profile</a>
+      <?php endif; ?>
       </div>
       <div class="flex items-center gap-3">
+      <?php if (isset($_SESSION['UserID'])): ?>
+        <a href="logout.php" class="text-sm text-zinc-400 hover:text-white px-3 py-1.5 flex items-center gap-2">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+      <?php else: ?>
         <a href="login.php" class="text-sm text-zinc-400 hover:text-white px-3 py-1.5">Login</a>
         <a href="signup.php" class="text-sm bg-violet-600 hover:bg-violet-500 text-white px-4 py-1.5 rounded-lg">Sign Up</a>
+      <?php endif; ?>
       </div>
     </div>
   </nav>
