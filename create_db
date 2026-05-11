@@ -17,10 +17,15 @@ password varchar(50)
 Create TABLE ordertb
 (
 TicketID int(8) PRIMARY KEY AUTO_INCREMENT,
+UserID int(8),
 EventDate date,
 SeatLocation varchar(50),
 TicketQuantity int(5),
 TotalPrice int(50),
 TransactionPin int(8),
-PurchaseDate date
+PurchaseDate date,
+EventLocation varchar(100),
+PaymentMethod varchar(20)
 );
+
+
