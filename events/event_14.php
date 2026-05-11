@@ -10,14 +10,14 @@ $event = [
     "location"    => "Philippine Arena, Bulacan",
     "price"       => "₱2,500",
     "images"      => [
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDxe35dj5YviHHBSRHrEZH3wuk_e70X3CM0Q&s",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfWI7Mh6JBh31cfnSwC4cgVkwbZkqV6hTqzg&s",
+        "Images/adoposter.png",
+        "Images/adopic1.png",
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8sdipMzzOIiULnbYU9gkS0e72Nw4apkj5lg&s",
         "https://aphrodite.gmanetwork.com/entertainment/articles/900_675_3_-20250509142608.jpg",
     ],
     "description" => "Japan's most powerful voice, Ado, makes her Philippine debut in what promises to be an electrifying performance.",
     "dates" => [
-        ["label" => "Sat, Mar 14", "time" => "8:00 PM"],
+        ["label" => "Wed, Mar 10", "time" => "8:00 PM"],
     ],
     "tiers" => [
         ["name" => "VIP PIT (Floor Standing)", "price" => 11000, "status" => "Standing", "available" => 8000, "color" => "violet"],
