@@ -11,16 +11,16 @@ $event = [
     "price"       => "₱1,500",
     "images"      => [
         "https://theaterfansmanila.com/wp-content/uploads/2023/10/Miss-Saigon-feat-pic.jpg",
-        "https://deadline.com/wp-content/uploads/2019/07/miss-saigon.jpg?w=1000",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBTUuVJH8ovV-Qzn48k8NFv41p7nLmAHJk5g&s",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKzX1SR_ebc2cByW5MRSuB69z53MF-H8bMcg&s",
+        "Images/misssaigonpic2.png",
+        "Images/misssaigonpic3.jpg",
+        "Images/misssaigonseatplan.png",
     ],
     "description" => "The legendary West End and Broadway musical comes to Manila. A timeless story of love and war set in the final days of the Vietnam War.",
     "dates" => [
-        ["label" => "Tue, Jun 10", "time" => "8:00 PM"],
-        ["label" => "Wed, Jun 11", "time" => "3:00 PM"],
-        ["label" => "Sat, Jun 14", "time" => "8:00 PM"],
-        ["label" => "Sun, Jun 15", "time" => "2:00 PM"],
+        ["label" => "Wed, Jun 10", "time" => "8:00 PM"],
+        ["label" => "Thu, Jun 11", "time" => "3:00 PM"],
+        ["label" => "Sun, Jun 14", "time" => "8:00 PM"],
+        ["label" => "Mon, Jun 15", "time" => "2:00 PM"],
     ],
     "tiers" => [
         ["name" => "PLATINUM", "price" => 8500, "status" => "Reserved Seating", "available" => 250, "color" => "violet"],

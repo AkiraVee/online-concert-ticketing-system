@@ -7,24 +7,26 @@ $event = [
     "category"    => "festival",
     "type"        => "Festival",
     "date"        => "February 20, 2027",
-    "location"    => "Mall of Asia Grounds",
+    "location"    => "Mall of Asia Arena",
     "price"       => "₱1,500",
     "images"      => [
         "Images/MikuExpo.jpg",
-        "https://mikuexpo.com/na2026/images/og.jpg",
-        "https://mikuexpo.com/europe2026/images/og.jpg",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWnjhwzD22W08_Pu0on6saTiwQhpnTQ5gRaw&s",
+        "Images/mikupic.png",
+        "Images/mikupic2.png",
+        "Images/mikuseatplan.png",
     ],
     "description" => "The virtual idol phenomenon comes to life with stunning holographic performances and a full festival experience.",
     "dates" => [
-        ["label" => "Fri, Feb 13", "time" => "8:00 PM"],
-        ["label" => "Sat, Feb 14", "time" => "8:00 PM"],
-        ["label" => "Sun, Feb 15", "time" => "8:00 PM"]
+        ["label" => "Mon, Nov 16", "time" => "8:00 PM"],
     ],
     "tiers" => [
-        ["name" => "VIP Experience (Expo Day 1-3)", "price" => 4500, "available" => 300, "color" => "violet"],
-        ["name" => "Expo Day 1", "price" => 1500, "available" => 2000, "color" => "blue"],
-        ["name" => "Expo Day 2", "price" => 1500, "available" => 2000, "color" => "blue"],
-        ["name" => "General Admission", "price" => 800, "available" => 2000, "color" => "zinc"],
+        ["name" => "VIP", "price" => 10880, "available" => 450, "color" => "violet"],
+        ["name" => "Premium", "price" => 8880, "available" => 1200, "color" => "blue"],
+        ["name" => "Patron", "price" => 7880, "available" => 1000, "color" => "blue"],
+        ["name" => "Lower Box A", "price" => 6880, "available" => 2200, "color" => "zinc"],
+        ["name" => "Lower Box B", "price" => 5880, "available" => 1800, "color" => "zinc"],
+        ["name" => "Lower Box C", "price" => 4880, "available" => 1200, "color" => "zinc"],
+        ["name" => "Upper Box", "price" => 3880, "available" => 3500, "color" => "zinc"],
+        ["name" => "Gen Ad", "price" => 2880, "available" => 2500, "color" => "zinc"],
     ]
 ];

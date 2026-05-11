@@ -10,15 +10,15 @@ $event = [
     "location"    => "Smart Araneta Coliseum",
     "price"       => "₱500",
     "images"      => [
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToBiCMqMOD48wLnF7cLJWIty31xw8Dmf3gOw&s",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStfpu5gL8vKcfQNhvj8FgkE42A4QNO-3uxmA&s",
-        "https://cdn-0001.qstv.on.epicgames.com/LZGCXcoMsVIGYlcyBG/image/landscape_comp.jpeg",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWnjhwzD22W08_Pu0on6saTiwQhpnTQ5gRaw&s",
+        "Images/bballposter.png",
+        "Images/bbballpic2.jpg",
+        "Images/bballpic3.png",
+        "Images/bballseatplan.jpg",
     ],
     "description" => "Barangay Ginebra faces off against the TNT Tropang Giga in a highly anticipated PBA clash. Don't miss the action!",
     "dates" => [
-        ["label" => "Wed, May 15", "time" => "7:00 PM"],
-        ["label" => "Sat, May 18", "time" => "4:00 PM"],
+        ["label" => "Fri, May 15", "time" => "7:00 PM"],
+        ["label" => "Mon, May 18", "time" => "4:00 PM"],
     ],
     "tiers" => [
         ["name" => "SEATED VIP", "price" => 3300, "status" => "Reserved Seating", "available" => 150, "color" => "violet"],
