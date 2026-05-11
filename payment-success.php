@@ -25,8 +25,19 @@ $orderID = "AC-" . date("Ymd") . "-" . rand(1000, 9999);
 include('mysql-connect.php');
 $userID = $_SESSION['UserID'];
 
-$rawDate = $_GET['date'] ?? date('Y-m-d');
-$parsedDate = date('Y-m-d', strtotime($rawDate));
+// ====================== IMPROVED DATE PARSING ======================
+$rawDate = $_GET['date'] ?? '';
+$parsedDate = date('Y-m-d'); // fallback
+
+if (!empty($rawDate)) {
+    // Remove time part if exists (e.g. "May 20, 2026 • 8:00 PM")
+    $dateOnly = trim(explode('•', $rawDate)[0]);
+    $timestamp = strtotime($dateOnly);
+    if ($timestamp !== false) {
+        $parsedDate = date('Y-m-d', $timestamp);
+    }
+}
+// =================================================================
 
 $insertQuery = "INSERT INTO ordertb 
                 (UserID, EventTitle, SeatLocation, EventDate, TicketQuantity, TotalPrice, 
@@ -41,7 +52,7 @@ if (mysqli_query($conn, $insertQuery)) {
     echo "Error: " . mysqli_error($conn);
     exit();
 }
-    mysqli_close($conn);
+mysqli_close($conn);
 ?>
 
 <!DOCTYPE html>
