@@ -10,9 +10,9 @@ $event = [
     "location"    => "MOA Arena, Pasay",
     "price"       => "₱1,500",
     "images"      => [
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuEJOC_Sm2eUoa629dYjjw-A7rfs4q0sx7ZA&s",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStfpu5gL8vKcfQNhvj8FgkE42A4QNO-3uxmA&s",
-        "https://cdn-0001.qstv.on.epicgames.com/LZGCXcoMsVIGYlcyBG/image/landscape_comp.jpeg",
+        "Images/coldplayposter.jpg",
+        "Images/coldplaypicture.jpg",
+        "Images/coldplaypicture2.jpg",
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWnjhwzD22W08_Pu0on6saTiwQhpnTQ5gRaw&s",
     ],
     "description" => "Coldplay's Music of the Spheres World Tour arrives in Manila. Expect a breathtaking light show and all your favourite anthems.",

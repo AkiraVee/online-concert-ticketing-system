@@ -1,7 +1,8 @@
 <?php 
-$username ="root"; 
-$password=""; 
-$database="ticketdb"; 
-$conn = mysqli_connect("localhost",$username,$password); 
-mysqli_select_db($conn, $database) or die ("Unable to select database");  
-?> 
+$dbhost = "localhost";
+$dbuser = "root"; 
+$dbpass = ""; 
+$dbname = "ticketdb"; 
+$conn = mysqli_connect($dbhost, $dbuser, $dbpass); 
+mysqli_select_db($conn, $dbname) or die("Unable to select database");  
+?>
