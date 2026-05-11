@@ -29,8 +29,8 @@ if (isset($_SESSION['UserID'])) {
     $rawDate = $_GET['date'] ?? '';
     $parsedDate = date('Y-m-d', strtotime($rawDate));
 
- $insertQuery = "insert into ordertb (UserID, EventTitle, SeatLocation, EventDate,  TicketQuantity, TotalPrice, TransactionPin, PurchaseDate, EventLocation, PaymentMethod)
-            values ($userID, '$eventTitle', '$tier', '$parsedDate', '$quantity', '$grandTotal', '$transactionPin', NOW(), '$eventLocation', '$paymentMethod')";
+ $insertQuery = "insert into ordertb (TicketID, EventDate, SeatLocation, TicketQuantity, TotalPrice, TransactionPin, PurchaseDate)
+            values ($userID, '$parsedDate', '$tier', '$quantity', '$grandTotal', '$transactionPin', NOW())";
 
     @mysqli_query($conn, $insertQuery);
     mysqli_close($conn);
