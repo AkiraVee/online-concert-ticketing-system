@@ -9,7 +9,7 @@ FullName varchar(30),
 Email varchar(30),
 Birthdate date,
 Age int(2),
-ContactNumber int (11),
+ContactNumber varchar (11),
 password varchar(50)
 );
 
