@@ -17,7 +17,7 @@ $user = mysqli_fetch_assoc($userResult);
 
 // Fetch user's purchased tickets
 $ticketsQuery = "SELECT * FROM ordertb 
-                 WHERE TicketID = '$userID' 
+                 WHERE UserID = '$userID' 
                  ORDER BY PurchaseDate DESC, TicketID DESC";
 $ticketsResult = mysqli_query($conn, $ticketsQuery);
 
@@ -81,68 +81,105 @@ $fullName = $user['FullName'] ?? 'Unknown';
       <div class="flex-1">
         <h1 class="text-4xl text-white mb-8">My Profile</h1>
 
-        <!-- Tabs Navigation -->
+        <!-- Tabs -->
         <div class="flex gap-6 border-b border-zinc-800 mb-8">
-          <a href="profile.php"
+          <button onclick="showTab(0)" id="tab0" 
             class="pb-4 text-white border-b-2 border-violet-500 font-medium flex items-center gap-2">
             <i class="fa-solid fa-ticket text-violet-400"></i> Upcoming Tickets
-          </a>
-          <a href="view.php"
+          </button>
+          <button onclick="showTab(1)" id="tab1" 
             class="pb-4 text-zinc-400 hover:text-white border-b-2 border-transparent transition-colors flex items-center gap-2">
             <i class="fa-solid fa-ticket"></i> View My Tickets
-          </a>
+          </button>
         </div>
 
-        <!-- Upcoming Tickets -->
-        <div>
+        <!-- Tab 1: Upcoming Tickets -->
+        <div id="content0">
           <h3 class="text-xl font-semibold mb-6 flex items-center gap-3">
             <i class="fa-solid fa-ticket text-violet-400"></i> Upcoming Tickets
           </h3>
-          <div id="upcomingTickets" class="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <!-- Populated by JS -->
-          </div>
+          <div id="upcomingTickets" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
+        </div>
+
+        <!-- Tab 2: My Purchased Tickets -->
+        <div id="content1" class="hidden">
+          <h3 class="text-xl font-semibold mb-6 flex items-center gap-3">
+            <i class="fa-solid fa-clock-rotate-left text-emerald-400"></i> My Purchased Tickets
+          </h3>
+
+          <?php if (mysqli_num_rows($ticketsResult) > 0): ?>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <?php while ($ticket = mysqli_fetch_assoc($ticketsResult)): ?>
+                <div class="bg-zinc-900 border border-zinc-700 rounded-3xl overflow-hidden">
+                  <div class="p-6">
+                    <h4 class="font-semibold text-lg text-white"><?= htmlspecialchars($ticket['EventTitle']) ?></h4>
+                    <p class="text-zinc-400 text-sm mt-1"><?= $ticket['EventDate'] ?> • <?= htmlspecialchars($ticket['EventLocation']) ?></p>
+                    
+                    <div class="mt-4 space-y-2 text-sm">
+                      <div class="flex justify-between">
+                        <span class="text-zinc-500">Tier</span>
+                        <span class="text-white"><?= htmlspecialchars($ticket['SeatLocation']) ?></span>
+                      </div>
+                      <div class="flex justify-between">
+                        <span class="text-zinc-500">Quantity</span>
+                        <span class="text-white"><?= $ticket['TicketQuantity'] ?> ticket(s)</span>
+                      </div>
+                      <div class="flex justify-between pt-3 border-t border-zinc-700">
+                        <span class="text-zinc-500">Total Paid</span>
+                        <span class="text-violet-400 font-bold">₱<?= number_format($ticket['TotalPrice']) ?></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="bg-zinc-800 px-6 py-4 flex justify-between items-center border-t border-zinc-700">
+                    <span class="text-emerald-400 text-sm">✅ Confirmed</span>
+                    <button onclick="alert('🎟️ Ticket #<?= $ticket['TicketID'] ?> - Download coming soon!')" 
+                      class="bg-violet-600 hover:bg-violet-500 text-white px-5 py-2 rounded-xl text-sm">
+                      View Ticket
+                    </button>
+                  </div>
+                </div>
+              <?php endwhile; ?>
+            </div>
+          <?php else: ?>
+            <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-12 text-center">
+              <i class="fa-solid fa-ticket text-6xl text-zinc-600 mb-4"></i>
+              <p class="text-zinc-400">No tickets purchased yet.</p>
+              <a href="homepage.php" class="mt-6 inline-block bg-violet-600 hover:bg-violet-500 text-white px-8 py-3 rounded-2xl">
+                Browse Events
+              </a>
+            </div>
+          <?php endif; ?>
         </div>
       </div>
     </div>
   </div>
 
   <script>
+    function showTab(n) {
+      document.getElementById('content0').classList.toggle('hidden', n !== 0);
+      document.getElementById('content1').classList.toggle('hidden', n !== 1);
+      
+      document.getElementById('tab0').classList.toggle('border-violet-500', n === 0);
+      document.getElementById('tab0').classList.toggle('text-white', n === 0);
+      document.getElementById('tab1').classList.toggle('border-violet-500', n === 1);
+      document.getElementById('tab1').classList.toggle('text-white', n === 1);
+    }
+
+    // Upcoming Tickets
     const upcoming = [
-      {
-        title: "Coldplay World Tour",
-        date: "July 5, 2026",
-        location: "MOA Arena, Pasay",
-        price: "₱6,000",
-        image: "https://picsum.photos/id/870/400/250",
-      },
-      {
-        title: "PBA: Ginebra vs TNT",
-        date: "May 15, 2026",
-        location: "Smart Araneta Coliseum",
-        price: "₱800",
-        image: "https://picsum.photos/id/201/400/250",
-      },
+      { title: "Coldplay World Tour", date: "July 5, 2026", location: "MOA Arena", price: "₱6,000" },
+      { title: "PBA: Ginebra vs TNT", date: "May 15, 2026", location: "Smart Araneta", price: "₱800" }
     ];
 
     const container = document.getElementById("upcomingTickets");
-    container.innerHTML = upcoming.map(ticket => `
-      <div class="card bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden">
-        <img src="${ticket.image}" class="w-full h-40 object-cover">
-        <div class="p-5">
-          <h4 class="font-semibold leading-tight mb-2">${ticket.title}</h4>
-          <p class="text-xs text-zinc-500 mb-4">${ticket.date} • ${ticket.location}</p>
-          <div class="flex justify-between items-center">
-            <span class="text-violet-400 font-semibold">${ticket.price}</span>
-            <button onclick="viewTicket()"
-              class="text-xs bg-violet-600 hover:bg-violet-500 px-5 py-2 rounded-xl">View Ticket</button>
-          </div>
-        </div>
+    container.innerHTML = upcoming.map(t => `
+      <div class="bg-zinc-900 border border-zinc-700 rounded-3xl p-6">
+        <h4 class="font-semibold">${t.title}</h4>
+        <p class="text-sm text-zinc-400">${t.date}</p>
+        <p class="text-sm text-zinc-500">${t.location}</p>
+        <p class="text-violet-400 font-bold mt-3">${t.price}</p>
       </div>
-    `).join("");
-
-    function viewTicket() {
-      alert("Ticket details would open here (Demo)");
-    }
+    `).join('');
   </script>
 
   <!-- Footer -->

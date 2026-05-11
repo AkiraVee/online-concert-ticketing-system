@@ -1,9 +1,12 @@
 <?php
 // payment-success.php
-
 session_start();
 
-// Get all data from URL parameters
+if (!isset($_SESSION['UserID'])) {
+    header("Location: login.php");
+    exit();
+}
+
 $eventTitle     = isset($_GET['eventTitle']) ? htmlspecialchars($_GET['eventTitle']) : 'Untitled Event';
 $eventDate      = isset($_GET['date']) ? htmlspecialchars($_GET['date']) : 'Date not available';
 $eventLocation  = isset($_GET['location']) ? htmlspecialchars($_GET['location']) : 'Location not available';
@@ -13,28 +16,32 @@ $total          = max(0, (int)($_GET['total'] ?? 0));
 $paymentMethod  = isset($_GET['paymentMethod']) ? htmlspecialchars($_GET['paymentMethod']) : 'GCash';
 $transactionPin = isset($_GET['transactionPin']) ? htmlspecialchars($_GET['transactionPin']) : 'N/A';
 
-// Calculations
 $subtotal       = $total;
 $serviceFee     = round($subtotal * 0.08);
 $grandTotal     = $subtotal + $serviceFee;
 
-// Generate Order ID
-$orderID = "AC-" . date("Y") . "-" . rand(10000, 99999);
+$orderID = "AC-" . date("Ymd") . "-" . rand(1000, 9999);
 
-// Save order to DB
-if (isset($_SESSION['UserID'])) {
-    include('mysql-connect.php');
+include('mysql-connect.php');
+$userID = $_SESSION['UserID'];
 
-    $userID = $_SESSION['UserID'];
-    $rawDate = $_GET['date'] ?? '';
-    $parsedDate = date('Y-m-d', strtotime($rawDate));
+$rawDate = $_GET['date'] ?? date('Y-m-d');
+$parsedDate = date('Y-m-d', strtotime($rawDate));
 
- $insertQuery = "insert into ordertb (TicketID, EventDate, SeatLocation, TicketQuantity, TotalPrice, TransactionPin, PurchaseDate)
-            values ($userID, '$parsedDate', '$tier', '$quantity', '$grandTotal', '$transactionPin', NOW())";
+$insertQuery = "INSERT INTO ordertb 
+                (UserID, EventTitle, SeatLocation, EventDate, TicketQuantity, TotalPrice, 
+                 TransactionPin, PurchaseDate, EventLocation, PaymentMethod) 
+                VALUES 
+                ($userID, '$eventTitle', '$tier', '$parsedDate', $quantity, $grandTotal, 
+                 '$transactionPin', NOW(), '$eventLocation', '$paymentMethod')";
 
-    @mysqli_query($conn, $insertQuery);
-    mysqli_close($conn);
+if (mysqli_query($conn, $insertQuery)) {
+    $newTicketID = mysqli_insert_id($conn);
+} else {
+    echo "Error: " . mysqli_error($conn);
+    exit();
 }
+    mysqli_close($conn);
 ?>
 
 <!DOCTYPE html>
