@@ -8,6 +8,7 @@ $eventLocation = isset($_GET['location']) ? htmlspecialchars($_GET['location']) 
 $tier          = isset($_GET['tier']) ? htmlspecialchars($_GET['tier']) : 'General Admission';
 $quantity      = max(1, (int)($_GET['quantity'] ?? 1));
 $total         = max(0, (int)($_GET['total'] ?? 0));
+$transactionPin = isset($_GET['transactionPin']) ? htmlspecialchars($_GET['transactionPin']) : 'N/A';
 
 // Calculations
 $pricePerTicket = $quantity > 0 ? round($total / $quantity, 2) : 0;
@@ -67,7 +68,7 @@ $grandTotal     = $subtotal + $serviceFee;
           </div>
           <div class="flex justify-between">
             <span class="text-zinc-400">Price per Ticket</span>
-            <span class="font-medium text-white">₱<?= number_format($pricePerTicket) ?></span>
+            <span class="font-medium text-white">₱<?= number_format($pricePerTicket, 2) ?></span>
           </div>
         </div>
       </div>
@@ -95,6 +96,29 @@ $grandTotal     = $subtotal + $serviceFee;
       <div class="border-t border-zinc-700 pt-6">
         <h3 class="uppercase text-xs tracking-widest text-zinc-500 mb-4">Choose Payment Method</h3>
         <div class="grid grid-cols-3 gap-3" id="paymentOptions"></div>
+      </div>
+
+      <!-- Transaction PIN -->
+      <div class="border-t border-zinc-700 pt-6">
+        <h3 class="uppercase text-xs tracking-widest text-zinc-500 mb-4">Transaction PIN</h3>
+        <p class="text-xs text-zinc-500 mb-3">Enter your 8-digit transaction PIN to proceed</p>
+        
+        <div class="relative">
+          <input 
+            type="password" 
+            id="transactionPin"
+            maxlength="8"
+            inputmode="numeric"
+            placeholder="••••••••"
+            class="w-full bg-zinc-800 border border-zinc-700 focus:border-violet-500 rounded-2xl px-6 py-5 text-center text-3xl tracking-[8px] font-mono outline-none transition-colors">
+          
+          <!-- Toggle Button -->
+          <button type="button" 
+            id="togglePin"
+            class="absolute right-6 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white p-2 transition-colors">
+            <i class="fa-solid fa-eye text-xl"></i>
+          </button>
+        </div>
       </div>
 
       <!-- Terms -->
@@ -130,7 +154,7 @@ $grandTotal     = $subtotal + $serviceFee;
     <p>© 2026 Absolute Cinema. All rights reserved.</p>
   </footer>
 
-  <script>
+    <script>
     let selectedPayment = null;
 
     function renderPaymentMethods() {
@@ -158,8 +182,31 @@ $grandTotal     = $subtotal + $serviceFee;
       selectedPayment = btn.querySelector('span').textContent.trim();
     }
 
+    // PIN Show/Hide Toggle
+    function setupPinToggle() {
+      const pinInput = document.getElementById('transactionPin');
+      const toggleBtn = document.getElementById('togglePin');
+      
+      if (!pinInput || !toggleBtn) return;
+
+      let isVisible = false;
+
+      toggleBtn.addEventListener('click', () => {
+        isVisible = !isVisible;
+
+        if (isVisible) {
+          pinInput.type = 'text';
+          toggleBtn.innerHTML = `<i class="fa-solid fa-eye-slash text-xl"></i>`;
+        } else {
+          pinInput.type = 'password';
+          toggleBtn.innerHTML = `<i class="fa-solid fa-eye text-xl"></i>`;
+        }
+      });
+    }
+
     function proceedToPayment() {
       const agreed = document.getElementById('agreeTerms').checked;
+      const pinInput = document.getElementById('transactionPin').value.trim();
 
       if (!agreed) {
         alert("Please agree to the Terms of Service before proceeding.");
@@ -169,16 +216,25 @@ $grandTotal     = $subtotal + $serviceFee;
         alert("Please select a payment method.");
         return;
       }
+      if (!pinInput || pinInput.length !== 8 || !/^\d{8}$/.test(pinInput)) {
+        alert("Please enter a valid 8-digit Transaction PIN.");
+        document.getElementById('transactionPin').focus();
+        return;
+      }
 
       const params = new URLSearchParams(window.location.search);
       params.set('paymentMethod', selectedPayment);
       params.set('grandTotal', <?= $grandTotal ?>);
+      params.set('transactionPin', pinInput);
 
       window.location.href = `payment-success.php?${params.toString()}`;
     }
 
-    // Initialize
-    renderPaymentMethods();
+    // Initialize everything
+    window.onload = function() {
+      renderPaymentMethods();
+      setupPinToggle();
+    };
   </script>
 </body>
 </html>
