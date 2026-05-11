@@ -10,13 +10,13 @@ if (!isset($_SESSION['admin_logged_in']) && !isset($_SESSION['is_admin'])) {
 include('mysql-connect.php');
 
 // Fetch Users
-$users = mysqli_query($conn, "SELECT * FROM usertb ORDER BY UserID DESC");
+$users = mysqli_query($conn, "SELECT * FROM usertb ORDER BY UserID");
 
 // Fetch Orders with more details
 $orders = mysqli_query($conn, "SELECT o.*, u.FullName, u.Email 
                                FROM ordertb o 
                                LEFT JOIN usertb u ON o.UserID = u.UserID 
-                               ORDER BY o.TicketID DESC");
+                               ORDER BY o.TicketID");
 ?>
 
 <!DOCTYPE html>
