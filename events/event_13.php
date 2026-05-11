@@ -8,7 +8,7 @@ $event = [
     "type"        => "Festival",
     "date"        => "February 20, 2027",
     "location"    => "Mall of Asia Arena",
-    "price"       => "₱1,500",
+    "price"       => "₱2,880",
     "images"      => [
         "Images/MikuExpo.jpg",
         "Images/mikupic.png",
