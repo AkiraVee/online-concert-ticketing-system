@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 // event-details.php
 
 error_reporting(E_ALL);
@@ -328,11 +330,11 @@ function switchImage(i) {
 }
 
 function openModal() {
-  if (localStorage.getItem("userLoggedIn") !== "true") {
+  <?php if (!isset($_SESSION['UserID'])): ?>
     alert("Please log in first to purchase tickets.");
     window.location.href = "login.php";
     return;
-  }
+  <?php endif; ?>
 
   const e = state.event;
   const tier = e.tiers[state.selectedTier];

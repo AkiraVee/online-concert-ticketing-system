@@ -4,7 +4,11 @@ session_start();
 
 // Already logged in? Go home.
 if (isset($_SESSION['UserID'])) {
-    header("Location: profile.php");
+    if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true) {
+        header("Location: admin.php");
+    } else {
+        header("Location: profile.php");
+    }
     exit();
 }
 
@@ -29,9 +33,18 @@ if (isset($_POST['submit'])) {
             $_SESSION['FullName'] = $row['FullName'];
             $_SESSION['Email']    = $row['Email'];
 
-            mysqli_close($conn);
-            header("Location: profile.php");
-            exit();
+            if (strtolower($row['Email']) === 'admin@absolutecinema.com') {
+                $_SESSION['is_admin'] = true;
+                mysqli_close($conn);
+                header("Location: admin.php");
+                exit();
+            } 
+            // Regular user
+            else {
+                mysqli_close($conn);
+                header("Location: profile.php");
+                exit();
+            }
         } else {
             $error = 'The email address and/or password you entered is incorrect.';
         }
@@ -117,10 +130,19 @@ if (isset($_POST['submit'])) {
           </div>
         </form>
 
-        <div class="mt-8 text-center">
+                <div class="mt-8 text-center">
           <p class="text-zinc-400">
             Don't have an account? 
             <a href="signup.php" class="text-violet-400 hover:text-violet-300 font-medium">Sign up</a>
+          </p>
+          
+          <!-- NEW: Admin Login Button -->
+          <p class="mt-6 pt-6 border-t border-zinc-800">
+            <a href="admin-login.php" 
+               class="inline-flex items-center gap-2 text-xs text-violet-400 hover:text-violet-300">
+              <i class="fa-solid fa-shield-halved"></i>
+              Admin Login
+            </a>
           </p>
         </div>
       </div>

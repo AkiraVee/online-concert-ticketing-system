@@ -1,6 +1,8 @@
 <?php
 // payment-success.php
 
+session_start();
+
 // Get all data from URL parameters
 $eventTitle     = isset($_GET['eventTitle']) ? htmlspecialchars($_GET['eventTitle']) : 'Untitled Event';
 $eventDate      = isset($_GET['date']) ? htmlspecialchars($_GET['date']) : 'Date not available';
@@ -9,14 +11,30 @@ $tier           = isset($_GET['tier']) ? htmlspecialchars($_GET['tier']) : 'Gene
 $quantity       = max(1, (int)($_GET['quantity'] ?? 1));
 $total          = max(0, (int)($_GET['total'] ?? 0));
 $paymentMethod  = isset($_GET['paymentMethod']) ? htmlspecialchars($_GET['paymentMethod']) : 'GCash';
+$transactionPin = isset($_GET['transactionPin']) ? htmlspecialchars($_GET['transactionPin']) : 'N/A';
 
 // Calculations
 $subtotal       = $total;
 $serviceFee     = round($subtotal * 0.08);
 $grandTotal     = $subtotal + $serviceFee;
 
-// Generate a fake Order ID
+// Generate Order ID
 $orderID = "AC-" . date("Y") . "-" . rand(10000, 99999);
+
+// Save order to DB
+if (isset($_SESSION['UserID'])) {
+    include('mysql-connect.php');
+
+    $userID = $_SESSION['UserID'];
+    $rawDate = $_GET['date'] ?? '';
+    $parsedDate = date('Y-m-d', strtotime($rawDate));
+
+ $insertQuery = "insert into ordertb (UserID, EventTitle, SeatLocation, EventDate,  TicketQuantity, TotalPrice, TransactionPin, PurchaseDate, EventLocation, PaymentMethod)
+            values ($userID, '$eventTitle', '$tier', '$parsedDate', '$quantity', '$grandTotal', '$transactionPin', NOW(), '$eventLocation', '$paymentMethod')";
+
+    @mysqli_query($conn, $insertQuery);
+    mysqli_close($conn);
+}
 ?>
 
 <!DOCTYPE html>

@@ -1,30 +1,27 @@
 <?php
 session_start();
 
-// Auth guard - redirect to login if not logged in
 if (!isset($_SESSION['UserID'])) {
     header("Location: login.php");
     exit();
 }
 
-// Fetch user data from DB
 include('mysql-connect.php');
 
 $userID = $_SESSION['UserID'];
-$query = "SELECT FullName, Email, Birthdate, Age, ContactNumber FROM usertb WHERE UserID='$userID'";
-$result = @mysqli_query($conn, $query);
-$user = mysqli_fetch_array($result);
 
-mysqli_close($conn);
+// Fetch user info
+$userQuery = "SELECT FullName, Email, Birthdate, Age, ContactNumber FROM usertb WHERE UserID='$userID'";
+$userResult = mysqli_query($conn, $userQuery);
+$user = mysqli_fetch_assoc($userResult);
 
-$fullName      = $user['FullName'] ?? 'Unknown';
-$email         = $user['Email'] ?? '';
-$birthdate     = $user['Birthdate'] ?? '';
-$age           = $user['Age'] ?? '--';
-$contactNumber = $user['ContactNumber'] ?? '--';
+// Fetch user's purchased tickets
+$ticketsQuery = "SELECT * FROM ordertb 
+                 WHERE UserID = '$userID' 
+                 ORDER BY PurchaseDate DESC, TicketID DESC";
+$ticketsResult = mysqli_query($conn, $ticketsQuery);
 
-// Format birthdate
-$formattedBirthdate = $birthdate ? date("F d, Y", strtotime($birthdate)) : '--';
+$fullName = $user['FullName'] ?? 'Unknown';
 ?>
 
 <!DOCTYPE html>
@@ -46,19 +43,15 @@ $formattedBirthdate = $birthdate ? date("F d, Y", strtotime($birthdate)) : '--';
         <i class="fa-solid fa-ticket text-violet-400 text-xl"></i>
         <span class="text-lg font-semibold tracking-tight">Absolute Cinema</span>
       </div>
-      <div class="hidden md:flex items-center gap-6 text-sm text-zinc-400">
+      <div class="flex items-center gap-6 text-sm">
         <a href="homepage.php" class="hover:text-white">Home</a>
-      </div>
-      <div class="flex items-center gap-3">
-        <a href="logout.php"
-          class="text-sm text-zinc-400 hover:text-white px-4 py-1.5 flex items-center gap-2">
+        <a href="logout.php" class="text-red-400 hover:text-red-500 flex items-center gap-2">
           <i class="fa-solid fa-right-from-bracket"></i> Logout
         </a>
       </div>
     </div>
   </nav>
 
-  <!-- Profile Content -->
   <div class="max-w-6xl mx-auto px-6 py-12">
     <div class="flex flex-col md:flex-row gap-10">
 
@@ -69,35 +62,18 @@ $formattedBirthdate = $birthdate ? date("F d, Y", strtotime($birthdate)) : '--';
             👤
           </div>
           <h2 class="text-2xl font-semibold text-white mb-1"><?= htmlspecialchars($fullName) ?></h2>
-          <p class="text-zinc-400"><?= htmlspecialchars($email) ?></p>
+          <p class="text-zinc-400"><?= htmlspecialchars($user['Email'] ?? '') ?></p>
 
           <div class="mt-8 pt-6 border-t border-zinc-800 text-left space-y-4 text-sm">
             <div class="flex justify-between">
               <span class="text-zinc-500">Age</span>
-              <span class="text-zinc-300"><?= htmlspecialchars($age) ?></span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-zinc-500">Birthday</span>
-              <span class="text-zinc-300"><?= htmlspecialchars($formattedBirthdate) ?></span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-zinc-500">Contact</span>
-              <span class="text-zinc-300"><?= htmlspecialchars($contactNumber) ?></span>
+              <span class="text-zinc-300"><?= $user['Age'] ?? '--' ?></span>
             </div>
             <div class="flex justify-between">
               <span class="text-zinc-500">Tickets Purchased</span>
-              <span class="text-violet-400 font-medium">7</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-zinc-500">Favorite Category</span>
-              <span class="text-zinc-300">Concerts</span>
+              <span class="text-violet-400 font-medium"><?= mysqli_num_rows($ticketsResult) ?></span>
             </div>
           </div>
-
-          <button onclick="editProfile()"
-            class="mt-8 w-full border border-zinc-700 hover:border-violet-500 text-white py-3 rounded-2xl transition-colors">
-            Edit Profile
-          </button>
         </div>
       </div>
 
@@ -105,91 +81,112 @@ $formattedBirthdate = $birthdate ? date("F d, Y", strtotime($birthdate)) : '--';
       <div class="flex-1">
         <h1 class="text-4xl text-white mb-8">My Profile</h1>
 
-        <!-- Upcoming Tickets -->
+        <!-- Upcoming Tickets Section (Kept as requested) -->
         <div class="mb-12">
           <h3 class="text-xl font-semibold mb-6 flex items-center gap-3">
             <i class="fa-solid fa-ticket text-violet-400"></i> Upcoming Tickets
           </h3>
           <div id="upcomingTickets" class="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <!-- Populated by JS -->
+            <!-- Static upcoming tickets (you can make dynamic later) -->
           </div>
         </div>
 
-        <!-- Past Events -->
+        <!-- My Purchased Tickets -->
         <div>
           <h3 class="text-xl font-semibold mb-6 flex items-center gap-3">
-            <i class="fa-solid fa-clock-rotate-left text-zinc-500"></i> Past Events
+            <i class="fa-solid fa-clock-rotate-left text-emerald-400"></i> My Purchased Tickets
           </h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 opacity-75">
-            <div class="card bg-zinc-900 border border-zinc-800 rounded-2xl p-5 flex gap-5">
-              <img src="https://picsum.photos/id/1015/120/120" class="w-24 h-24 object-cover rounded-xl" />
-              <div>
-                <h4 class="font-medium">Taylor Swift | The Eras Tour</h4>
-                <p class="text-sm text-zinc-500 mt-1">May 20, 2026 • Philippine Arena</p>
-                <span class="text-xs text-emerald-400 mt-3 inline-block">Attended</span>
-              </div>
+
+          <?php if (mysqli_num_rows($ticketsResult) > 0): ?>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <?php while ($ticket = mysqli_fetch_assoc($ticketsResult)): ?>
+                <div class="bg-zinc-900 border border-zinc-700 rounded-3xl overflow-hidden">
+                  <div class="p-6">
+                    <h4 class="font-semibold text-lg text-white mb-3"><?= htmlspecialchars($ticket['EventTitle']) ?></h4>
+                    
+                    <div class="space-y-3 text-sm">
+                      <div class="flex justify-between">
+                        <span class="text-zinc-500">Event Date</span>
+                        <span class="text-white"><?= $ticket['EventDate'] ?></span>
+                      </div>
+                      <div class="flex justify-between">
+                        <span class="text-zinc-500">Location</span>
+                        <span class="text-white"><?= htmlspecialchars($ticket['EventLocation']) ?></span>
+                      </div>
+                      <div class="flex justify-between">
+                        <span class="text-zinc-500">Tier</span>
+                        <span class="text-white"><?= htmlspecialchars($ticket['SeatLocation']) ?></span>
+                      </div>
+                      <div class="flex justify-between">
+                        <span class="text-zinc-500">Quantity</span>
+                        <span class="text-white"><?= $ticket['TicketQuantity'] ?> ticket(s)</span>
+                      </div>
+                      <div class="flex justify-between pt-4 border-t border-zinc-700">
+                        <span class="text-zinc-500">Total Paid</span>
+                        <span class="text-violet-400 font-bold">₱<?= number_format($ticket['TotalPrice']) ?></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="bg-zinc-800 px-6 py-4 flex justify-between items-center">
+                    <span class="text-emerald-400 text-sm flex items-center gap-1">
+                      <i class="fa-solid fa-circle-check"></i> Confirmed
+                    </span>
+                    <button onclick="alert('🎟️ E-Ticket for Order #<?= $ticket['TicketID'] ?>')" 
+                      class="text-xs bg-violet-600 hover:bg-violet-500 px-6 py-2.5 rounded-xl transition">
+                      View E-Ticket
+                    </button>
+                  </div>
+                </div>
+              <?php endwhile; ?>
             </div>
-          </div>
+          <?php else: ?>
+            <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-12 text-center">
+              <i class="fa-solid fa-ticket text-6xl text-zinc-600 mb-4"></i>
+              <h3 class="text-xl text-zinc-400">No tickets purchased yet</h3>
+              <a href="homepage.php" class="mt-6 inline-block bg-violet-600 hover:bg-violet-500 px-8 py-3 rounded-2xl text-white">
+                Browse & Buy Tickets
+              </a>
+            </div>
+          <?php endif; ?>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer class="border-t border-zinc-800 py-8 text-center text-zinc-600 text-sm">
-    <div class="flex justify-center items-center gap-2 text-zinc-400 mb-3">
-      <i class="fa-solid fa-ticket text-violet-400"></i>
-      <span class="font-medium">Absolute Cinema</span>
-    </div>
-    <div class="flex justify-center gap-6 text-xs mb-4">
-      <a href="faqs.php" class="hover:text-zinc-300">FAQs</a>
-      <a href="https://www.facebook.com/jersey1705" target="_blank" class="hover:text-zinc-300">Contact</a>
-      <a href="terms.php" class="hover:text-zinc-300">Terms</a>
-    </div>
-    <p>© 2026 Absolute Cinema. All rights reserved.</p>
-  </footer>
-
   <script>
+    // Upcoming Tickets (Static Demo)
     const upcoming = [
       {
         title: "Coldplay World Tour",
         date: "July 5, 2026",
-        location: "MOA Arena, Pasay",
-        price: "₱6,000",
-        image: "https://picsum.photos/id/870/400/250",
+        location: "Philippine Arena",
+        price: "₱6,000"
       },
       {
         title: "PBA: Ginebra vs TNT",
         date: "May 15, 2026",
         location: "Smart Araneta Coliseum",
-        price: "₱800",
-        image: "https://picsum.photos/id/201/400/250",
-      },
+        price: "₱800"
+      }
     ];
 
     const container = document.getElementById("upcomingTickets");
     container.innerHTML = upcoming.map(ticket => `
-      <div class="card bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden">
-        <img src="${ticket.image}" class="w-full h-40 object-cover">
-        <div class="p-5">
-          <h4 class="font-semibold leading-tight mb-2">${ticket.title}</h4>
-          <p class="text-xs text-zinc-500 mb-4">${ticket.date} • ${ticket.location}</p>
-          <div class="flex justify-between items-center">
-            <span class="text-violet-400 font-semibold">${ticket.price}</span>
-            <button onclick="viewTicket()"
-              class="text-xs bg-violet-600 hover:bg-violet-500 px-5 py-2 rounded-xl">View Ticket</button>
-          </div>
+      <div class="bg-zinc-900 border border-zinc-700 rounded-3xl p-6">
+        <h4 class="font-semibold mb-2">${ticket.title}</h4>
+        <p class="text-sm text-zinc-400">${ticket.date}</p>
+        <p class="text-sm text-zinc-500">${ticket.location}</p>
+        <div class="mt-4 flex justify-between items-center">
+          <span class="text-violet-400 font-bold">${ticket.price}</span>
+          <button class="text-xs bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded-xl">View Ticket</button>
         </div>
       </div>
     `).join("");
-
-    function viewTicket() {
-      alert("Ticket details would open here (Demo)");
-    }
-
-    function editProfile() {
-      alert("Profile editing feature coming soon! ✨");
-    }
   </script>
+
+  <!-- Footer -->
+  <footer class="border-t border-zinc-800 py-8 text-center text-zinc-600 text-sm">
+    <p>© 2026 Absolute Cinema. All rights reserved.</p>
+  </footer>
 </body>
 </html>
