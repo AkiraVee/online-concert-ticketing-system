@@ -31,7 +31,7 @@ session_start();
       </div>
       <div class="flex items-center gap-3">
       <?php if (isset($_SESSION['UserID'])): ?>
-        <a href="logout.php" class="text-sm text-zinc-400 hover:text-white px-3 py-1.5 flex items-center gap-2">
+        <a href="logout.php" class="text-red-400 hover:text-red-500 flex items-center gap-2">
           <i class="fa-solid fa-right-from-bracket"></i> Logout
         </a>
       <?php else: ?>

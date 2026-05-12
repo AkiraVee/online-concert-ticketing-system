@@ -314,7 +314,13 @@ $fullName = $user['FullName'] ?? 'Unknown';
             <input type="text" name="contact" value="<?= htmlspecialchars($user['ContactNumber'] ?? '') ?>" 
                    class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-4 py-3 focus:outline-none focus:border-violet-500">
           </div>
-          
+
+          <div>
+            <label class="block text-zinc-400 text-sm mb-1">Birthdate</label>
+            <input type="date" name="birthdate" value="<?= htmlspecialchars($user['Birthdate'] ?? '') ?>" 
+                   class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-4 py-3 focus:outline-none focus:border-violet-500">
+          </div>
+
           <div class="flex gap-4 pt-6">
             <button type="button" onclick="closeEditModal()" 
               class="flex-1 py-3 rounded-2xl border border-zinc-700 hover:bg-zinc-800 transition">
