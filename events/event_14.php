@@ -6,9 +6,10 @@ $event = [
     "title"       => "Ado Live in Manila",
     "category"    => "concert",
     "type"        => "Concert",
-    "date"        => "March 10, 2027",
+    "date"        => "March 11, 2027",
     "location"    => "Philippine Arena, Bulacan",
     "price"       => "₱2,500",
+    "duration"    => "2 hours",
     "images"      => [
         "Images/adoposter.png",
         "Images/adopic1.png",
@@ -17,7 +18,7 @@ $event = [
     ],
     "description" => "Japan's most powerful voice, Ado, makes her Philippine debut in what promises to be an electrifying performance.",
     "dates" => [
-        ["label" => "Wed, Mar 10", "time" => "8:00 PM"],
+        ["label" => "Wed, Mar 11", "time" => "8:00 PM"],
     ],
     "tiers" => [
         ["name" => "VIP PIT (Floor Standing)", "price" => 11000, "status" => "Standing", "available" => 8000, "color" => "violet"],

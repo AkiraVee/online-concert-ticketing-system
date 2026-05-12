@@ -73,9 +73,23 @@ $fullName = $user['FullName'] ?? 'Unknown';
               <span class="text-zinc-500">Tickets Purchased</span>
               <span class="text-violet-400 font-medium"><?= mysqli_num_rows($ticketsResult) ?></span>
             </div>
+            <div class="flex justify-between">
+              <span class="text-zinc-500">Contact</span>
+              <span class="text-zinc-300"><?= htmlspecialchars($user['ContactNumber'] ?? '--') ?></span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-zinc-500">Birthdate</span>
+              <span class="text-zinc-300"><?= htmlspecialchars($user['Birthdate'] ?? '--') ?></span>
+            </div>
+            <button onclick="alert('Edit profile coming soon!')" 
+              class="w-full mt-4 bg-violet-600 hover:bg-violet-500 text-white px-5 py-2 rounded-xl text-sm">
+              Edit Profile
+            </button> 
           </div>
         </div>
       </div>
+
+      
 
       <!-- Main Content -->
       <div class="flex-1">

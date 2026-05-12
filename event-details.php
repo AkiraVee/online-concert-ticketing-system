@@ -33,17 +33,6 @@ $eventJson = json_encode($event, JSON_UNESCAPED_SLASHES);
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
   <link rel="stylesheet" href="styles.css" />
   <style>
-    .tier-bar-track {
-      height: 3px;
-      background: #3f3f46;
-      border-radius: 9999px;
-      margin-top: 8px;
-    }
-    .tier-bar-fill {
-      height: 3px;
-      background: #7c3aed;
-      border-radius: 9999px;
-    }
   </style>
 </head>
 

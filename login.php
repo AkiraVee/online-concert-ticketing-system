@@ -62,11 +62,7 @@ if (isset($_POST['submit'])) {
   <title>Login - Absolute Cinema</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
-  <style>
-    @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap");
-    body { font-family: "DM Sans", sans-serif; }
-    h1, h2 { font-family: "DM Serif Display", serif; }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="bg-zinc-950 text-zinc-300 min-h-screen">
 
@@ -146,32 +142,8 @@ if (isset($_POST['submit'])) {
           </p>
         </div>
       </div>
-
-      <!-- Social Login (UI only) -->
-      <div class="mt-6">
-        <div class="relative">
-          <div class="absolute inset-0 flex items-center">
-            <div class="w-full border-t border-zinc-800"></div>
-          </div>
-          <div class="relative text-center">
-            <span class="bg-zinc-950 px-4 text-xs text-zinc-500">OR</span>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-4 mt-6">
-          <button class="flex items-center justify-center gap-3 bg-zinc-900 border border-zinc-700 hover:border-zinc-600 py-3 rounded-2xl transition-colors">
-            <i class="fa-brands fa-google text-red-500"></i>
-            <span class="text-sm">Google</span>
-          </button>
-          <button class="flex items-center justify-center gap-3 bg-zinc-900 border border-zinc-700 hover:border-zinc-600 py-3 rounded-2xl transition-colors">
-            <i class="fa-brands fa-facebook-f text-blue-500"></i>
-            <span class="text-sm">Facebook</span>
-          </button>
-        </div>
-      </div>
     </div>
   </div>
-
   <!-- Footer -->
   <footer class="border-t border-zinc-800 py-8 text-center text-zinc-600 text-sm">
     <div class="flex justify-center items-center gap-2 text-zinc-400 mb-3">
