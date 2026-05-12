@@ -146,11 +146,12 @@ if (isset($_POST['submit'])) {
               </div>
 
               <div>
-                <label class="block text-sm text-zinc-400 mb-2">Age (Must be 18+ ) </label>
+                <label class="block text-sm text-zinc-400 mb-2">Age </label>
                 <input type="number" name="age" min="18" max="100" required
                   class="form-input w-full bg-zinc-950 border border-zinc-700 rounded-2xl px-5 py-4 text-white placeholder-zinc-500 focus:outline-none"
                   placeholder="18"
                   value="<?= htmlspecialchars($_POST['age'] ?? '') ?>">
+                  <p class="text-xs text-amber-500 mt-2">Must be 18+</p>
               </div>
             </div>
 
@@ -168,7 +169,7 @@ if (isset($_POST['submit'])) {
                        placeholder="09123456789"
                        value="<?= htmlspecialchars($_POST['contactNumber'] ?? '') ?>">
               </div>
-              <p class="text-xs text-zinc-500 mt-2">Must start with 09 (11 digits)</p>
+              <p class="text-xs text-amber-500 mt-2">Must start with 09 (11 digits)</p>
             </div>
 
             <!-- Password -->
