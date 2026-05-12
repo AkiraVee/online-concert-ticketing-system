@@ -116,13 +116,13 @@ session_start();
       { id: 7, title: "Hamilton - Manila", category: "theatre", date: "August 15, 2026", location: "Newport Performing Arts Theater", price: "₱2,645", image: "Images/hamiltonposter.png", type: "Theatre" },
       { id: 8, title: "Daniel Caesar Live in Manila", category: "concert", date: "September 10, 2026", location: "Mall of Asia Arena", price: "₱2,750", image: "https://aphrodite.gmanetwork.com/entertainment/articles/1200_675_11_07-04-2026-1513_-20260407151314.jpg", type: "Concert" },
       { id: 9, title: "My Chemical Romance Reunion Tour", category: "concert", date: "October 5, 2026", location: "Philippine Arena, Bulacan", price: "₱2,120", image: "Images/mcrposter.png", type: "Concert" },
-      { id: 10, title: "Bruno Mars 24K Magic Tour", category: "concert", date: "November 20, 2026", location: "Philippine Arena, Bulacan", price: "₱2,500", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKOSUoBKa_EU2RjXxdYvmpNWacBQHSG-XyGw&s", type: "Concert" },
-      { id: 11, title: "Epic: The Musical - Manila", category: "theatre", date: "December 10, 2026", location: "Newport Performing Arts Theater", price: "₱1,545", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLyeZHMjAKjedyosMPPtKMDEkhXOUGP-FKLQ&s", type: "Theatre" },
-      { id: 12, title: "The 1975 Live in Manila", category: "concert", date: "January 15, 2027", location: "MOA Arena, Pasay", price: "₱1,975", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLuM0qZr-iQVhiWeomcFN_JFBMxGoP5FTiow&s", type: "Concert" },
+      { id: 10, title: "Bruno Mars 24K Magic Tour", category: "concert", date: "November 20, 2026", location: "Philippine Arena, Bulacan", price: "₱2,750", image: "Images/marsposter.png", type: "Concert" },
+      { id: 11, title: "Epic: The Musical - Manila", category: "theatre", date: "December 10, 2026", location: "Newport Performing Arts Theater", price: "₱1,545", image: "Images/poster.png", type: "Theatre" },
+      { id: 12, title: "The 1975 Live in Manila", category: "concert", date: "January 15, 2027", location: "MOA Arena, Pasay", price: "₱1,975", image: "Images/1975poster.png", type: "Concert" },
       { id: 13, title: "Hatsune Miku Expo 2026", category: "festival", date: "February 20, 2027", location: "Mall of Asia Arena", price: "₱2,880", image: "Images/MikuExpo.jpg", type: "Festival" },
       { id: 14, title: "Ado Live in Manila", category: "concert", date: "March 10, 2027", location: "Philippine Arena, Bulacan", price: "₱2,500", image: "Images/adohomepage.png", type: "Concert" },
       { id: 15, title: "Laufey A Matter of Time Tour", category: "concert", date: "April 5, 2027", location: "MOA Arena, Pasay", price: "₱2,500", image: "Images/laufey_30042026120056.jpg", type: "Concert" },
-      { id: 16, title: "The Greatest Showman Live Experience", category: "theatre", date: "May 20, 2027", location: "Newport Performing Arts Theater", price: "₱1,500", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqkgJb8uKCbWDDTQnM53jlsgiNOc-2gjbkew&s", type: "Theatre" }
+      { id: 16, title: "The Greatest Showman Live Experience", category: "theatre", date: "May 20, 2027", location: "Newport Performing Arts Theater", price: "₱1,500", image: "Images/greathomepage.png", type: "Theatre" }
     ];
 
     let currentFilter = "all";

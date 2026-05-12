@@ -12,8 +12,8 @@ $event = [
     "images"      => [
         "Images/adoposter.png",
         "Images/adopic1.png",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8sdipMzzOIiULnbYU9gkS0e72Nw4apkj5lg&s",
-        "https://aphrodite.gmanetwork.com/entertainment/articles/900_675_3_-20250509142608.jpg",
+        "Images/adopic2.jpg",
+        "Images/adoseatplan.jpg",
     ],
     "description" => "Japan's most powerful voice, Ado, makes her Philippine debut in what promises to be an electrifying performance.",
     "dates" => [

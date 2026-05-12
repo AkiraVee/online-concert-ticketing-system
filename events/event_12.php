@@ -10,14 +10,14 @@ $event = [
     "location"    => "MOA Arena, Pasay",
     "price"       => "₱1,975",
     "images"      => [
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLuM0qZr-iQVhiWeomcFN_JFBMxGoP5FTiow&s",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1savZ0blaQBem92gJaSjeuoInGrt8WjaRCA&s",
-        "https://od2-image-api.abs-cbn.com/prod/20241025161052/7f87a45b6eebf670c62a8c1397c3dfcb3d18e2b64651b08c07ae737321bd1e8f.jpg?w=1200&h=800",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnS4ea81J7kQQWrtBr40i1JmJSErqfTXU85A&s",
+        "Images/1975poster.png",
+        "Images/1975 (1).webp",
+        "Images/pic21975.png",
+        "Images/1975seatplan.png",
     ],
     "description" => "The 1975 bring their unique blend of pop, rock, and electronic music to Manila for an unforgettable night.",
     "dates" => [
-        ["label" => "Sat, Jan 18", "time" => "8:00 PM"],
+        ["label" => "Fri, Jan 15", "time" => "8:00 PM"],
     ],
     "tiers" => [
         ["name" => "SVIP SEATED", "price" => 10340, "status" => "Reserved Seating", "available" => 600, "color" => "violet"],
