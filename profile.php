@@ -278,8 +278,6 @@ $fullName = $user['FullName'] ?? 'Unknown';
   </div>
 </div>
 
-
-
   <!-- ====================== EDIT PROFILE MODAL ====================== -->
   <div id="editModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[100]">
     <div class="bg-zinc-900 border border-zinc-700 rounded-3xl w-full max-w-md mx-4 overflow-hidden">
