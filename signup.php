@@ -146,10 +146,10 @@ if (isset($_POST['submit'])) {
               </div>
 
               <div>
-                <label class="block text-sm text-zinc-400 mb-2">Age</label>
-                <input type="number" name="age" min="13" max="100" required
+                <label class="block text-sm text-zinc-400 mb-2">Age (Must be 18+ ) </label>
+                <input type="number" name="age" min="18" max="100" required
                   class="form-input w-full bg-zinc-950 border border-zinc-700 rounded-2xl px-5 py-4 text-white placeholder-zinc-500 focus:outline-none"
-                  placeholder="25"
+                  placeholder="18"
                   value="<?= htmlspecialchars($_POST['age'] ?? '') ?>">
               </div>
             </div>
