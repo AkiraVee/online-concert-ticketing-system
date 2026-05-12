@@ -10,16 +10,41 @@ include('mysql-connect.php');
 
 $userID = $_SESSION['UserID'];
 
-// Fetch user info
-$userQuery = "SELECT FullName, Email, Birthdate, Age, ContactNumber FROM usertb WHERE UserID='$userID'";
-$userResult = mysqli_query($conn, $userQuery);
-$user = mysqli_fetch_assoc($userResult);
+// ====================== HANDLE PROFILE UPDATE ======================
+if (isset($_POST['update_profile'])) {
+    $fullName   = trim($_POST['fullName']);
+    $email      = trim($_POST['email']);
+    $contact    = trim($_POST['contact']);
+    $birthdate  = $_POST['birthdate'];
 
-// Fetch user's purchased tickets
-$ticketsQuery = "SELECT * FROM ordertb 
-                 WHERE UserID = '$userID' 
-                 ORDER BY PurchaseDate DESC, TicketID DESC";
-$ticketsResult = mysqli_query($conn, $ticketsQuery);
+    if (!empty($fullName) && !empty($email)) {
+        $stmt = $conn->prepare("UPDATE usertb SET FullName=?, Email=?, ContactNumber=?, Birthdate=? WHERE UserID=?");
+        $stmt->bind_param("ssssi", $fullName, $email, $contact, $birthdate, $userID);
+        
+        if ($stmt->execute()) {
+            $success = "Profile updated successfully!";
+        } else {
+            $error = "Failed to update profile. Please try again.";
+        }
+        $stmt->close();
+    } else {
+        $error = "Full Name and Email are required.";
+    }
+}
+
+// ====================== FETCH USER DATA ======================
+$stmt = $conn->prepare("SELECT FullName, Email, Birthdate, Age, ContactNumber FROM usertb WHERE UserID = ?");
+$stmt->bind_param("i", $userID);
+$stmt->execute();
+$user = $stmt->get_result()->fetch_assoc();
+$stmt->close();
+
+// Fetch user's tickets
+$stmt = $conn->prepare("SELECT * FROM ordertb WHERE UserID = ? ORDER BY PurchaseDate DESC, TicketID DESC");
+$stmt->bind_param("i", $userID);
+$stmt->execute();
+$ticketsResult = $stmt->get_result();
+$tickets = $ticketsResult->fetch_all(MYSQLI_ASSOC);
 
 $fullName = $user['FullName'] ?? 'Unknown';
 ?>
@@ -36,7 +61,7 @@ $fullName = $user['FullName'] ?? 'Unknown';
 </head>
 <body class="bg-zinc-950 text-zinc-300">
 
-  <!-- Nav -->
+  <!-- Navigation -->
   <nav class="border-b border-zinc-800 sticky top-0 z-50 bg-zinc-950/90 backdrop-blur">
     <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-2 text-white">
@@ -71,7 +96,7 @@ $fullName = $user['FullName'] ?? 'Unknown';
             </div>
             <div class="flex justify-between">
               <span class="text-zinc-500">Tickets Purchased</span>
-              <span class="text-violet-400 font-medium"><?= mysqli_num_rows($ticketsResult) ?></span>
+              <span class="text-violet-400 font-medium"><?= count($tickets) ?></span>
             </div>
             <div class="flex justify-between">
               <span class="text-zinc-500">Contact</span>
@@ -81,15 +106,14 @@ $fullName = $user['FullName'] ?? 'Unknown';
               <span class="text-zinc-500">Birthdate</span>
               <span class="text-zinc-300"><?= htmlspecialchars($user['Birthdate'] ?? '--') ?></span>
             </div>
-            <button onclick="alert('Edit profile coming soon!')" 
-              class="w-full mt-4 bg-violet-600 hover:bg-violet-500 text-white px-5 py-2 rounded-xl text-sm">
-              Edit Profile
-            </button> 
+
+            <button onclick="openEditModal()" 
+              class="w-full mt-6 bg-violet-600 hover:bg-violet-500 text-white px-5 py-3 rounded-2xl text-sm font-medium transition">
+              ✏️ Edit Profile
+            </button>
           </div>
         </div>
       </div>
-
-      
 
       <!-- Main Content -->
       <div class="flex-1">
@@ -103,11 +127,11 @@ $fullName = $user['FullName'] ?? 'Unknown';
           </button>
           <button onclick="showTab(1)" id="tab1" 
             class="pb-4 text-zinc-400 hover:text-white border-b-2 border-transparent transition-colors flex items-center gap-2">
-            <i class="fa-solid fa-ticket"></i> View My Tickets
+            <i class="fa-solid fa-clock-rotate-left"></i> My Tickets
           </button>
         </div>
 
-        <!-- Tab 1: Upcoming Tickets -->
+        <!-- Tab 0: Upcoming Tickets -->
         <div id="content0">
           <h3 class="text-xl font-semibold mb-6 flex items-center gap-3">
             <i class="fa-solid fa-ticket text-violet-400"></i> Upcoming Tickets
@@ -115,15 +139,15 @@ $fullName = $user['FullName'] ?? 'Unknown';
           <div id="upcomingTickets" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
         </div>
 
-        <!-- Tab 2: My Purchased Tickets -->
+        <!-- Tab 1: My Purchased Tickets -->
         <div id="content1" class="hidden">
           <h3 class="text-xl font-semibold mb-6 flex items-center gap-3">
             <i class="fa-solid fa-clock-rotate-left text-emerald-400"></i> My Purchased Tickets
           </h3>
 
-          <?php if (mysqli_num_rows($ticketsResult) > 0): ?>
+          <?php if (count($tickets) > 0): ?>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <?php while ($ticket = mysqli_fetch_assoc($ticketsResult)): ?>
+              <?php foreach ($tickets as $ticket): ?>
                 <div class="bg-zinc-900 border border-zinc-700 rounded-3xl overflow-hidden">
                   <div class="p-6">
                     <h4 class="font-semibold text-lg text-white"><?= htmlspecialchars($ticket['EventTitle']) ?></h4>
@@ -152,7 +176,7 @@ $fullName = $user['FullName'] ?? 'Unknown';
                     </button>
                   </div>
                 </div>
-              <?php endwhile; ?>
+              <?php endforeach; ?>
             </div>
           <?php else: ?>
             <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-12 text-center">
@@ -168,6 +192,64 @@ $fullName = $user['FullName'] ?? 'Unknown';
     </div>
   </div>
 
+  <!-- ====================== EDIT PROFILE MODAL ====================== -->
+  <div id="editModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[100]">
+    <div class="bg-zinc-900 border border-zinc-700 rounded-3xl w-full max-w-md mx-4 overflow-hidden">
+      <div class="p-8">
+        <h2 class="text-2xl font-semibold text-white mb-6">Edit Profile</h2>
+
+        <?php if (isset($success)): ?>
+          <div class="bg-green-500/10 border border-green-500 text-green-400 p-4 rounded-2xl mb-6">
+            <?= $success ?>
+          </div>
+        <?php endif; ?>
+
+        <?php if (isset($error)): ?>
+          <div class="bg-red-500/10 border border-red-500 text-red-400 p-4 rounded-2xl mb-6">
+            <?= $error ?>
+          </div>
+        <?php endif; ?>
+
+        <form method="POST" class="space-y-5">
+          <div>
+            <label class="block text-zinc-400 text-sm mb-1">Full Name</label>
+            <input type="text" name="fullName" value="<?= htmlspecialchars($user['FullName'] ?? '') ?>" 
+                   class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-4 py-3 focus:outline-none focus:border-violet-500" required>
+          </div>
+
+          <div>
+            <label class="block text-zinc-400 text-sm mb-1">Email Address</label>
+            <input type="email" name="email" value="<?= htmlspecialchars($user['Email'] ?? '') ?>" 
+                   class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-4 py-3 focus:outline-none focus:border-violet-500" required>
+          </div>
+
+          <div>
+            <label class="block text-zinc-400 text-sm mb-1">Contact Number</label>
+            <input type="text" name="contact" value="<?= htmlspecialchars($user['ContactNumber'] ?? '') ?>" 
+                   class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-4 py-3 focus:outline-none focus:border-violet-500">
+          </div>
+
+          <div>
+            <label class="block text-zinc-400 text-sm mb-1">Birthdate</label>
+            <input type="date" name="birthdate" value="<?= htmlspecialchars($user['Birthdate'] ?? '') ?>" 
+                   class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-4 py-3 focus:outline-none focus:border-violet-500">
+          </div>
+
+          <div class="flex gap-4 pt-6">
+            <button type="button" onclick="closeEditModal()" 
+              class="flex-1 py-3 rounded-2xl border border-zinc-700 hover:bg-zinc-800 transition">
+              Cancel
+            </button>
+            <button type="submit" name="update_profile" 
+              class="flex-1 py-3 bg-violet-600 hover:bg-violet-500 rounded-2xl transition">
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <script>
     function showTab(n) {
       document.getElementById('content0').classList.toggle('hidden', n !== 0);
@@ -175,11 +257,28 @@ $fullName = $user['FullName'] ?? 'Unknown';
       
       document.getElementById('tab0').classList.toggle('border-violet-500', n === 0);
       document.getElementById('tab0').classList.toggle('text-white', n === 0);
+      document.getElementById('tab0').classList.toggle('text-zinc-400', n !== 0);
+      
       document.getElementById('tab1').classList.toggle('border-violet-500', n === 1);
       document.getElementById('tab1').classList.toggle('text-white', n === 1);
+      document.getElementById('tab1').classList.toggle('text-zinc-400', n !== 1);
     }
 
-    // Upcoming Tickets
+    // Edit Modal Functions
+    function openEditModal() {
+      document.getElementById('editModal').classList.remove('hidden');
+    }
+
+    function closeEditModal() {
+      document.getElementById('editModal').classList.add('hidden');
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('editModal').addEventListener('click', function(e) {
+      if (e.target === this) closeEditModal();
+    });
+
+    // Upcoming Tickets (Hardcoded for now)
     const upcoming = [
       { title: "Coldplay World Tour", date: "July 5, 2026", location: "MOA Arena", price: "₱6,000" },
       { title: "PBA: Ginebra vs TNT", date: "May 15, 2026", location: "Smart Araneta", price: "₱800" }
@@ -189,9 +288,9 @@ $fullName = $user['FullName'] ?? 'Unknown';
     container.innerHTML = upcoming.map(t => `
       <div class="bg-zinc-900 border border-zinc-700 rounded-3xl p-6">
         <h4 class="font-semibold">${t.title}</h4>
-        <p class="text-sm text-zinc-400">${t.date}</p>
+        <p class="text-sm text-zinc-400 mt-1">${t.date}</p>
         <p class="text-sm text-zinc-500">${t.location}</p>
-        <p class="text-violet-400 font-bold mt-3">${t.price}</p>
+        <p class="text-violet-400 font-bold mt-4">${t.price}</p>
       </div>
     `).join('');
   </script>
