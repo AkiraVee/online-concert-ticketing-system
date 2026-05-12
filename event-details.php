@@ -41,7 +41,7 @@ $eventJson = json_encode($event, JSON_UNESCAPED_SLASHES);
   <!-- Nav -->
   <nav class="border-b border-zinc-800 sticky top-0 z-50 bg-zinc-950/90 backdrop-blur">
     <div class="max-w-6xl mx-auto px-6 py-4 flex items-center gap-4">
-      <a href="homepage.php" class="flex items-center gap-2 text-white hover:text-violet-400 transition-colors">
+      <a href="index.php" class="flex items-center gap-2 text-white hover:text-violet-400 transition-colors">
         <i class="fa-solid fa-arrow-left text-sm"></i>
         <span class="text-sm">Back</span>
       </a>

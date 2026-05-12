@@ -36,7 +36,7 @@ $grandTotal     = $subtotal + $serviceFee;
         <i class="fa-solid fa-ticket text-violet-400 text-xl"></i>
         <span class="text-lg font-semibold tracking-tight">Absolute Cinema</span>
       </div>
-      <a href="homepage.php" class="text-sm text-zinc-400 hover:text-white">← Back</a>
+      <a href="index.php" class="text-sm text-zinc-400 hover:text-white">← Back</a>
     </div>
   </nav>
 

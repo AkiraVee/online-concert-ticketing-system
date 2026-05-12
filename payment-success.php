@@ -74,7 +74,7 @@ mysqli_close($conn);
         <i class="fa-solid fa-ticket text-violet-400 text-xl"></i>
         <span class="text-lg font-semibold tracking-tight">Absolute Cinema</span>
       </div>
-      <a href="homepage.php" class="text-sm text-zinc-400 hover:text-white">← Back to Home</a>
+      <a href="index.php" class="text-sm text-zinc-400 hover:text-white">← Back to Home</a>
     </div>
   </nav>
 

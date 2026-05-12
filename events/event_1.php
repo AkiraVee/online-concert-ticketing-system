@@ -9,7 +9,6 @@ $event = [
     "date"        => "May 20, 2026",
     "location"    => "Philippine Arena, Bulacan",
     "price"       => "₱3,500",
-    "duration"    => "3 hours",
     "images"      => [
         "https://cdn-0001.qstv.on.epicgames.com/LZGCXcoMsVIGYlcyBG/image/landscape_comp.jpeg",
         "Images/taylor-swift-1681860050.jpg",

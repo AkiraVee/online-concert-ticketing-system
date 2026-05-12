@@ -23,7 +23,7 @@
       </div>
 
       <div class="hidden md:flex items-center gap-6 text-sm text-zinc-400">
-        <a href="homepage.php" class="hover:text-white">Home</a>
+        <a href="index.php" class="hover:text-white">Home</a>
         <a href="profile.php" class="hover:text-white">My Profile</a>
       </div>
 

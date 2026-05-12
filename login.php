@@ -74,7 +74,7 @@ if (isset($_POST['submit'])) {
         <span class="text-lg font-semibold tracking-tight">Absolute Cinema</span>
       </div>
       <div class="flex items-center gap-3">
-        <a href="homepage.php" class="text-sm text-zinc-400 hover:text-white">← Back to Home</a>
+        <a href="index.php" class="text-sm text-zinc-400 hover:text-white">← Back to Home</a>
       </div>
     </div>
   </nav>

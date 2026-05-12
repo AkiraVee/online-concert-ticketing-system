@@ -45,7 +45,7 @@ mysqli_close($conn);
         <span class="text-lg font-semibold tracking-tight">Absolute Cinema</span>
       </div>
       <div class="flex items-center gap-6 text-sm">
-        <a href="homepage.php" class="hover:text-white">Home</a>
+        <a href="index.php" class="hover:text-white">Home</a>
         <a href="logout.php" class="text-red-400 hover:text-red-500 flex items-center gap-2">
           <i class="fa-solid fa-right-from-bracket"></i> Logout
         </a>
@@ -142,7 +142,7 @@ mysqli_close($conn);
               <i class="fa-solid fa-ticket text-zinc-600 text-5xl mb-4"></i>
               <h3 class="text-xl font-semibold text-white mb-2">No Tickets Found</h3>
               <p class="text-zinc-400 mb-6">You haven't purchased any tickets yet.</p>
-              <a href="homepage.php"
+              <a href="index.php"
                 class="inline-block bg-violet-600 hover:bg-violet-500 text-white px-6 py-3 rounded-xl transition-colors">
                 Browse Events
               </a>

@@ -69,7 +69,7 @@ $fullName = $user['FullName'] ?? 'Unknown';
         <span class="text-lg font-semibold tracking-tight">Absolute Cinema</span>
       </div>
       <div class="flex items-center gap-6 text-sm">
-        <a href="homepage.php" class="hover:text-white">Home</a>
+        <a href="index.php" class="hover:text-white">Home</a>
         <a href="logout.php" class="text-red-400 hover:text-red-500 flex items-center gap-2">
           <i class="fa-solid fa-right-from-bracket"></i> Logout
         </a>
@@ -182,7 +182,7 @@ $fullName = $user['FullName'] ?? 'Unknown';
             <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-12 text-center">
               <i class="fa-solid fa-ticket text-6xl text-zinc-600 mb-4"></i>
               <p class="text-zinc-400">No tickets purchased yet.</p>
-              <a href="homepage.php" class="mt-6 inline-block bg-violet-600 hover:bg-violet-500 text-white px-8 py-3 rounded-2xl">
+              <a href="index.php" class="mt-6 inline-block bg-violet-600 hover:bg-violet-500 text-white px-8 py-3 rounded-2xl">
                 Browse Events
               </a>
             </div>
