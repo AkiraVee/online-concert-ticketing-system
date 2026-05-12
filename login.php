@@ -111,14 +111,6 @@ if (isset($_POST['submit'])) {
                 placeholder="••••••••" />
             </div>
 
-            <div class="flex items-center justify-between">
-              <label class="flex items-center gap-2 text-sm">
-                <input type="checkbox" class="w-4 h-4 accent-violet-600" />
-                <span class="text-zinc-400">Remember me</span>
-              </label>
-              <a href="#" class="text-sm text-violet-400 hover:text-violet-300">Forgot Password?</a>
-            </div>
-
             <button type="submit" name="submit"
               class="w-full bg-violet-600 hover:bg-violet-500 text-white py-3.5 rounded-2xl font-medium text-base transition-colors">
               Sign In
