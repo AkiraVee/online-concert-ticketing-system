@@ -170,10 +170,19 @@ $fullName = $user['FullName'] ?? 'Unknown';
                   </div>
                   <div class="bg-zinc-800 px-6 py-4 flex justify-between items-center border-t border-zinc-700">
                     <span class="text-emerald-400 text-sm">✅ Confirmed</span>
-                    <button onclick="alert('🎟️ Ticket #<?= $ticket['TicketID'] ?> - Download coming soon!')" 
-                      class="bg-violet-600 hover:bg-violet-500 text-white px-5 py-2 rounded-xl text-sm">
-                      View Ticket
-                    </button>
+                      <button 
+                        onclick="openTicketModal(
+                          '<?= htmlspecialchars($ticket['EventTitle']) ?>',
+                          '<?= htmlspecialchars($ticket['EventDate']) ?>',
+                          '<?= htmlspecialchars($ticket['EventLocation']) ?>',
+                          '<?= htmlspecialchars($ticket['SeatLocation']) ?>',
+                          '<?= htmlspecialchars($ticket['TicketQuantity']) ?>',
+                          '<?= htmlspecialchars(number_format($ticket['TotalPrice'])) ?>',
+                          '<?= htmlspecialchars($ticket['TicketID']) ?>'
+                        )"
+                        class="bg-violet-600 hover:bg-violet-500 text-white px-5 py-2 rounded-xl text-sm">
+                        View Ticket
+                      </button>
                   </div>
                 </div>
               <?php endforeach; ?>
@@ -191,6 +200,85 @@ $fullName = $user['FullName'] ?? 'Unknown';
       </div>
     </div>
   </div>
+
+  <!-- ====================== VIEW TICKET MODAL ====================== -->
+<div id="ticketModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[100]">
+  <div class="bg-zinc-900 border border-zinc-700 rounded-3xl w-full max-w-lg mx-4 overflow-hidden">
+
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-violet-600 to-fuchsia-600 p-6 text-white">
+      <div class="flex justify-between items-center">
+        <div>
+          <h2 class="text-2xl font-bold">🎟️ Event Ticket</h2>
+          <p class="text-sm text-white/80">Absolute Cinema</p>
+        </div>
+
+        <button onclick="closeTicketModal()" class="text-white text-xl hover:opacity-70">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="p-8">
+
+      <div class="space-y-5">
+
+        <div>
+          <p class="text-zinc-500 text-sm">Event</p>
+          <h3 id="ticketEvent" class="text-2xl font-semibold text-white"></h3>
+        </div>
+
+        <div class="grid grid-cols-2 gap-5">
+
+          <div class="bg-zinc-800 rounded-2xl p-4">
+            <p class="text-zinc-500 text-sm">Date</p>
+            <p id="ticketDate" class="text-white mt-1"></p>
+          </div>
+
+          <div class="bg-zinc-800 rounded-2xl p-4">
+            <p class="text-zinc-500 text-sm">Location</p>
+            <p id="ticketLocation" class="text-white mt-1"></p>
+          </div>
+
+          <div class="bg-zinc-800 rounded-2xl p-4">
+            <p class="text-zinc-500 text-sm">Seat Tier</p>
+            <p id="ticketTier" class="text-white mt-1"></p>
+          </div>
+
+          <div class="bg-zinc-800 rounded-2xl p-4">
+            <p class="text-zinc-500 text-sm">Quantity</p>
+            <p id="ticketQuantity" class="text-white mt-1"></p>
+          </div>
+
+        </div>
+
+        <div class="border-t border-dashed border-zinc-700 pt-6 flex justify-between items-center">
+          <div>
+            <p class="text-zinc-500 text-sm">Ticket ID</p>
+            <p id="ticketID" class="text-violet-400 font-semibold"></p>
+          </div>
+
+          <div class="text-right">
+            <p class="text-zinc-500 text-sm">Total Paid</p>
+            <p id="ticketPrice" class="text-2xl font-bold text-emerald-400"></p>
+          </div>
+        </div>
+
+        <div class="bg-emerald-500/10 border border-emerald-500 rounded-2xl p-4 text-center">
+          <p class="text-emerald-400 font-medium">
+            ✅ Payment Confirmed
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
 
   <!-- ====================== EDIT PROFILE MODAL ====================== -->
   <div id="editModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[100]">
@@ -251,6 +339,31 @@ $fullName = $user['FullName'] ?? 'Unknown';
   </div>
 
   <script>
+    
+          // ====================== VIEW TICKET MODAL ======================
+
+      function openTicketModal(title, date, location, tier, quantity, price, id) {
+
+        document.getElementById('ticketEvent').innerText = title;
+        document.getElementById('ticketDate').innerText = date;
+        document.getElementById('ticketLocation').innerText = location;
+        document.getElementById('ticketTier').innerText = tier;
+        document.getElementById('ticketQuantity').innerText = quantity + ' ticket(s)';
+        document.getElementById('ticketPrice').innerText = '₱' + price;
+        document.getElementById('ticketID').innerText = '#' + id;
+
+        document.getElementById('ticketModal').classList.remove('hidden');
+      }
+
+      function closeTicketModal() {
+        document.getElementById('ticketModal').classList.add('hidden');
+      }
+
+      // Close ticket modal when clicking outside
+      document.getElementById('ticketModal').addEventListener('click', function(e) {
+        if (e.target === this) closeTicketModal();
+      });
+          
     function showTab(n) {
       document.getElementById('content0').classList.toggle('hidden', n !== 0);
       document.getElementById('content1').classList.toggle('hidden', n !== 1);

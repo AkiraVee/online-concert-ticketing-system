@@ -24,7 +24,7 @@ session_start();
       </div>
       <div class="hidden md:flex items-center gap-6 text-sm text-zinc-400">
       <?php if (isset($_SESSION['UserID'])): ?>
-        <a href="index.php" class="text-sm text-zinc-400 hover:text-white px-3 py-1.5 flex items-center gap-2">
+        <a href="profile.php" class="text-sm text-zinc-400 hover:text-white px-3 py-1.5 flex items-center gap-2">
           <i class="fa-solid fa-user"></i> My Profile
         </a>
       <?php endif; ?>

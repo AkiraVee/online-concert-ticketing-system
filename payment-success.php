@@ -156,10 +156,6 @@ mysqli_close($conn);
          class="flex-1 bg-violet-600 hover:bg-violet-500 text-white py-4 rounded-2xl font-semibold transition-colors">
         View My Tickets
       </a>
-      <button onclick="downloadTickets()" 
-        class="flex-1 border border-zinc-700 hover:border-zinc-500 py-4 rounded-2xl font-semibold transition-colors">
-        Download Tickets (PDF)
-      </button>
     </div>
 
     <p class="text-zinc-500 text-sm mt-12">
@@ -181,11 +177,5 @@ mysqli_close($conn);
     </div>
     <p>© 2026 Absolute Cinema. All rights reserved.</p>
   </footer>
-
-  <script>
-    function downloadTickets() {
-      alert("🎟️ Downloading your tickets as PDF...\nOrder ID: #<?= $orderID ?> (Demo)");
-    }
-  </script>
 </body>
 </html>
