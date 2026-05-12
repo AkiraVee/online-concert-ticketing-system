@@ -63,11 +63,7 @@ mysqli_close($conn);
   <title>Payment Successful - Absolute Cinema</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap');
-    body { font-family: 'DM Sans', sans-serif; }
-    .serif { font-family: 'DM Serif Display', serif; }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body class="bg-zinc-950 text-zinc-300 min-h-screen">
 
