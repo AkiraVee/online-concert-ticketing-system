@@ -107,21 +107,21 @@ session_start();
 
   <script>
     const events = [
-      { id: 1, title: "Taylor Swift | The Eras Tour", category: "concert", date: "May 20, 2026", location: "Philippine Arena, Bulacan", price: "₱3,500", image: "https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/88477c99-c357-4758-a37e-b1b750215b2f/compose?aspectRatio=1.78&format=webp&width=1200", type: "Concert" },
-      { id: 2, title: "PBA: Ginebra vs TNT", category: "sports", date: "May 15, 2026", location: "Smart Araneta Coliseum", price: "₱500", image: "Images/bballhomepage.png", type: "Sports" },
-      { id: 3, title: "Miss Saigon - Manila", category: "theatre", date: "June 10, 2026", location: "Newport Performing Arts Theater", price: "₱1,500", image: "https://theaterfansmanila.com/wp-content/uploads/2023/10/Miss-Saigon-feat-pic.jpg", type: "Theatre" },
-      { id: 4, title: "Coldplay World Tour", category: "concert", date: "July 5, 2026", location: "Philippine Arena, Bulacan", price: "₱1,500", image: "Images/coldpayposter.png", type: "Concert" },
-      { id: 5, title: "UAAP Men's Basketball: Ateneo vs La Salle", category: "sports", date: "May 25, 2026", location: "Smart Araneta Coliseum", price: "₱500", image: "Images/uaapposter.png", type: "Sports" },
+      { id: 1, title: "Taylor Swift | The Eras Tour", category: "concert", date: "May 16, May 17 & May 20, 2026", location: "Philippine Arena, Bulacan", price: "₱3,500", image: "https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/88477c99-c357-4758-a37e-b1b750215b2f/compose?aspectRatio=1.78&format=webp&width=1200", type: "Concert" },
+      { id: 2, title: "PBA: Ginebra vs TNT", category: "sports", date: "May 15 & May 18, 2026", location: "Smart Araneta Coliseum", price: "₱500", image: "Images/bballhomepage.png", type: "Sports" },
+      { id: 3, title: "Miss Saigon - Manila", category: "theatre", date: "June 10, June 11, June 14 & June 15, 2026", location: "Newport Performing Arts Theater", price: "₱1,500", image: "https://theaterfansmanila.com/wp-content/uploads/2023/10/Miss-Saigon-feat-pic.jpg", type: "Theatre" },
+      { id: 4, title: "Coldplay World Tour", category: "concert", date: "July 5 & July 6, 2026", location: "Philippine Arena, Bulacan", price: "₱1,500", image: "Images/coldpayposter.png", type: "Concert" },
+      { id: 5, title: "UAAP Men's Basketball: Ateneo vs La Salle", category: "sports", date: "May 25 & May 31, 2026", location: "Smart Araneta Coliseum", price: "₱500", image: "Images/uaapposter.png", type: "Sports" },
       { id: 6, title: "Music Festival 2026", category: "festival", date: "June 20, 2026", location: "Mall of Asia Arena", price: "₱1,800", image: "Images/musicfesposter.png", type: "Festival" },
-      { id: 7, title: "Hamilton - Manila", category: "theatre", date: "August 15, 2026", location: "Newport Performing Arts Theater", price: "₱2,645", image: "Images/hamiltonposter.png", type: "Theatre" },
-      { id: 8, title: "Daniel Caesar Live in Manila", category: "concert", date: "September 10, 2026", location: "Mall of Asia Arena", price: "₱2,750", image: "https://aphrodite.gmanetwork.com/entertainment/articles/1200_675_11_07-04-2026-1513_-20260407151314.jpg", type: "Concert" },
-      { id: 9, title: "My Chemical Romance Reunion Tour", category: "concert", date: "October 5, 2026", location: "Philippine Arena, Bulacan", price: "₱2,120", image: "Images/mcrposter.png", type: "Concert" },
+      { id: 7, title: "Hamilton - Manila", category: "theatre", date: "August 14, August 15 & August 16, 2026", location: "Newport Performing Arts Theater", price: "₱2,645", image: "Images/hamiltonposter.png", type: "Theatre" },
+      { id: 8, title: "Daniel Caesar Live in Manila", category: "concert", date: "May 19, 2026", location: "Mall of Asia Arena", price: "₱2,750", image: "https://aphrodite.gmanetwork.com/entertainment/articles/1200_675_11_07-04-2026-1513_-20260407151314.jpg", type: "Concert" },
+      { id: 9, title: "My Chemical Romance Reunion Tour", category: "concert", date: "November 14, 2026", location: "Philippine Arena, Bulacan", price: "₱2,120", image: "Images/mcrposter.png", type: "Concert" },
       { id: 10, title: "Bruno Mars 24K Magic Tour", category: "concert", date: "November 20, 2026", location: "Philippine Arena, Bulacan", price: "₱2,750", image: "Images/marsposter.png", type: "Concert" },
       { id: 11, title: "Epic: The Musical - Manila", category: "theatre", date: "December 10, 2026", location: "Newport Performing Arts Theater", price: "₱1,545", image: "Images/poster.png", type: "Theatre" },
       { id: 12, title: "The 1975 Live in Manila", category: "concert", date: "January 15, 2027", location: "MOA Arena, Pasay", price: "₱1,975", image: "Images/1975poster.png", type: "Concert" },
-      { id: 13, title: "Hatsune Miku Expo 2026", category: "festival", date: "February 20, 2027", location: "Mall of Asia Arena", price: "₱2,880", image: "Images/MikuExpo.jpg", type: "Festival" },
+      { id: 13, title: "Hatsune Miku Expo 2026", category: "festival", date: "November 16, 2026", location: "Mall of Asia Arena", price: "₱2,880", image: "Images/MikuExpo.jpg", type: "Festival" },
       { id: 14, title: "Ado Live in Manila", category: "concert", date: "March 10, 2027", location: "Philippine Arena, Bulacan", price: "₱2,500", image: "Images/adohomepage.png", type: "Concert" },
-      { id: 15, title: "Laufey A Matter of Time Tour", category: "concert", date: "April 5, 2027", location: "MOA Arena, Pasay", price: "₱2,500", image: "Images/laufey_30042026120056.jpg", type: "Concert" },
+      { id: 15, title: "Laufey A Matter of Time Tour", category: "concert", date: "May 26, May 27 & May 28, 2026", location: "MOA Arena, Pasay", price: "₱2,500", image: "Images/laufey_30042026120056.jpg", type: "Concert" },
       { id: 16, title: "The Greatest Showman Live Experience", category: "theatre", date: "May 20, 2027", location: "Newport Performing Arts Theater", price: "₱1,500", image: "Images/greathomepage.png", type: "Theatre" }
     ];
 
